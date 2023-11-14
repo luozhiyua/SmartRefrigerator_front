@@ -1,5 +1,5 @@
 import { NavList, TabId } from '../model/NavItemModel';
-import HomeIndex from '../view/HomeComponent';
+import FoodIndex from '../view/FoodComponent';
 import MenuIndex from '../view/MenuComponent';
 import QAIndex from '../view/QAComponent';
 import FoodList from '../viewmodel/FoodList';
@@ -18,7 +18,7 @@ struct Index {
   private tabController: TabsController = new TabsController();
 
   aboutToAppear(){
-    // TODO check：还是 onPageShow 呢？此处主要用来初始化食物列表
+    // TODO: 还是 onPageShow 呢？此处主要用来初始化食物列表
     this.foodList.initData();
   }
 
@@ -39,7 +39,7 @@ struct Index {
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.tabController }) {
       TabContent() {
-        HomeIndex({ foodList : $foodList })
+        FoodIndex({ foodList : $foodList })
       }
       .tabBar(this.TabBuilder(TabId.HOME))
 

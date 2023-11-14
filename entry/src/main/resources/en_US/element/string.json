@@ -23,6 +23,30 @@
     {
       "name": "tab_qa",
       "value": "qa"
+    },
+    {
+      "name": "category_all",
+      "value": "All"
+    },
+    {
+      "name": "category_fruit",
+      "value": "Fruit"
+    },
+    {
+      "name": "category_vegetable",
+      "value": "Vegetable"
+    },
+    {
+      "name": "category_meat",
+      "value": "Meat"
+    },
+    {
+      "name": "category_seafood",
+      "value": "Seafood"
+    },
+    {
+      "name": "category_dessert",
+      "value": "Dessert"
     }
   ]
 }

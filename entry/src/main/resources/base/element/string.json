@@ -23,6 +23,30 @@
     {
       "name": "tab_menu",
       "value": "餐谱"
+    },
+    {
+      "name": "category_all",
+      "value": "全部"
+    },
+    {
+      "name": "category_fruit",
+      "value": "水果"
+    },
+    {
+      "name": "category_vegetable",
+      "value": "蔬菜"
+    },
+    {
+      "name": "category_meat",
+      "value": "肉类"
+    },
+    {
+      "name": "category_seafood",
+      "value": "海鲜"
+    },
+    {
+      "name": "category_dessert",
+      "value": "零食"
     }
   ]
 }
