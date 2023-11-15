@@ -118,15 +118,15 @@ export default struct FoodIndex {
           })
           .margin({top : 10, bottom : 0})
 
-        Row(){
-          Text("食物列表")
-          // 默认 false 为按品类排序，一旦isOn,则触发按保质期排序
-          // TODO: 位置是否改成between分布？如何提醒用户toggle的作用
-          Toggle({type: ToggleType.Switch, isOn: false})
-            .onChange((isOn: boolean) => {
-              this.sortByFresh = isOn;
-            })
-        }
+        // Row(){
+        //   Text("食物列表")
+        //   // 默认 false 为按品类排序，一旦isOn,则触发按保质期排序
+        //   // TODO: 位置是否改成between分布？如何提醒用户toggle的作用
+        //   Toggle({type: ToggleType.Switch, isOn: false})
+        //     .onChange((isOn: boolean) => {
+        //       this.sortByFresh = isOn;
+        //     })
+        // }
 
         // 食物列表
         if(this.sortByFresh){
