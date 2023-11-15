@@ -75,7 +75,7 @@ export default struct MenuIndex {
         })
         .margin({top : 10, bottom : 0, left : 30})
 
-      MenuGrid().height("89%")
+      MenuGrid().height("88.5%")
 
     }.justifyContent(FlexAlign.End)
   }
