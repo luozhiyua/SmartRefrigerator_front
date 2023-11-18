@@ -47,6 +47,14 @@
     {
       "name": "category_dessert",
       "value": "Dessert"
+    },
+    {
+      "name": "recipe_width",
+      "value": "90%"
+    },
+    {
+      "name": "dotted_line",
+      "value": "----------------------------------------"
     }
   ]
 }

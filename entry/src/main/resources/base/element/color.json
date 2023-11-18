@@ -99,6 +99,14 @@
     {
       "name": "progress_column_color",
       "value": "#0d000000"
+    },
+    {
+      "name": "tab_bar_select_color",
+      "value": "#73CD57"
+    },
+    {
+      "name": "tab_bar_normal_color",
+      "value": "#999999"
     }
   ]
 }

@@ -47,6 +47,22 @@
     {
       "name": "category_dessert",
       "value": "零食"
+    },
+    {
+      "name": "recipe_width",
+      "value": "90%"
+    },
+    {
+      "name": "dotted_line",
+      "value": "----------------------------------------------"
+    },
+    {
+      "name": "recipe_detail_ingredient_title",
+      "value": "用料"
+    },
+    {
+      "name": "recipe_detail_step_title",
+      "value": "步骤"
     }
   ]
 }
