@@ -9,7 +9,7 @@ import {MenuInfo} from '../bean/MenuModel'
 // }
 
 export function getStringCategories(): string[]{
-  return ['蔬菜', '水果', '肉类', '海鲜','零食']
+  return ['蔬菜', '水果', '肉类', '海鲜','零食','其他']
 }
 
 export function getMenus(): Array<MenuInfo> {

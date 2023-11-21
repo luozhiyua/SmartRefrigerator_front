@@ -57,6 +57,15 @@ export default struct MenuIndex {
   build() {
 
     Column(){
+      //顶部导航栏
+      Text($r('app.string.start_menu'))
+        .fontSize(25)
+        .fontWeight(FontWeight.Bold)
+        .padding({ top: 10, bottom: 10, left: 20, right: 20 })
+        .alignSelf(ItemAlign.Start)
+        .width('100%')
+        .backgroundColor($r('app.color.startColor'))
+
       Search({ value: this.textInfo, placeholder: '菜谱名称', controller: this.controller })
         .searchButton('Search')
         .width('75%')

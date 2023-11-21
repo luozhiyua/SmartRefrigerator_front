@@ -19,6 +19,15 @@ export default struct QAIndex {
 
   build() {
     Column() {
+      //顶部导航栏
+      Text($r('app.string.start_qa'))
+        .fontSize(25)
+        .fontWeight(FontWeight.Bold)
+        .padding({ top: 15, bottom: 10, left: 20, right: 20 })
+        .alignSelf(ItemAlign.Start)
+        .width('100%')
+        .backgroundColor($r('app.color.startColor'))
+
       ChefTitle()
       Line().lineStyle()
 
