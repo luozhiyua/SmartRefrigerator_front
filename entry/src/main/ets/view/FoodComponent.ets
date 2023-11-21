@@ -99,25 +99,42 @@ export default struct FoodIndex {
   build(){ // Text('食物主页')
     Stack() {
       Column(){
-        // Search栏
-        Search({ value: this.searchInfo, placeholder: '食材名称', controller: this.controller })
-          .searchButton('Search')
-          .width('75%')
-          .height("10%")
-          .textFont({ size: 25, weight: FontWeight.Bold })
-          .placeholderFont({ size: 25, weight: FontWeight.Normal, style: FontStyle.Normal })
-          .backgroundColor(Color.White)
-          .placeholderColor(Color.Grey)
-          .onSubmit((value: string) => {
-            // 提交后反应
-            this.searchInfo = value
-            this.filter()
-          })
-          .onChange((value: string) => {
-            this.searchInfo = value
-          })
-          .margin({top : 10, bottom : 0})
+        // 使用Stack作为背景容器
 
+        //顶部导航栏
+        Text($r('app.string.start_home'))
+          .fontSize(25)
+          .fontWeight(FontWeight.Bold)
+          .padding({ top: 15, bottom: 10, left: 20, right: 20 })
+          .alignSelf(ItemAlign.Start)
+          .width('100%')
+          .backgroundColor($r('app.color.startColor'))
+
+        Row(){
+         /* Button("按照保质期排序", {type: ButtonType.Capsule , stateEffect: true}){
+
+          }*/
+
+          // Search栏
+          Search({ value: this.searchInfo, placeholder: '食材名称', controller: this.controller })
+            .searchButton('搜索')
+            .width('55%')
+            .height("6%")
+            .textFont({ size: 20, weight: FontWeight.Bold })
+            .placeholderFont({ size: 20, weight: FontWeight.Normal, style: FontStyle.Normal })
+            .backgroundColor(Color.White)
+            .placeholderColor(Color.Grey)
+            .onSubmit((value: string) => {
+              // 提交后反应
+              this.searchInfo = value
+              this.filter()
+            })
+            .onChange((value: string) => {
+              this.searchInfo = value
+            })
+            .margin({top : 10, bottom : 0})
+
+        }
         // Row(){
         //   Text("食物列表")
         //   // 默认 false 为按品类排序，一旦isOn,则触发按保质期排序

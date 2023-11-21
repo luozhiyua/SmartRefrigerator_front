@@ -107,6 +107,10 @@
     {
       "name": "tab_bar_normal_color",
       "value": "#999999"
+    },
+    {
+      "name": "startColor",
+      "value": "#FF87E3B5"
     }
   ]
 }

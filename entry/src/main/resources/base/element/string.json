@@ -25,6 +25,18 @@
       "value": "餐谱"
     },
     {
+      "name": "start_home",
+      "value": "你的贴心管家"
+    },
+    {
+      "name": "start_qa",
+      "value": "问答小助手"
+    },
+    {
+      "name": "start_menu",
+      "value": "菜谱小助手"
+    },
+    {
       "name": "category_all",
       "value": "全部"
     },
