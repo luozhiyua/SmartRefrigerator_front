@@ -15,9 +15,13 @@ export struct FoodListComponent{
           //  TODO here！！！单项布局再完善，还应该显示出什么信息
 
           Text(item.name).fontSize(20)
-          .width('100%')
+          .width('95%')
+            .height('6%')
+          .borderRadius(14)
+          .backgroundColor($r('app.color.leveBgColor'))
           // .justifyContent(FlexAlign.Start)
-        }.onClick(()=>{
+        }.align(Alignment.Center)
+        .onClick(()=>{
           router.pushUrl({
             url: 'pages/FoodDetailPage',
             params: {foodItem: item}
@@ -33,6 +37,7 @@ export struct FoodListComponent{
     })
     .width('100%')
     .height('100%')
+
 
   }
 

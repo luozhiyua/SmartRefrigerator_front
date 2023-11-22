@@ -34,6 +34,7 @@ struct Index {
         .fontColor(this.currentPage === index ? $r('app.color.blueColor') : $r('app.color.tabTitleColor'))
         .margin({ top: $r('app.float.default_4') })
     }.justifyContent(FlexAlign.Center).allSize()
+
   }
 
   build() {

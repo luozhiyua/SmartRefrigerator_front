@@ -37,6 +37,7 @@ export struct CategoryModeFoods {
       .margin({ top: 2 })
       .height(56)
       .width(60)
+
   }
 
   build() {
@@ -50,6 +51,8 @@ export struct CategoryModeFoods {
           FoodListComponent({ foodList: this.foodList.getData().filter(item => (item.category === foodCategory)) })
         }.tabBar(this.tabBarItemBuilder(foodCategory,
           index! + 1))
+        /*.borderRadius(14)
+        .backgroundColor($r('app.color.leveBgColor'))*/
       })
     }
     .animationDuration(0)
@@ -112,22 +115,51 @@ export default struct FoodIndex {
           .backgroundColor($r('app.color.startColor'))
 
         Row(){
-          Button("按照保质期排序", {type: ButtonType.Capsule , stateEffect: true})
-          .borderRadius(8)
-          .width('50%')
-            .height("6%")
-          .onClick(() => {
-            console.log('rank change')
-            console.log(this.isRankSort == false? 'flase' : 'true')
-            this.isRankSort = !this.isRankSort
-          })
-          .backgroundColor(this.isRankSort == false ? $r('app.color.rankColor') : $r('app.color.isRankColor'))
+          Row(){
+            Text('排序:')
+              .fontColor('#000000')
+              .backgroundColor($r('app.color.white'))
+              .width('20%')
+
+            Button("名称", {type: ButtonType.Capsule , stateEffect: true})
+              .borderRadius(8)
+              .width('35%')
+              .height("70%")
+              .fontSize(16)
+              .fontColor('#000000')
+              .onClick(() => {
+                console.log('rank change')
+                console.log(this.isRankSort == false? 'flase' : 'true')
+                this.isRankSort = !this.isRankSort
+              })
+              .borderRadius(14)
+              .backgroundColor(this.isRankSort == false ? $r('app.color.notRankColor') : $r('app.color.isRankColor'))
+
+            Button("保质期", {type: ButtonType.Normal , stateEffect: true})
+              .borderRadius(8)
+              .width('40%')
+              .height("70%")
+              .fontSize(16)
+              .fontColor('#000000')
+              .onClick(() => {
+                console.log('rank change')
+                console.log(this.isRankSort == false? 'flase' : 'true')
+                this.isRankSort = !this.isRankSort
+              })
+              .borderRadius(14)
+              .backgroundColor(this.isRankSort == false ? $r('app.color.isRankColor') : $r('app.color.notRankColor'))
+              .margin({right: 0})
+
+          }.backgroundColor($r('app.color.white'))
+          .height('6%')
+          .width('55%')
+          .borderRadius(14)
 
 
           // Search栏
-          Search({ value: this.searchInfo, placeholder: '食材名称', controller: this.controller })
+          Search({ value: this.searchInfo, placeholder: '名称', controller: this.controller })
             .searchButton('搜索')
-            .width('50%')
+            .width('44%')
             .height("6%")
             .textFont({ size: 20, weight: FontWeight.Bold })
             .placeholderFont({ size: 18, weight: FontWeight.Normal, style: FontStyle.Normal })
@@ -141,9 +173,9 @@ export default struct FoodIndex {
             .onChange((value: string) => {
               this.searchInfo = value
             })
-            .margin({top : 10, bottom : 0})
+            //.margin({top : 10, bottom : 0})
 
-        }
+        }.backgroundColor($r('app.color.leveBgColor'))
         // Row(){
         //   Text("食物列表")
         //   // 默认 false 为按品类排序，一旦isOn,则触发按保质期排序

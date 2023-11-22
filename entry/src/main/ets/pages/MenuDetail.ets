@@ -3,11 +3,11 @@ import router from '@ohos.router'
 
 // import {MenuInfo} from '../model/DataModels'
 // import {getMenuInfo} from '../model/DataUtil'
-import {PageTitle} from '../pages/MenuComponent/PageTitle'
-import {MenuImage} from '../pages/MenuComponent/MenuImage'
-import {IngredientList} from '../pages/MenuComponent/IngredientList'
+import {PageTitle} from '../view/MenuComponent/PageTitle'
+import {MenuImage} from '../view/MenuComponent/MenuImage'
+import {IngredientList} from '../view/MenuComponent/IngredientList'
 import {MenuViewModel} from '../viewModel/MenuViewModel'
-import {StepList} from '../pages/MenuComponent/StepList'
+import {StepList} from '../view/MenuComponent/StepList'
 import thermal from '@ohos.thermal'
 
 @Component
