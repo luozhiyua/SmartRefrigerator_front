@@ -111,6 +111,14 @@
     {
       "name": "startColor",
       "value": "#FF87E3B5"
+    },
+    {
+      "name": "rankColor",
+      "value": "#C4A7F8D8"
+    },
+    {
+      "name": "isRankColor",
+      "value": "#C4102821"
     }
   ]
 }

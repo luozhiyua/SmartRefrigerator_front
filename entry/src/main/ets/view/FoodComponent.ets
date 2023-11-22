@@ -36,6 +36,7 @@ export struct CategoryModeFoods {
       .fontSize(this.currentTabIndex === index ? 24 : 18)
       .margin({ top: 2 })
       .height(56)
+      .width(60)
   }
 
   build() {
@@ -52,7 +53,7 @@ export struct CategoryModeFoods {
       })
     }
     .animationDuration(0)
-    .barWidth('80%')
+    .barWidth('100%')
     .onChange((index) => {
       this.currentTabIndex = index
     })
@@ -76,7 +77,7 @@ export default struct FoodIndex {
 
   @State searchInfo: string = '';
   private controller: SearchController = new SearchController()
-
+  private isRankSort: Boolean = false;
   // TODO: 搜索功能实现
   filter: () => void = () => {}
   // filter: () => {
@@ -111,17 +112,25 @@ export default struct FoodIndex {
           .backgroundColor($r('app.color.startColor'))
 
         Row(){
-         /* Button("按照保质期排序", {type: ButtonType.Capsule , stateEffect: true}){
+          Button("按照保质期排序", {type: ButtonType.Capsule , stateEffect: true})
+          .borderRadius(8)
+          .width('50%')
+            .height("6%")
+          .onClick(() => {
+            console.log('rank change')
+            console.log(this.isRankSort == false? 'flase' : 'true')
+            this.isRankSort = !this.isRankSort
+          })
+          .backgroundColor(this.isRankSort == false ? $r('app.color.rankColor') : $r('app.color.isRankColor'))
 
-          }*/
 
           // Search栏
           Search({ value: this.searchInfo, placeholder: '食材名称', controller: this.controller })
             .searchButton('搜索')
-            .width('55%')
+            .width('50%')
             .height("6%")
             .textFont({ size: 20, weight: FontWeight.Bold })
-            .placeholderFont({ size: 20, weight: FontWeight.Normal, style: FontStyle.Normal })
+            .placeholderFont({ size: 18, weight: FontWeight.Normal, style: FontStyle.Normal })
             .backgroundColor(Color.White)
             .placeholderColor(Color.Grey)
             .onSubmit((value: string) => {
@@ -146,7 +155,8 @@ export default struct FoodIndex {
         // }
 
         // 食物列表
-        if(this.sortByFresh){
+        if(this.isRankSort){
+
           FreshDateFoods({foodList: this.foodList})
         }else {
           CategoryModeFoods({foodList: this.foodList})
