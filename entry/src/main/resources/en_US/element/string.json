@@ -55,6 +55,26 @@
     {
       "name": "dotted_line",
       "value": "----------------------------------------"
+    },
+    {
+      "name": "start_menu",
+      "value": "menu_helper"
+    },
+    {
+      "name": "start_qa",
+      "value": "qa_helper"
+    },
+    {
+      "name": "start_home",
+      "value": "home_helper"
+    },
+    {
+      "name": "recipe_detail_ingredient_title",
+      "value": "ingredient"
+    },
+    {
+      "name": "recipe_detail_step_title",
+      "value": "steps"
     }
   ]
 }

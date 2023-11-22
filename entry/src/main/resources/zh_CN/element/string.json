@@ -63,6 +63,18 @@
     {
       "name": "recipe_detail_step_title",
       "value": "步骤"
+    },
+    {
+      "name": "start_home",
+      "value": "你的贴心小管家"
+    },
+    {
+      "name": "start_qa",
+      "value": "你的贴心小管家"
+    },
+    {
+      "name": "start_menu",
+      "value": "你的贴心小管家"
     }
   ]
 }

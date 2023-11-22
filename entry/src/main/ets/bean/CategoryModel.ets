@@ -3,7 +3,8 @@ export enum CategoryId {
   Fruit,
   Meat,
   Seafood,
-  Dessert
+  Dessert,
+  Others
 }
 
 export class Category {
