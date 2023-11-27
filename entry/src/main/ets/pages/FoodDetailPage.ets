@@ -166,62 +166,74 @@ struct FoodDetailPage {
         }.width('100%')
         .margin(5)
       } else {
-        Flex({ justifyContent: FlexAlign.SpaceBetween }) {
+        Row(){
+          Image($r('app.media.return_icon'))
+            .width(28)
+            .height(28)
+            .onClick(()=>{
+              router.back()
+            })
+          Column().width(5)
+          Text('食物编辑').fontSize(25)
+          Blank()
           Button('取消',{ type: ButtonType.Normal, stateEffect: true })
             .onClick(()=>{
-              if(this.whe_add)router.back()
-              else this.whe_edit = false;
-            })
+                    if(this.whe_add)router.back()
+                    else this.whe_edit = false;
+                })
             .buttonStyle()
+
+          Column().width(5)
 
           Button('完成',{ type: ButtonType.Normal, stateEffect: true })
             .onClick(()=>{
-              // TODO: 根据 whe_add 进行 PUT 或 POST
-              // let httpRequest = http.createHttp();
-              // if(this.whe_add){
-              //   httpRequest.request(
-              //     SERVER_ADDR+'/foodItem',
-              //     {
-              //       method: http.RequestMethod.POST,
-              //       header: {
-              //         'Content-Type': 'application/json'
-              //       },
-              //       extraData:{
-              //         name: this.newName,
-              //         shelfLife: this.newShelfLife,
-              //         quantity: this.newQuantity,
-              //         category: this.newCategory,
-              //         addr: this.newAddr
-              //       }
-              //     },(err,data)=>{
-              //     // 考虑弹窗提醒结果
-              //   })
-              // }else {
-              //   httpRequest.request(
-              //     SERVER_ADDR+'/foodItem/${this.foodItem.id}',
-              //     {
-              //       method: http.RequestMethod.PUT,
-              //       header: {
-              //         'Content-Type': 'application/json'
-              //       },
-              //       extraData:{
-              //         name: this.newName,
-              //         shelfLife: this.newShelfLife,
-              //         quantity: this.newQuantity,
-              //         category: this.newCategory,
-              //         addr: this.newAddr
-              //       }
-              //     },(err,data)=>{
-              //     // 考虑弹窗提醒结果
-              //   })
-              // }
-              // httpRequest.destroy();
+                    // TODO: 根据 whe_add 进行 PUT 或 POST
+                    // let httpRequest = http.createHttp();
+                    // if(this.whe_add){
+                    //   httpRequest.request(
+                    //     SERVER_ADDR+'/foodItem',
+                    //     {
+                    //       method: http.RequestMethod.POST,
+                    //       header: {
+                    //         'Content-Type': 'application/json'
+                    //       },
+                    //       extraData:{
+                    //         name: this.newName,
+                    //         shelfLife: this.newShelfLife,
+                    //         quantity: this.newQuantity,
+                    //         category: this.newCategory,
+                    //         addr: this.newAddr
+                    //       }
+                    //     },(err,data)=>{
+                    //     // 考虑弹窗提醒结果
+                    //   })
+                    // }else {
+                    //   httpRequest.request(
+                    //     SERVER_ADDR+'/foodItem/${this.foodItem.id}',
+                    //     {
+                    //       method: http.RequestMethod.PUT,
+                    //       header: {
+                    //         'Content-Type': 'application/json'
+                    //       },
+                    //       extraData:{
+                    //         name: this.newName,
+                    //         shelfLife: this.newShelfLife,
+                    //         quantity: this.newQuantity,
+                    //         category: this.newCategory,
+                    //         addr: this.newAddr
+                    //       }
+                    //     },(err,data)=>{
+                    //     // 考虑弹窗提醒结果
+                    //   })
+                    // }
+                    // httpRequest.destroy();
 
 
-              router.back()
-            })
+                    router.back()
+                  })
             .buttonStyle()
-        }.margin(8)
+        }.width('100%')
+        .margin(5)
       }
 
       Row()

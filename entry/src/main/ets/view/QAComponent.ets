@@ -19,68 +19,66 @@ export default struct QAIndex {
 
   build() {
     Column() {
-      //顶部导航栏
-      Text($r('app.string.start_qa'))
-        .fontSize(25)
-        .fontWeight(FontWeight.Bold)
-        .padding({ top: 15, bottom: 10, left: 20, right: 20 })
-        .alignSelf(ItemAlign.Start)
-        .width('100%')
-        .backgroundColor($r('app.color.startColor'))
+      Column(){
+        //顶部导航栏
+        Text($r('app.string.start_qa'))
+          .fontSize(25)
+          .fontWeight(FontWeight.Bold)
+          .padding({ top: 15, bottom: 10, left: 20, right: 20 })
+          .alignSelf(ItemAlign.Start)
+          .width('100%')
+          .backgroundColor($r('app.color.startColor'))
+      }
 
-      ChefTitle()
-      Line().lineStyle()
-
-      Scroll(this.scroller) {
-        Column() { //未来改成scroll
-          ForEach(this.text, (item, index) => {
-            ChefRes()
-
-            if (index == this.textLength - 1) {
-              UserRes({item: this.textNow})
-            } else {
-              UserRes({item: item})
-            }
-          })
+      Column(){
+        Scroll(this.scroller) {
+          Column() { //未来改成scroll
+            ForEach(this.text, (item, index) => {
+              ChefRes()
+              if (index == this.textLength - 1) {
+                UserRes({item: this.textNow})
+              } else {
+                UserRes({item: item})
+              }
+            })
+          }.width('95%')
         }
-      }
-      .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
-      .scrollBar(BarState.On)  // 滚动条常驻显示
-      .scrollBarColor(Color.Gray)  // 滚动条颜色
-      .scrollBarWidth(10) // 滚动条宽度
-      .edgeEffect(EdgeEffect.None)
-      .onScroll((xOffset: number, yOffset: number) => {
-        console.info(xOffset + ' ' + yOffset)
-      })
-      .onScrollEdge((side: Edge) => {
-        console.info('To the edge')
-      })
+        .width('100%')
+        .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
+        .scrollBar(BarState.On)  // 滚动条常驻显示
+        .scrollBarColor(Color.Gray)  // 滚动条颜色
+        .scrollBarWidth(10) // 滚动条宽度
+        .edgeEffect(EdgeEffect.None)
+      }.height('80%')
 
-      Row() {
-        TextInput({ placeholder: 'inline style', controller: this.controller })
-          .width("60%")
-          .height(60)
-          .margin(20)
-          .fontSize(18)
-          .borderRadius(0)
-          .style(TextInputStyle.Inline)
-          .onChange((value: string) => {
-            this.textNow = value
-          })
-        Button('发送')
-          .margin(15)
-          .onClick(() => {
-            this.text[this.textLength - 1] = this.textNow;
-            this.text[this.textLength] = ""
-            this.textNow = "";
-            this.textLength++
-          })
+      Column(){
+        Row() {
+          TextInput({ placeholder: 'inline style', controller: this.controller })
+            .width("60%")
+            .height(60)
+            .margin(20)
+            .fontSize(18)
+            .borderRadius(0)
+            .style(TextInputStyle.Inline)
+            .onChange((value: string) => {
+              this.textNow = value
+            })
+          Button('发送')
+            .margin(15)
+            .onClick(() => {
+              this.text[this.textLength - 1] = this.textNow;
+              this.text[this.textLength] = ""
+              this.textNow = "";
+              this.textLength++
+              // TODO: 因为click后有长度增加，所以每次总是差一个的长度，如何才能使之每次滚动到最下栏
+              this.scroller.scrollEdge(Edge.End)
+            })
+        }
+        .margin({
+          bottom: "3%"
+        })
       }
-      .margin({
-        bottom: "3%"
-      })
-
-      Text("目前对话：chatGLM")
     }
+    .height('100%')
   }
 }
