@@ -187,46 +187,46 @@ struct FoodDetailPage {
 
           Button('完成',{ type: ButtonType.Normal, stateEffect: true })
             .onClick(()=>{
-                    // TODO: 根据 whe_add 进行 PUT 或 POST
-                    // let httpRequest = http.createHttp();
-                    // if(this.whe_add){
-                    //   httpRequest.request(
-                    //     SERVER_ADDR+'/foodItem',
-                    //     {
-                    //       method: http.RequestMethod.POST,
-                    //       header: {
-                    //         'Content-Type': 'application/json'
-                    //       },
-                    //       extraData:{
-                    //         name: this.newName,
-                    //         shelfLife: this.newShelfLife,
-                    //         quantity: this.newQuantity,
-                    //         category: this.newCategory,
-                    //         addr: this.newAddr
-                    //       }
-                    //     },(err,data)=>{
-                    //     // 考虑弹窗提醒结果
-                    //   })
-                    // }else {
-                    //   httpRequest.request(
-                    //     SERVER_ADDR+'/foodItem/${this.foodItem.id}',
-                    //     {
-                    //       method: http.RequestMethod.PUT,
-                    //       header: {
-                    //         'Content-Type': 'application/json'
-                    //       },
-                    //       extraData:{
-                    //         name: this.newName,
-                    //         shelfLife: this.newShelfLife,
-                    //         quantity: this.newQuantity,
-                    //         category: this.newCategory,
-                    //         addr: this.newAddr
-                    //       }
-                    //     },(err,data)=>{
-                    //     // 考虑弹窗提醒结果
-                    //   })
-                    // }
-                    // httpRequest.destroy();
+                    // TODO(http): 根据 whe_add 进行 PUT 或 POST
+                    let httpRequest = http.createHttp();
+                    if(this.whe_add){
+                      httpRequest.request(
+                        SERVER_ADDR+'/add-food',
+                        {
+                          method: http.RequestMethod.POST,
+                          header: {
+                            'Content-Type': 'application/json'
+                          },
+                          extraData:{
+                            name: this.newName,
+                            shelfLife: this.newShelfLife,
+                            quantity: this.newQuantity,
+                            category: this.newCategory,
+                            addr: this.newAddr
+                          }
+                        },(err,data)=>{
+                        // 考虑弹窗提醒结果
+                      })
+                    }else {
+                      httpRequest.request(
+                        SERVER_ADDR+'/edit-food/${this.foodItem.id}',
+                        {
+                          method: http.RequestMethod.PUT,
+                          header: {
+                            'Content-Type': 'application/json'
+                          },
+                          extraData:{
+                            name: this.newName,
+                            shelfLife: this.newShelfLife,
+                            quantity: this.newQuantity,
+                            category: this.newCategory,
+                            addr: this.newAddr
+                          }
+                        },(err,data)=>{
+                        // 考虑弹窗提醒结果
+                      })
+                    }
+                    httpRequest.destroy();
 
 
                     router.back()
@@ -245,9 +245,9 @@ struct FoodDetailPage {
         .height('50%')
 
         Column(){
-          FoodInfoItem({title: '名字', value: this.foodItem.name,whe_Edit: this.whe_edit,newValue: $newName});
+          FoodInfoItem({title: '名字', value: this.foodItem.name,whe_Edit: this.whe_edit,newValue: $(this.newName)});
           Row().height(15)
-          FoodInfoItem({title: '种类', value: this.foodCategory,whe_Edit: this.whe_edit,newValue: $newCategory});
+          FoodInfoItem({title: '种类', value: this.foodCategory,whe_Edit: this.whe_edit,newValue: $(this.newCategory)});
         }
         .justifyContent(FlexAlign.Center)
         .width('55%')
@@ -259,11 +259,11 @@ struct FoodDetailPage {
       .height('2%')
 
       Column(){
-        FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity,whe_Edit: this.whe_edit,newValue: $newQuantity});
+        FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity,whe_Edit: this.whe_edit,newValue: $(this.newQuantity)});
         Divider().color('#D2D1D1')
-        FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife,whe_Edit: this.whe_edit,newValue: $newShelfLife});
+        FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife,whe_Edit: this.whe_edit,newValue: $(this.newShelfLife)});
         Divider().color('#D2D1D1')
-        FoodInfoItem({title: '存放位置', value: this.foodItem.addr,whe_Edit: this.whe_edit,newValue: $newAddr});
+        FoodInfoItem({title: '存放位置', value: this.foodItem.addr,whe_Edit: this.whe_edit,newValue: $(this.newAddr)});
         Divider().color('#D2D1D1')
       }
       .justifyContent(FlexAlign.SpaceAround)

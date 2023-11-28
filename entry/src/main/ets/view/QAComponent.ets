@@ -1,11 +1,52 @@
+import { SERVER_ADDR } from '../util/DataUtil'
 import ChefRes from './QA/ChefRes'
 import ChefTitle from './QA/ChefTitle'
 import { UserRes } from './QA/UserRes'
+import http from '@ohos.net.http'
 @Extend(Line)
 function lineStyle() {
   .width('100%')
   .height("1vp")
   .backgroundColor("#df73ff")
+}
+
+//TODO（http）:返回值有问题
+function postResponse({requestBody: str}): string{
+  let url="http://"+SERVER_ADDR+"/qa/ques"
+  let httpRequest = http.createHttp();
+  let requestBody: string = str;
+  let promise = httpRequest.request(
+    // 请求url地址
+    url,
+    {
+      // 请求方式
+      method: http.RequestMethod.POST,
+      // 请求的额外数据。
+      extraData: {
+        "userQues": requestBody
+      },
+      // 可选，默认为60s
+      connectTimeout: 60000,
+      // 可选，默认为60s
+      readTimeout: 60000,
+      // 开发者根据自身业务需要添加header字段
+      header: {
+        'Content-Type': 'application/json'
+      }
+    });
+  promise.then((data) => {
+    if (data.responseCode === http.ResponseCode.OK) {
+      console.info('Result:' + data.result);
+      console.info('code:' + data.responseCode);
+      httpRequest.destroy();
+      return "data.result";
+    }
+  }).catch((err) => {
+    console.info('error:' + JSON.stringify(err));
+    httpRequest.destroy();
+    return null;
+  });
+  return "";
 }
 
 @Component
