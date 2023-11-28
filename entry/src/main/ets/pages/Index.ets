@@ -40,7 +40,7 @@ struct Index {
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.tabController }) {
       TabContent() {
-        FoodIndex({ foodList : $(this.foodList) })
+        FoodIndex({ foodList : $foodList })
       }
       .tabBar(this.TabBuilder(TabId.HOME))
 

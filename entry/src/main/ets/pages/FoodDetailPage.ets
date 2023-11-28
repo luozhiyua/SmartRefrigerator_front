@@ -245,9 +245,9 @@ struct FoodDetailPage {
         .height('50%')
 
         Column(){
-          FoodInfoItem({title: '名字', value: this.foodItem.name,whe_Edit: this.whe_edit,newValue: $(this.newName)});
+          FoodInfoItem({title: '名字', value: this.foodItem.name,whe_Edit: this.whe_edit,newValue: $newName});
           Row().height(15)
-          FoodInfoItem({title: '种类', value: this.foodCategory,whe_Edit: this.whe_edit,newValue: $(this.newCategory)});
+          FoodInfoItem({title: '种类', value: this.foodCategory,whe_Edit: this.whe_edit,newValue: $newCategory});
         }
         .justifyContent(FlexAlign.Center)
         .width('55%')
@@ -259,11 +259,11 @@ struct FoodDetailPage {
       .height('2%')
 
       Column(){
-        FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity,whe_Edit: this.whe_edit,newValue: $(this.newQuantity)});
+        FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity,whe_Edit: this.whe_edit,newValue: $newQuantity});
         Divider().color('#D2D1D1')
-        FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife,whe_Edit: this.whe_edit,newValue: $(this.newShelfLife)});
+        FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife,whe_Edit: this.whe_edit,newValue: $newShelfLife});
         Divider().color('#D2D1D1')
-        FoodInfoItem({title: '存放位置', value: this.foodItem.addr,whe_Edit: this.whe_edit,newValue: $(this.newAddr)});
+        FoodInfoItem({title: '存放位置', value: this.foodItem.addr,whe_Edit: this.whe_edit,newValue: $newAddr});
         Divider().color('#D2D1D1')
       }
       .justifyContent(FlexAlign.SpaceAround)
