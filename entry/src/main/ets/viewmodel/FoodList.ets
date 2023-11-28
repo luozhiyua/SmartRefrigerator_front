@@ -15,7 +15,7 @@ export default class FoodList{
 
   initData(){
     // TODO(http): 前后端数据结构不同步
-    let httpRequest = http.createHttp();
+    /*let httpRequest = http.createHttp();
     let url = "http://"+SERVER_ADDR+"/foods-by-date"
     let promise = httpRequest.request(
       url,
@@ -38,14 +38,14 @@ export default class FoodList{
     }).catch((err) => {
       console.info('error:' + JSON.stringify(err));
     });
-    httpRequest.destroy();
+    httpRequest.destroy();*/
 
-    // this.foodList.push(new FoodItem(1,"鸡蛋","3天","10个","肉类","冷藏1层"));
-    // this.foodList.push(new FoodItem(2,"鸡肉","3天","10个","肉类","冷藏1层"));
-    // this.foodList.push(new FoodItem(3,"生菜","3天","10个","蔬菜","冷藏1层"));
-    // this.foodList.push(new FoodItem(4,"苹果","3天","10个","水果","冷藏1层"));
-    // this.foodList.push(new FoodItem(5,"白菜","3天","10个","蔬菜","冷藏1层"));
-    // this.foodList.push(new FoodItem(6,"猪肉","3天","10个","肉类","冷藏1层"));
+    this.foodList.push(new FoodItem(1,"鸡蛋","3天","10个","肉类","冷藏1层"));
+    this.foodList.push(new FoodItem(2,"鸡肉","3天","10个","肉类","冷藏1层"));
+    this.foodList.push(new FoodItem(3,"生菜","3天","10个","蔬菜","冷藏1层"));
+    this.foodList.push(new FoodItem(4,"苹果","3天","10个","水果","冷藏1层"));
+    this.foodList.push(new FoodItem(5,"白菜","3天","10个","蔬菜","冷藏1层"));
+    this.foodList.push(new FoodItem(6,"猪肉","3天","10个","肉类","冷藏1层"));
 
   }
 

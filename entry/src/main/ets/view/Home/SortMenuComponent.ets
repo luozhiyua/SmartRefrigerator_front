@@ -8,21 +8,24 @@ export struct SortMenuComponent{
   @Builder
   MyMenu(){
     Menu() {
-      MenuItem({ startIcon: $r("app.media.ic_files_name_drive"), content: "按名称排序" })
+      MenuItem({
+        startIcon: $r("app.media.ic_files_name_drive"),
+        content: "按名称排序" })
         .selected(this.select)
-        .enabled(this.select)
+        .selectIcon(this.select)
         .onClick(() =>{
           this.select = true;
+          console.log('true');
         })
-      MenuItem({ startIcon: $r("app.media.ic_files_time_drive"), content: "按保质期排序" })
+      MenuItem({
+        startIcon: $r("app.media.ic_files_time_drive"),
+        content: "按保质期排序" })
         .selected(!this.select)
-        .enabled(!this.select)
+        .selectIcon(!this.select)
         .onClick(() =>{
           this.select = false;
+          console.log('false');
         })
-        /*.onChange((selected) => {
-
-        })*/
 
     }
   }
@@ -33,6 +36,8 @@ export struct SortMenuComponent{
           .width('20%')
           .height(25)
           .objectFit(ImageFit.Contain)
+        Text('排序方式')
+          .fontSize(10)
       }
       .bindMenu(this.MyMenu)
 

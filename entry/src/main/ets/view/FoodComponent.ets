@@ -5,6 +5,8 @@ import FoodItem from '../bean/FoodItem';
 import { getStringCategories } from '../util/DataUtil';
 import { FoodListComponent } from './Home/FoodListComponent';
 import { SortMenuComponent } from './Home/SortMenuComponent';
+import { SelectExample } from './Home/selectSortType';
+import { popupSortType } from './Home/popupSortType';
 @Styles function allSize() {
   .width('100%')
   .height('100%')
@@ -117,12 +119,12 @@ export default struct FoodIndex {
             .alignSelf(ItemAlign.Start)
             .width('80%')
           //排序方式
-          SortMenuComponent()
-
+         /* 以菜单方式
+          SortMenuComponent()*/
+          /*以下拉选择菜单
+          SelectExample()*/
+          popupSortType()
         }.backgroundColor($r('app.color.startColor'))
-
-
-
 
           // Search栏
           Search({ value: this.searchInfo, placeholder: '名称', controller: this.controller })
