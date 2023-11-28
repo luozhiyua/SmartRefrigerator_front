@@ -4,7 +4,7 @@ import FoodList from '../viewmodel/FoodList';
 import FoodItem from '../bean/FoodItem';
 import { getStringCategories } from '../util/DataUtil';
 import { FoodListComponent } from './Home/FoodListComponent';
-
+import { SortMenuComponent } from './Home/SortMenuComponent';
 @Styles function allSize() {
   .width('100%')
   .height('100%')
@@ -33,14 +33,16 @@ export struct CategoryModeFoods {
   tabBarItemBuilder(value: string, index: number) {
     Text(value)
       .fontColor(this.currentTabIndex === index ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.6)')
-      .fontSize(this.currentTabIndex === index ? 24 : 18)
+      .fontSize(this.currentTabIndex === index ? 23 : 17)
       .margin({ top: 2 })
       .height(56)
-      .width(60)
+      .width("98%")
+
 
   }
 
   build() {
+
     Tabs() {
       TabContent() {
         FoodListComponent({ foodList: this.foodList.getData() })
@@ -60,7 +62,10 @@ export struct CategoryModeFoods {
     .onChange((index) => {
       this.currentTabIndex = index
     })
+    .width('95%')
+
   }
+
 }
 
 @Component
@@ -103,63 +108,26 @@ export default struct FoodIndex {
   build(){ // Text('食物主页')
     Stack() {
       Column(){
-        // 使用Stack作为背景容器
-
         //顶部导航栏
-        Text($r('app.string.start_home'))
-          .fontSize(25)
-          .fontWeight(FontWeight.Bold)
-          .padding({ top: 15, bottom: 10, left: 20, right: 20 })
-          .alignSelf(ItemAlign.Start)
-          .width('100%')
-          .backgroundColor($r('app.color.startColor'))
-
         Row(){
-          Row(){
-            Text('排序:')
-              .fontColor('#000000')
-              .backgroundColor($r('app.color.white'))
-              .width('20%')
+          Text($r('app.string.start_home'))
+            .fontSize(25)
+            .fontWeight(FontWeight.Bold)
+            .padding({ top: 15, bottom: 10, left: 20, right: 20 })
+            .alignSelf(ItemAlign.Start)
+            .width('80%')
+          //排序方式
+          SortMenuComponent()
 
-            Button("名称", {type: ButtonType.Capsule , stateEffect: true})
-              .borderRadius(8)
-              .width('35%')
-              .height("70%")
-              .fontSize(16)
-              .fontColor('#000000')
-              .onClick(() => {
-                console.log('rank change')
-                console.log(this.isRankSort == false? 'flase' : 'true')
-                this.isRankSort = !this.isRankSort
-              })
-              .borderRadius(14)
-              .backgroundColor(this.isRankSort == false ? $r('app.color.notRankColor') : $r('app.color.isRankColor'))
+        }.backgroundColor($r('app.color.startColor'))
 
-            Button("保质期", {type: ButtonType.Normal , stateEffect: true})
-              .borderRadius(8)
-              .width('40%')
-              .height("70%")
-              .fontSize(16)
-              .fontColor('#000000')
-              .onClick(() => {
-                console.log('rank change')
-                console.log(this.isRankSort == false? 'flase' : 'true')
-                this.isRankSort = !this.isRankSort
-              })
-              .borderRadius(14)
-              .backgroundColor(this.isRankSort == false ? $r('app.color.isRankColor') : $r('app.color.notRankColor'))
-              .margin({right: 0})
 
-          }.backgroundColor($r('app.color.white'))
-          .height('6%')
-          .width('55%')
-          .borderRadius(14)
 
 
           // Search栏
           Search({ value: this.searchInfo, placeholder: '名称', controller: this.controller })
             .searchButton('搜索')
-            .width('44%')
+            .width('90%')
             .height("6%")
             .textFont({ size: 20, weight: FontWeight.Bold })
             .placeholderFont({ size: 18, weight: FontWeight.Normal, style: FontStyle.Normal })
@@ -173,9 +141,8 @@ export default struct FoodIndex {
             .onChange((value: string) => {
               this.searchInfo = value
             })
-            //.margin({top : 10, bottom : 0})
+          //.margin({top : 10, bottom : 0})
 
-        }.backgroundColor($r('app.color.leveBgColor'))
         // Row(){
         //   Text("食物列表")
         //   // 默认 false 为按品类排序，一旦isOn,则触发按保质期排序
@@ -188,7 +155,6 @@ export default struct FoodIndex {
 
         // 食物列表
         if(this.isRankSort){
-
           FreshDateFoods({foodList: this.foodList})
         }else {
           CategoryModeFoods({foodList: this.foodList})

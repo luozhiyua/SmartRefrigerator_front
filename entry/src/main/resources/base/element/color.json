@@ -93,8 +93,8 @@
       "value": "#007DFF"
     },
     {
-      "name": "denominator_text_color",
-      "value": "#72787E"
+      "name": "dividerColor",
+      "value": "#FFA2A9A2"
     },
     {
       "name": "progress_column_color",
