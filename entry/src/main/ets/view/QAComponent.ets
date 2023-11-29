@@ -68,7 +68,7 @@ export default struct QAIndex {
     Column() {
       Column(){
         //顶部导航栏
-        Text($r('app.string.start_qa'))
+        Text('问答小助手')
           .fontSize(25)
           .fontWeight(FontWeight.Bold)
           .padding({ top: 15, bottom: 10, left: 20, right: 20 })

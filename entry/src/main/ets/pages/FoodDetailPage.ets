@@ -1,7 +1,7 @@
 import FoodItem from '../bean/FoodItem'
 import router from '@ohos.router'
 import http from '@ohos.net.http';
-import {getStringCategories, SERVER_ADDR} from '../util/DataUtil'
+import {getChineseCategories, getEnglishCategories, SERVER_ADDR} from '../util/DataUtil'
 
 const params = router.getParams(); // 获取传递过来的参数对象
 const realfoodItem = params['foodItem']
@@ -67,7 +67,7 @@ export struct FoodInfoItem{
   value: string
   @Link newValue: string
   @Prop whe_Edit: boolean;
-  private categorys: string[] = getStringCategories()
+  private ChiCategories: string[] = getChineseCategories()
 
   build(){
     Column(){
@@ -87,9 +87,9 @@ export struct FoodInfoItem{
                 .width(15)
                 .onClick(()=>{
                   TextPickerDialog.show({
-                    range: this.categorys,
+                    range: this.ChiCategories,
                     onAccept: (value: TextPickerResult) => {
-                      this.newValue = this.categorys[value.index]
+                      this.newValue = this.ChiCategories[value.index]
                     }
                   })
                 })

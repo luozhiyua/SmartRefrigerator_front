@@ -46,6 +46,10 @@ export default class FoodList{
     this.foodList.push(new FoodItem(4,"苹果","3天","10个","水果","冷藏1层"));
     this.foodList.push(new FoodItem(5,"白菜","3天","10个","蔬菜","冷藏1层"));
     this.foodList.push(new FoodItem(6,"猪肉","3天","10个","肉类","冷藏1层"));
+    this.foodList.push(new FoodItem(7,"螃蟹","3天","10个","海鲜","冷冻1层"));
+    this.foodList.push(new FoodItem(8,"巧克力","3天","10个","零食","冷藏1层"));
+    this.foodList.push(new FoodItem(9,"可乐","3天","10个","其他","冷藏1层"));
+
 
   }
 
