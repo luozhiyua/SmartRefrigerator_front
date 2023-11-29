@@ -1,9 +1,12 @@
 @Component
 export struct UserRes{
-  item: string
+  @Prop item: string
+  staticItem: string
+  whe_static: boolean
+
   build() {
     Row() {
-      Text(this.item)
+      Text(this.whe_static ? this.staticItem : this.item)
         .fontSize(18)
         .backgroundColor("#dcdcdc")
         .width("80%")

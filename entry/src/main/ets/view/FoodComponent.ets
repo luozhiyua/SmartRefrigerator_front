@@ -169,6 +169,7 @@ export default struct FoodIndex {
               // 提交后反应
               this.searchInfo = value
               this.filter()
+
             })
             .onChange((value: string) => {
               this.searchInfo = value

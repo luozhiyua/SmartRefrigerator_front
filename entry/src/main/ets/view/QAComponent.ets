@@ -3,6 +3,11 @@ import ChefRes from './QA/ChefRes'
 import ChefTitle from './QA/ChefTitle'
 import { UserRes } from './QA/UserRes'
 import http from '@ohos.net.http'
+
+let retValue:string = "";
+let chefRes: string[] = ["我是厨师机器人"]
+let chefResNum: number = 1
+
 @Extend(Line)
 function lineStyle() {
   .width('100%')
@@ -10,7 +15,7 @@ function lineStyle() {
   .backgroundColor("#df73ff")
 }
 
-//TODO（http）:返回值有问题
+//TODO（http）
 function postResponse({requestBody: str}): string{
   let url="http://"+SERVER_ADDR+"/qa/ques"
   let httpRequest = http.createHttp();
@@ -36,10 +41,10 @@ function postResponse({requestBody: str}): string{
     });
   promise.then((data) => {
     if (data.responseCode === http.ResponseCode.OK) {
-      console.info('Result:' + data.result);
-      console.info('code:' + data.responseCode);
+      console.info('Result(f):' + data.result);
+      retValue = data.result.toString();
+      chefRes[chefResNum++] = retValue
       httpRequest.destroy();
-      return "data.result";
     }
   }).catch((err) => {
     console.info('error:' + JSON.stringify(err));
@@ -75,11 +80,11 @@ export default struct QAIndex {
         Scroll(this.scroller) {
           Column() { //未来改成scroll
             ForEach(this.text, (item, index) => {
-              ChefRes()
+              ChefRes({item: chefRes[index]})
               if (index == this.textLength - 1) {
-                UserRes({item: this.textNow})
+                UserRes({item: this.textNow,whe_static: false})
               } else {
-                UserRes({item: item})
+                UserRes({staticItem: item, item: '',whe_static: true})
               }
             })
           }.width('95%')
@@ -109,8 +114,10 @@ export default struct QAIndex {
             .onClick(() => {
               this.text[this.textLength - 1] = this.textNow;
               this.text[this.textLength] = ""
+              postResponse({ requestBody: this.textNow })
               this.textNow = "";
               this.textLength++
+
               // TODO: 因为click后有长度增加，所以每次总是差一个的长度，如何才能使之每次滚动到最下栏
               this.scroller.scrollEdge(Edge.End)
             })
