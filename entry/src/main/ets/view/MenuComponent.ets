@@ -65,13 +65,17 @@ export default struct MenuIndex {
 
     Column(){
       //顶部导航栏
-      Text($r('app.string.start_menu'))
-        .fontSize(25)
+      Text('菜谱小助手')
+        .fontSize(29)
+        .fontColor($r("app.color.titleColor"))
         .fontWeight(FontWeight.Bold)
-        .padding({ top: 10, bottom: 10, left: 20, right: 20 })
+        .padding({ top: 15, bottom: 10, left: 25, right: 20 })
         .alignSelf(ItemAlign.Start)
         .width('100%')
-        .backgroundColor($r('app.color.startColor'))
+        .linearGradient({
+          angle: 90,
+          colors: [['#FFB88C', 0.0], ["#DE6262", 0.8]]
+        }).height("8%")
 
       Row(){
         Search({ value: this.textInfo, placeholder: '菜谱名称', controller: this.controller })

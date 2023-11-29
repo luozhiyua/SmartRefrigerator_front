@@ -2,11 +2,11 @@ import AddBtn from './Home/AddBtnComponent'
 import router from '@ohos.router';
 import FoodList from '../viewmodel/FoodList';
 import FoodItem from '../bean/FoodItem';
-import { getStringCategories } from '../util/DataUtil';
+import { getChineseCategories, getEnglishCategories } from '../util/DataUtil';
 import { FoodListComponent } from './Home/FoodListComponent';
-import { SortMenuComponent } from './Home/SortMenuComponent';
-import { SelectExample } from './Home/selectSortType';
-import { popupSortType } from './Home/popupSortType';
+import { SortMenuComponent } from './Home/sortType/SortMenuComponent';
+import { SelectExample } from './Home/sortType/selectSortType';
+import { popupSortType } from './Home/sortType/popupSortType';
 @Styles function allSize() {
   .width('100%')
   .height('100%')
@@ -28,8 +28,12 @@ import { popupSortType } from './Home/popupSortType';
 export struct CategoryModeFoods {
   @State currentTabIndex: number = 0
   private foodList: FoodList;
-  private foodCategories: string[] = getStringCategories()
-
+  private foodCategories: string[] = getChineseCategories()
+  //private imageCategories: ResourceStr[] = getEnglishCategories()
+  /*imageCategories: Resource[] =
+[$r('app.media.vegetable'),$r("app.media.fruit"),
+  $r("app.media.meals"), $r('app.media.seafood'),
+  $r('app.media.snacks'),$r('app.media.others')]*/
 
   @Builder
   tabBarItemBuilder(value: string, index: number) {
@@ -39,7 +43,6 @@ export struct CategoryModeFoods {
       .margin({ top: 2 })
       .height(56)
       .width("98%")
-
 
   }
 
@@ -51,10 +54,16 @@ export struct CategoryModeFoods {
       }.tabBar(this.tabBarItemBuilder("全部", 0))
 
       ForEach(this.foodCategories, (foodCategory: string, index?: number) => {
+
+
+      ForEach(this.foodCategories, (foodCategory: string, index?: number) => {
         TabContent() {
-          FoodListComponent({ foodList: this.foodList.getData().filter(item => (item.category === foodCategory)) })
+          FoodListComponent({ foodList: this.foodList.getData().filter(item => (item.category === foodCategory)) ,
+          })
         }.tabBar(this.tabBarItemBuilder(foodCategory,
           index! + 1))
+
+
         /*.borderRadius(14)
         .backgroundColor($r('app.color.leveBgColor'))*/
       })
@@ -112,10 +121,11 @@ export default struct FoodIndex {
       Column(){
         //顶部导航栏
         Row(){
-          Text($r('app.string.start_home'))
-            .fontSize(25)
+          Text('食材小管家')
+            .fontSize(29)
+            .fontColor($r("app.color.titleColor"))
             .fontWeight(FontWeight.Bold)
-            .padding({ top: 15, bottom: 10, left: 20, right: 20 })
+            .padding({ top: 15, bottom: 10, left: 25, right: 20 })
             .alignSelf(ItemAlign.Start)
             .width('80%')
           //排序方式
@@ -124,7 +134,12 @@ export default struct FoodIndex {
           /*以下拉选择菜单
           SelectExample()*/
           popupSortType()
-        }.backgroundColor($r('app.color.startColor'))
+        }.backgroundColor('#ee9ca7')
+        /*.linearGradient({
+          angle: 90,
+          colors: [['#ee9ca7', 0.0], ["#fbc7d4", 0.7]]
+        })*/
+        .height("8%")
 
           // Search栏
           Search({ value: this.searchInfo, placeholder: '名称', controller: this.controller })
@@ -133,8 +148,8 @@ export default struct FoodIndex {
             .height("6%")
             .textFont({ size: 20, weight: FontWeight.Bold })
             .placeholderFont({ size: 18, weight: FontWeight.Normal, style: FontStyle.Normal })
-            .backgroundColor(Color.White)
-            .placeholderColor(Color.Grey)
+            .backgroundColor('#FFEDF2F5')
+            .placeholderColor(Color.Gray)
             .onSubmit((value: string) => {
               // 提交后反应
               this.searchInfo = value
@@ -167,6 +182,10 @@ export default struct FoodIndex {
       AddBtn({ clickAction: () => {this.EditFoodWithPOST()}})
     }
     .allSize()
-    .backgroundColor($r('app.color.primaryBgColor'))
+    //.backgroundColor($r('app.color.white'))
+    .linearGradient({
+      angle: 90,
+      colors: [['#ee9ca7', 0.0], ["#fbc7d4", 0.7]]
+    })
   }
 }
