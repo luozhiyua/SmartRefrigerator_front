@@ -1,6 +1,5 @@
 import { SERVER_ADDR } from '../util/DataUtil'
 import ChefRes from './QA/ChefRes'
-import ChefTitle from './QA/ChefTitle'
 import { UserRes } from './QA/UserRes'
 import http from '@ohos.net.http'
 
