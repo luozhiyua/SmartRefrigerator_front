@@ -1,8 +1,10 @@
 import FoodItem from '../bean/FoodItem';
 import { NavList, TabId } from '../model/NavItemModel';
+import { SERVER_ADDR } from '../util/DataUtil';
 import FoodIndex from '../view/FoodComponent';
 import MenuIndex from '../view/MenuComponent';
 import QAIndex from '../view/QAComponent';
+import http from '@ohos.net.http';
 
 @Styles function allSize() {
   .width('100%')
@@ -18,11 +20,29 @@ struct Index {
 
   @State foodList : FoodItem[] = new Array<FoodItem>();
 
-  onPageShow(){
+  aboutToAppear(){
     // TODO: 添加获取 foodList内容
     // TODO: 每次进入该页面都有一次远程调用，浪费资源
-    this.foodList.push(new FoodItem(4,"苹果","3天","10个","水果","冷藏1层"));
-    this.foodList.push(new FoodItem(5,"白菜","3天","10个","蔬菜","冷藏1层"));
+    let httpRequest = http.createHttp();
+    let url = "http://" + SERVER_ADDR + "/food/foods-by-date"
+    let promise = httpRequest.request(url,
+      {
+        method: http.RequestMethod.GET,
+        header: {
+          'Content-Type': 'application/json'
+        },
+        readTimeout: 60000,
+        connectTimeout: 60000
+      });
+    promise.then((data) => {
+      const foods = JSON.parse(data.result.toString())
+      for (let index = 0; index < foods.length; index++) {
+        const element = foods[index];
+        this.foodList.push(new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address))
+      }
+    }).catch((err) => {
+      console.info('error:' + JSON.stringify(err));
+    });
   }
 
   @Builder TabBuilder(index: number) {

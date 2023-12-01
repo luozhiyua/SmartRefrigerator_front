@@ -1,6 +1,6 @@
 import FoodItem from '../../bean/FoodItem';
 import router from '@ohos.router';
-import { getEnglishCategories as getCategoryImage } from '../../util/DataUtil';
+import { Eng2Chn, getCategoriesImage as getCategoryImage } from '../../util/DataUtil';
 
 
 @Component
@@ -12,7 +12,7 @@ export struct FoodListComponent{
 
   build(){
     List({space: 10,scroller: this.listScroller}){
-      ForEach(this.foodCategory == ''? this.foodList : this.foodList.filter(item => (item.category === this.foodCategory)),
+      ForEach(this.foodCategory == ''? this.foodList : this.foodList.filter(item => (Eng2Chn(item.category) === this.foodCategory)),
       (item: FoodItem) => {
         ListItem(){
           Row(){

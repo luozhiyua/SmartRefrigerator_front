@@ -10,21 +10,52 @@ import HashMap from '@ohos.util.HashMap'
 // }
 
 export function getChineseCategories(): string[]{
-  return ['蔬菜', '水果', '肉类', '海鲜', '零食','其他']
+  return ['水果', '蔬菜', '肉类', '海鲜','零食','其他']
 }
-export function getEnglishCategories(category: string): ResourceStr{
+
+export function getEnglishCategories(): string[]{
+  return ['FRUIT', 'VEGETABLE', 'MEAT', 'SEAFOOD','SNACK','OTHER']
+}
+
+export function Eng2Chn(cate: string): string{
+  let ret = "";
+  switch (cate) {
+    case 'FRUIT':
+      ret = '水果';
+      break;
+    case 'VEGETABLE':
+      ret = '蔬菜';
+      break;
+    case 'MEAT':
+      ret = '肉类';
+      break;
+    case 'SEAFOOD':
+      ret = '海鲜';
+      break;
+    case 'SNACK':
+      ret = '零食';
+      break;
+    case 'OTHER':
+      ret = '其他';
+      break;
+    default:
+  }
+  return ret;
+}
+
+export function getCategoriesImage(category: string): ResourceStr{
   switch (category) {
-    case '蔬菜':
+    case 'VEGETABLE':
       return $r('app.media.vegetable')
-    case '水果':
+    case 'FRUIT':
       return $r("app.media.fruit")
-    case '肉类':
+    case 'MEAT':
       return $r('app.media.meals')
-    case '海鲜':
+    case 'SEAFOOD':
       return $r("app.media.seafood")
-    case '零食':
+    case 'SNACK':
       return $r('app.media.snacks')
-    case '其他':
+    case 'OTHER':
       return $r("app.media.others")
     default:
       console.log("无法识别的食物类型")

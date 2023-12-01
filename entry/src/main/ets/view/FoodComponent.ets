@@ -64,8 +64,6 @@ export default struct FoodIndex {
 
   onSortWayChange(){
     // TODO: 排序方式一变，就要重新获取 foodList，根据 this.selectByName 的值可知道排序方式
-    this.foodList.push(new FoodItem(4,"苹果","3天","10个","水果","冷藏1层"));
-    this.foodList.push(new FoodItem(5,"白菜","3天","10个","蔬菜","冷藏1层"));
   }
 
   EditFoodWithPOST(){
