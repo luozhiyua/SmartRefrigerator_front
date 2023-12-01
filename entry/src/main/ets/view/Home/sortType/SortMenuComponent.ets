@@ -1,33 +1,36 @@
-@Entry
+@Styles function RowStyle(){
+  .width('100%')
+  .height(30)
+  .align(Alignment.Center)
+}
+
 @Component
 export struct SortMenuComponent{
-  @State select: boolean = true
-  private iconStr: ResourceStr = $r("app.media.icon")
-  private iconStr2: ResourceStr = $r("app.media.icon")
+  @Link selectByName: boolean
 
   @Builder
   MyMenu(){
-    Menu() {
-      MenuItem({
-        startIcon: $r("app.media.ic_files_name_drive"),
-        content: "按名称排序" })
-        .selected(this.select)
-        .selectIcon(this.select)
-        .onClick(() =>{
-          this.select = true;
-          console.log('true');
-        })
-      MenuItem({
-        startIcon: $r("app.media.ic_files_time_drive"),
-        content: "按保质期排序" })
-        .selected(!this.select)
-        .selectIcon(!this.select)
-        .onClick(() =>{
-          this.select = false;
-          console.log('false');
+    Flex({ direction: FlexDirection.Column, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
+      Column() {
+        Row() {
+          Image($r("app.media.ic_files_name_drive")).width(20).height(20).margin({ right: 5 })
+          Text(`按名称排序`).fontSize(15).fontColor(this.selectByName ? '#000000' : '#A9A9A9')
+        }.RowStyle()
+        .onClick(() => {
+          this.selectByName = true
         })
 
-    }
+        Divider().height(10).width('80%').color('#ccc')
+
+        Row() {
+          Image($r("app.media.ic_files_time_drive")).width(20).height(20).margin({ right: 5 })
+          Text(`按保质期排序`).fontSize(15).fontColor(this.selectByName ? '#A9A9A9' : '#000000')
+        }.RowStyle()
+        .onClick(()=>{
+          this.selectByName = false
+        })
+      }
+    }.width('50%')
   }
   build() {
     Row() {
@@ -37,7 +40,7 @@ export struct SortMenuComponent{
           .height(25)
           .objectFit(ImageFit.Contain)
         Text('排序方式')
-          .fontSize(10)
+          .fontSize(13)
       }
       .bindMenu(this.MyMenu)
 

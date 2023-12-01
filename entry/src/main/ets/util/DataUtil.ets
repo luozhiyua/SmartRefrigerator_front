@@ -1,5 +1,6 @@
 import { Category, CategoryId } from '../bean/CategoryModel'
 import {MenuInfo} from '../bean/MenuModel'
+import HashMap from '@ohos.util.HashMap'
 // export function getFoodCategories(): Category[] {
 //   return [{ id: CategoryId.Vegetable, name: $r('app.string.category_vegetable') },
 //     { id: CategoryId.Fruit, name: $r('app.string.category_fruit') },
@@ -36,6 +37,17 @@ export function getMenus(): Array<MenuInfo> {
     menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10
   ]
   return menuArray;
+}
+
+export function getFoodInfokey(s){
+  let array = new Map([
+    ['名字','name'],
+    ['种类','category'],
+    ['食物存储量','quantity'],
+    ['保质期','shelfLife'],
+    ['存放位置','addr']
+  ])
+  return array.get(s)
 }
 
 export let menu1: MenuInfo = new MenuInfo(0, 'menu1', 'menu1', $r('app.media.menu1'))

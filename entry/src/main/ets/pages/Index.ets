@@ -1,8 +1,8 @@
+import FoodItem from '../bean/FoodItem';
 import { NavList, TabId } from '../model/NavItemModel';
 import FoodIndex from '../view/FoodComponent';
 import MenuIndex from '../view/MenuComponent';
 import QAIndex from '../view/QAComponent';
-import FoodList from '../viewmodel/FoodList';
 
 @Styles function allSize() {
   .width('100%')
@@ -14,12 +14,15 @@ import FoodList from '../viewmodel/FoodList';
 @Component
 struct Index {
   @State currentPage: number = 0;
-  @State foodList : FoodList = new FoodList();
   private tabController: TabsController = new TabsController();
 
-  aboutToAppear(){
-    // TODO: 还是 onPageShow 呢？此处主要用来初始化食物列表
-    this.foodList.initData();
+  @State foodList : FoodItem[] = new Array<FoodItem>();
+
+  onPageShow(){
+    // TODO: 添加获取 foodList内容
+    // TODO: 每次进入该页面都有一次远程调用，浪费资源
+    this.foodList.push(new FoodItem(4,"苹果","3天","10个","水果","冷藏1层"));
+    this.foodList.push(new FoodItem(5,"白菜","3天","10个","蔬菜","冷藏1层"));
   }
 
   @Builder TabBuilder(index: number) {
@@ -41,6 +44,7 @@ struct Index {
     Tabs({ barPosition: BarPosition.End, controller: this.tabController }) {
       TabContent() {
         FoodIndex({ foodList : $foodList })
+        // FoodIndex()
       }
       .tabBar(this.TabBuilder(TabId.HOME))
 

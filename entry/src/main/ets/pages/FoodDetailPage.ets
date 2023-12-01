@@ -1,24 +1,25 @@
 import FoodItem from '../bean/FoodItem'
 import router from '@ohos.router'
 import http from '@ohos.net.http';
-import {getChineseCategories, getEnglishCategories, SERVER_ADDR} from '../util/DataUtil'
+import {getChineseCategories, getEnglishCategories, getFoodInfokey, SERVER_ADDR} from '../util/DataUtil'
 
 const params = router.getParams(); // 获取传递过来的参数对象
 const realfoodItem = params['foodItem']
 const clickAction = params['clickAction']
 
-// function deleteFoodItem(id: number) {
-//   let url="http://"+SERVER_ADDR+"/foodItem?id=id"
-//   let httpRequest = http.createHttp();
-//   httpRequest.request(
-//     url,
-//     {
-//       method: http.RequestMethod.DELETE,
-//     },(err,data)=>{
-//     // 考虑弹窗提醒结果
-//   })
-//   httpRequest.destroy();
-// }
+function deleteFoodItem(id: number) {
+  // TODO: 进行 DELETE 操作
+  // let url="http://"+SERVER_ADDR+"/foodItem?id=id"
+  // let httpRequest = http.createHttp();
+  // httpRequest.request(
+  //   url,
+  //   {
+  //     method: http.RequestMethod.DELETE,
+  //   },(err,data)=>{
+  //   // 考虑弹窗提醒结果
+  // })
+  // httpRequest.destroy();
+}
 
 @Styles
 function cardStyle() {
@@ -26,11 +27,6 @@ function cardStyle() {
   .borderRadius(12)
   .padding({ top: 8, right: 8, left: 8})
   .width('95%')
-}
-@Styles
-function buttonStyle() {
-  .borderRadius(12)
-  .backgroundColor('#73CD57')
 }
 
 @CustomDialog
@@ -51,8 +47,7 @@ struct CheckDelete {
           }).backgroundColor(0xffffff).fontColor(Color.Black)
         Button('确定')
           .onClick(() => {
-            // TODO: DELETE 删除操作，如何参数传递
-            // deleteFoodItem(this.foodItemID)
+            deleteFoodItem(this.foodItemID)
             router.back()
             this.controller.close()
           }).backgroundColor(0xffffff).fontColor(Color.Red)
@@ -65,8 +60,9 @@ struct CheckDelete {
 export struct FoodInfoItem{
   title: string
   value: string
-  @Link newValue: string
-  @Prop whe_Edit: boolean;
+  @State newValue: string = ''
+  @Consume new_foodItem: FoodItem
+  @Consume whe_edit: boolean;
   private ChiCategories: string[] = getChineseCategories()
 
   build(){
@@ -74,11 +70,11 @@ export struct FoodInfoItem{
       Flex({ justifyContent: FlexAlign.SpaceAround}) {
         Text(this.title+' :')
         .fontSize(20)
-        if(this.whe_Edit){
+        if(this.whe_edit){
           // 输入模式分为普通文本输入和文本选择(当为“种类”时)
           if(this.title == '种类'){
             Row(){
-              Text(this.newValue)
+              Text(this.new_foodItem.category == this.value ? this.value : this.newValue)
                 .fontColor('#708090')
                 .textAlign(TextAlign.Start)
               Blank()
@@ -90,6 +86,7 @@ export struct FoodInfoItem{
                     range: this.ChiCategories,
                     onAccept: (value: TextPickerResult) => {
                       this.newValue = this.ChiCategories[value.index]
+                      this.new_foodItem.category = this.newValue
                     }
                   })
                 })
@@ -99,10 +96,12 @@ export struct FoodInfoItem{
             .backgroundColor('#e6e6e6')
             .borderRadius(18)
             .padding(8)
-          }else{
+          }
+          else{
             TextInput({placeholder: this.value,text: this.newValue})
               .onChange((text: string)=>{
                 this.newValue = text;
+                this.new_foodItem[getFoodInfokey(this.title)] = this.newValue;
               })
               .width('60%')
           }
@@ -115,20 +114,49 @@ export struct FoodInfoItem{
   }
 }
 
+@Component
+struct FirstLine{
+  headText: string
+  leftText: string
+  rightText: string
+  LeftFunction: Function = () => {};
+  RightFunction: Function = () => {};
+
+  @Builder buttonUse(buttonText,onClickFunction){
+    Button(buttonText,{ type: ButtonType.Normal, stateEffect: true })
+      .onClick(onClickFunction)
+      .borderRadius(12)
+      .backgroundColor('#73CD57')
+  }
+
+  build(){
+    Row(){
+      Image($r('app.media.return_icon'))
+        .width(28)
+        .height(28)
+        .onClick(()=>{
+          router.back()
+        })
+      Column().width(5)
+      Text(this.headText).fontSize(25)
+      Blank()
+      this.buttonUse(this.leftText,this.LeftFunction)
+      Column().width(5)
+      this.buttonUse(this.rightText,this.RightFunction)
+    }.width('100%')
+    .margin(5)
+  }
+}
 
 @Entry
 @Component
 struct FoodDetailPage {
   foodItem: FoodItem = realfoodItem
   whe_add: boolean = clickAction == 'POST'
-  foodCategory: string = this.foodItem.category
 
-  @State whe_edit: boolean = this.whe_add
-  @State newName:string = ''
-  @State newQuantity:string = ''
-  @State newShelfLife:string = ''
-  @State newAddr:string = ''
-  @State newCategory:string = this.foodCategory
+  @Provide whe_edit: boolean = this.whe_add
+  @Provide new_foodItem: FoodItem = new FoodItem(this.foodItem.id,this.foodItem.name,
+    this.foodItem.shelfLife,this.foodItem.quantity,this.foodItem.category,this.foodItem.addr)
 
   // 这是用来控制 ”确认删除“弹窗的
   deleteCheckController: CustomDialogController = new CustomDialogController({
@@ -136,108 +164,71 @@ struct FoodDetailPage {
     alignment : DialogAlignment.Center
   })
 
+  submit() {
+  // TODO(http): 根据 this.whe_add, true则新增，否则修改。PUT 或 POST, 对象为 new_foodItem
+  // 当为新增时,id值为-1; 为编辑时，id从new_foodItem可知
+
+  // let httpRequest = http.createHttp();
+  // if(this.whe_add){
+  //   httpRequest.request(
+  //     SERVER_ADDR+'/add-food',
+  //     {
+  //       method: http.RequestMethod.POST,
+  //       header: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       extraData:{
+  //         name: this.newName,
+  //         shelfLife: this.newShelfLife,
+  //         quantity: this.newQuantity,
+  //         category: this.newCategory,
+  //         addr: this.newAddr
+  //       }
+  //     },(err,data)=>{
+  //     // 考虑弹窗提醒结果
+  //   })
+  // }else {
+  //   httpRequest.request(
+  //     SERVER_ADDR+'/edit-food/${this.foodItem.id}',
+  //     {
+  //       method: http.RequestMethod.PUT,
+  //       header: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       extraData:{
+  //         name: this.newName,
+  //         shelfLife: this.newShelfLife,
+  //         quantity: this.newQuantity,
+  //         category: this.newCategory,
+  //         addr: this.newAddr
+  //       }
+  //     },(err,data)=>{
+  //     // 考虑弹窗提醒结果
+  //   })
+  // }
+  // httpRequest.destroy();
+
+}
 
   build() {
     Column() {
       if(!this.whe_edit){
-        Row(){
-          Image($r('app.media.return_icon'))
-            .width(28)
-            .height(28)
-            .onClick(()=>{
-              router.back()
-            })
-          Column().width(5)
-          Text('食物详情').fontSize(25)
-          Blank()
-          Button('编辑',{ type: ButtonType.Normal, stateEffect: true })
-            .onClick(()=>{
-              this.whe_edit = true;
-            })
-            .buttonStyle()
-
-          Column().width(5)
-
-          Button('删除',{ type: ButtonType.Normal, stateEffect: true })
-            .onClick(()=>{
-              this.deleteCheckController.open()
-            })
-            .buttonStyle()
-        }.width('100%')
-        .margin(5)
+        FirstLine({headText:'食物详情',leftText:'编辑',rightText:'删除',
+        LeftFunction:()=>{ this.whe_edit = true},
+        RightFunction:()=>{this.deleteCheckController.open()}})
       } else {
-        Row(){
-          Image($r('app.media.return_icon'))
-            .width(28)
-            .height(28)
-            .onClick(()=>{
-              router.back()
-            })
-          Column().width(5)
-          Text('食物编辑').fontSize(25)
-          Blank()
-          Button('取消',{ type: ButtonType.Normal, stateEffect: true })
-            .onClick(()=>{
-                    if(this.whe_add)router.back()
-                    else this.whe_edit = false;
-                })
-            .buttonStyle()
-
-          Column().width(5)
-
-          Button('完成',{ type: ButtonType.Normal, stateEffect: true })
-            .onClick(()=>{
-                    // TODO(http): 根据 whe_add 进行 PUT 或 POST
-                    let httpRequest = http.createHttp();
-                    if(this.whe_add){
-                      httpRequest.request(
-                        SERVER_ADDR+'/add-food',
-                        {
-                          method: http.RequestMethod.POST,
-                          header: {
-                            'Content-Type': 'application/json'
-                          },
-                          extraData:{
-                            name: this.newName,
-                            shelfLife: this.newShelfLife,
-                            quantity: this.newQuantity,
-                            category: this.newCategory,
-                            addr: this.newAddr
-                          }
-                        },(err,data)=>{
-                        // 考虑弹窗提醒结果
-                      })
-                    }else {
-                      httpRequest.request(
-                        SERVER_ADDR+'/edit-food/${this.foodItem.id}',
-                        {
-                          method: http.RequestMethod.PUT,
-                          header: {
-                            'Content-Type': 'application/json'
-                          },
-                          extraData:{
-                            name: this.newName,
-                            shelfLife: this.newShelfLife,
-                            quantity: this.newQuantity,
-                            category: this.newCategory,
-                            addr: this.newAddr
-                          }
-                        },(err,data)=>{
-                        // 考虑弹窗提醒结果
-                      })
-                    }
-                    httpRequest.destroy();
-
-
-                    router.back()
-                  })
-            .buttonStyle()
-        }.width('100%')
-        .margin(5)
+        FirstLine({headText:'食物编辑',leftText:'取消',rightText:'完成',
+          LeftFunction:()=>{
+            if(this.whe_add)router.back()
+            else {
+              this.new_foodItem = realfoodItem
+              this.whe_edit = false;
+            }
+          },
+          RightFunction:()=>{ this.submit(); router.back()}})
       }
 
-      Row()
-      .height('1%')
+      Row().height('1%')
 
       Row(){
         Image($r('app.media.tomato'))
@@ -245,9 +236,9 @@ struct FoodDetailPage {
         .height('50%')
 
         Column(){
-          FoodInfoItem({title: '名字', value: this.foodItem.name,whe_Edit: this.whe_edit,newValue: $newName});
+          FoodInfoItem({title: '名字', value: this.foodItem.name});
           Row().height(15)
-          FoodInfoItem({title: '种类', value: this.foodCategory,whe_Edit: this.whe_edit,newValue: $newCategory});
+          FoodInfoItem({title: '种类', value: this.foodItem.category});
         }
         .justifyContent(FlexAlign.Center)
         .width('55%')
@@ -255,15 +246,14 @@ struct FoodDetailPage {
       .cardStyle()
       .height('20%')
 
-      Row()
-      .height('2%')
+      Row().height('2%')
 
       Column(){
-        FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity,whe_Edit: this.whe_edit,newValue: $newQuantity});
+        FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity});
         Divider().color('#D2D1D1')
-        FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife,whe_Edit: this.whe_edit,newValue: $newShelfLife});
+        FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife});
         Divider().color('#D2D1D1')
-        FoodInfoItem({title: '存放位置', value: this.foodItem.addr,whe_Edit: this.whe_edit,newValue: $newAddr});
+        FoodInfoItem({title: '存放位置', value: this.foodItem.addr});
         Divider().color('#D2D1D1')
       }
       .justifyContent(FlexAlign.SpaceAround)

@@ -99,7 +99,7 @@ export default struct QAIndex {
 
       Column(){
         Row() {
-          TextInput({ placeholder: 'inline style', controller: this.controller })
+          TextInput({ placeholder: 'inline style', controller: this.controller,text: this.textNow})
             .width("60%")
             .height(60)
             .margin(20)
@@ -122,7 +122,6 @@ export default struct QAIndex {
               this.textNow = "";
               this.textLength++;
 
-              // TODO: 因为click后有长度增加，所以每次总是差一个的长度，如何才能使之每次滚动到最下栏
               this.scroller.scrollEdge(Edge.End);
             });
         }
