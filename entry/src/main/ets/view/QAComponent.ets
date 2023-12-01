@@ -1,12 +1,7 @@
 import { SERVER_ADDR } from '../util/DataUtil'
 import ChefRes from './QA/ChefRes'
-import ChefTitle from './QA/ChefTitle'
 import { UserRes } from './QA/UserRes'
 import http from '@ohos.net.http'
-
-let retValue:string = "";
-let chefRes: string[] = ["我是厨师机器人"]
-let chefResNum: number = 1
 
 @Extend(Line)
 function lineStyle() {
@@ -15,43 +10,48 @@ function lineStyle() {
   .backgroundColor("#df73ff")
 }
 
-//TODO（http）
-function postResponse({requestBody: str}): string{
-  let url="http://"+SERVER_ADDR+"/qa/ques"
-  let httpRequest = http.createHttp();
-  let requestBody: string = str;
-  let promise = httpRequest.request(
-    // 请求url地址
-    url,
-    {
-      // 请求方式
-      method: http.RequestMethod.POST,
-      // 请求的额外数据。
-      extraData: {
-        "userQues": requestBody
-      },
-      // 可选，默认为60s
-      connectTimeout: 60000,
-      // 可选，默认为60s
-      readTimeout: 60000,
-      // 开发者根据自身业务需要添加header字段
-      header: {
-        'Content-Type': 'application/json'
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+let chefRes: string[] = ["我是厨师机器人"];
+let chefResNum: number = 0;
+
+async function postResponse(requestBody: string): Promise<string> {
+  const url = "http://" + SERVER_ADDR + "/qa/ques";
+  const httpRequest = http.createHttp();
+
+  try {
+    const data = await httpRequest.request(
+      url,
+      {
+        method: http.RequestMethod.POST,
+        extraData: {
+          "userQues": requestBody
+        },
+        connectTimeout: 60000,
+        readTimeout: 60000,
+        header: {
+          'Content-Type': 'application/json'
+        }
       }
-    });
-  promise.then((data) => {
+    );
+
     if (data.responseCode === http.ResponseCode.OK) {
+      const retValue = data.result.toString();
+      // chefRes[chefResNum] = retValue;
       console.info('Result(f):' + data.result);
-      retValue = data.result.toString();
-      chefRes[chefResNum++] = retValue
-      httpRequest.destroy();
+      return retValue;
+    } else {
+      console.error('HTTP request failed with response code:', data.responseCode);
+      return ''; // or handle the error accordingly
     }
-  }).catch((err) => {
-    console.info('error:' + JSON.stringify(err));
+  } catch (error) {
+    console.error('Error during HTTP request:', error);
+    return ''; // or handle the error accordingly
+  } finally {
     httpRequest.destroy();
-    return null;
-  });
-  return "";
+  }
 }
 
 @Component
@@ -111,16 +111,20 @@ export default struct QAIndex {
             })
           Button('发送')
             .margin(15)
-            .onClick(() => {
+            .onClick(async () => {
+              // 使用await等待异步操作完成
+              const result = await postResponse(this.textNow);
+              chefResNum++;
+              chefRes[chefResNum] = result;
+
               this.text[this.textLength - 1] = this.textNow;
-              this.text[this.textLength] = ""
-              postResponse({ requestBody: this.textNow })
+              this.text[this.textLength] = "";
               this.textNow = "";
-              this.textLength++
+              this.textLength++;
 
               // TODO: 因为click后有长度增加，所以每次总是差一个的长度，如何才能使之每次滚动到最下栏
-              this.scroller.scrollEdge(Edge.End)
-            })
+              this.scroller.scrollEdge(Edge.End);
+            });
         }
         .margin({
           bottom: "3%"
