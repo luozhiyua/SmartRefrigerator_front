@@ -62,6 +62,7 @@ export default struct QAIndex {
   alignContent: number = 0
   controller: TextInputController = new TextInputController()
   scroller: Scroller = new Scroller()
+  @State whe_loading: boolean = false
 
   build() {
     Column() {
@@ -109,21 +110,28 @@ export default struct QAIndex {
             .onChange((value: string) => {
               this.textNow = value
             })
-          Button('发送')
-            .margin(15)
-            .onClick(async () => {
-              // 使用await等待异步操作完成
-              const result = await postResponse(this.textNow);
-              chefResNum++;
-              chefRes[chefResNum] = result;
 
-              this.text[this.textLength - 1] = this.textNow;
-              this.text[this.textLength] = "";
-              this.textNow = "";
-              this.textLength++;
+          if(this.whe_loading){
+            Text('加载中...').fontSize(20).fontColor('#A9A9A9')
+          }else {
+            Button('发送')
+              .margin(15)
+              .onClick(async () => {
+                // 使用await等待异步操作完成
+                this.whe_loading = true
+                const result = await postResponse(this.textNow);
+                this.whe_loading = false
+                chefResNum++;
+                chefRes[chefResNum] = result;
 
-              this.scroller.scrollEdge(Edge.End);
-            });
+                this.text[this.textLength - 1] = this.textNow;
+                this.text[this.textLength] = "";
+                this.textNow = "";
+                this.textLength++;
+
+                this.scroller.scrollEdge(Edge.End);
+              });
+          }
         }
         .margin({
           bottom: "3%"
