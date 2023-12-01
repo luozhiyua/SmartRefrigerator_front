@@ -54,14 +54,11 @@ export struct CategoryModeFoods {
       }.tabBar(this.tabBarItemBuilder("全部", 0))
 
       ForEach(this.foodCategories, (foodCategory: string, index?: number) => {
-
-
-      ForEach(this.foodCategories, (foodCategory: string, index?: number) => {
         TabContent() {
-          FoodListComponent({ foodList: this.foodList.getData().filter(item => (item.category === foodCategory)) ,
+          FoodListComponent({ foodList: this.foodList.getData().filter(item => (item.category === foodCategory)),
           })
         }.tabBar(this.tabBarItemBuilder(foodCategory,
-          index! + 1))
+          index ! + 1))
 
 
         /*.borderRadius(14)
