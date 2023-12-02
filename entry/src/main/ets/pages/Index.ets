@@ -21,6 +21,7 @@ struct Index {
   @State foodList : FoodItem[] = new Array<FoodItem>();
 
   aboutToAppear(){
+    console.info("IndexAppear")
     // TODO: 添加获取 foodList内容
     // TODO: 每次进入该页面都有一次远程调用，浪费资源
     let httpRequest = http.createHttp();

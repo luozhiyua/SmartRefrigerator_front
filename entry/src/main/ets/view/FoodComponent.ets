@@ -54,13 +54,58 @@ export struct CategoryModeFoods {
 @Component
 export default struct FoodIndex {
   @Link foodList : FoodItem[]
-  @State @Watch('onSortWayChange') selectByName: boolean = true
+  @State @Watch('onSortWayChange') selectByName: boolean = false
 
   @State searchInfo: string = '';
   private controller: SearchController = new SearchController()
 
   onSortWayChange(){
     // TODO: 排序方式一变，就要重新获取 foodList，根据 this.selectByName 的值可知道排序方式
+    if(this.selectByName) {
+      let httpRequest = http.createHttp();
+      let url = "http://" + SERVER_ADDR + "/food/foods-by-name"
+      let promise = httpRequest.request(url,
+        {
+          method: http.RequestMethod.GET,
+          header: {
+            'Content-Type': 'application/json'
+          },
+          readTimeout: 60000,
+          connectTimeout: 60000
+        });
+      promise.then((data) => {
+        const foods = JSON.parse(data.result.toString())
+        this.foodList = new Array<FoodItem>()
+        for (let index = 0; index < foods.length; index++) {
+          const element = foods[index];
+          this.foodList.push(new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address))
+        }
+      }).catch((err) => {
+        console.info('error:' + JSON.stringify(err));
+      });
+    } else {
+      let httpRequest = http.createHttp();
+      let url = "http://" + SERVER_ADDR + "/food/foods-by-date"
+      let promise = httpRequest.request(url,
+        {
+          method: http.RequestMethod.GET,
+          header: {
+            'Content-Type': 'application/json'
+          },
+          readTimeout: 60000,
+          connectTimeout: 60000
+        });
+      promise.then((data) => {
+        const foods = JSON.parse(data.result.toString())
+        this.foodList = new Array<FoodItem>()
+        for (let index = 0; index < foods.length; index++) {
+          const element = foods[index];
+          this.foodList.push(new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address))
+        }
+      }).catch((err) => {
+        console.info('error:' + JSON.stringify(err));
+      });
+    }
   }
 
   EditFoodWithPOST(){
