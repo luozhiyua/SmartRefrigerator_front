@@ -180,7 +180,7 @@ export default struct FoodIndex {
             })
 
         // 食物列表
-        CategoryModeFoods({foodList: $foodList})
+        CategoryModeFoods({foodList: $foodList}).height('82%')
       }
       // ”添加“按钮
       AddBtn({ clickAction: () => {this.EditFoodWithPOST()}})

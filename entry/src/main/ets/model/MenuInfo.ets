@@ -1,11 +1,13 @@
 import {MenuIngredient} from './MenuIngredient'
 export class MenuInfo{
-  image: Resource
+  id:Number
+  image: string
   name: string
   ingredients: Array<MenuIngredient>
   steps: Array<string>
 
-  constructor(image: Resource, name: string, ingredients: Array<MenuIngredient>, steps: Array<string>) {
+  constructor(id:Number,image: string, name: string, ingredients: Array<MenuIngredient>, steps: Array<string>) {
+    this.id = id
     this.image = image
     this.name = name
     this.ingredients = ingredients

@@ -19,6 +19,8 @@ import { MenuIngredient } from '../model/MenuIngredient'
 export let CIRCLE_RADIUS: number = 80
 
 export class RecipeInfo{
+
+  static readonly id:Number = 1;
   static readonly FONT_WEIGHT: number = 500;
 
   static readonly name_fontBold = FontStyle.Italic;
@@ -29,7 +31,7 @@ export class RecipeInfo{
 
   static readonly recipe_name:string = "西红柿炒鸡蛋";
 
-  static readonly image: Resource = $r('app.media.menu_tomatoEgg')
+  static readonly image: string;
 
   static readonly steps: Array<string> = [
     "西红柿洗净，切成小块；鸡蛋打散备用。",

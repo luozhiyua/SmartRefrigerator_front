@@ -1,7 +1,8 @@
 import curves from '@ohos.curves'
-import { MenuInfo} from '../bean/MenuModel'
-import { getMenus } from '../util/DataUtil'
+import { MenuInfo} from '../model/MenuInfo'
+import { getMenus, SERVER_ADDR } from '../util/DataUtil'
 import router from '@ohos.router'
+import http from '@ohos.net.http'
 
 @Component
 struct MenuGridItem {
@@ -9,7 +10,7 @@ struct MenuGridItem {
 
   build() {
     Column() {
-      Image(this.MenuItem!.image!)
+      Image($r('app.media.strawberry'))//$r('app.media.user'))//this.MenuItem.image)//this.MenuItem!.image!)
         .objectFit(ImageFit.Contain)
         .backgroundColor('#f1f3f5')
         .width('100%')
@@ -32,17 +33,27 @@ struct MenuGridItem {
 
 @Component
 struct MenuGrid {
-  whe_openAll: boolean
-  private MenuItems: MenuInfo[] = getMenus()
+  whe_openAll: boolean;
+  @Link MenuItems: MenuInfo[];
   // TODO: 根据模式切换，展示不同的MenuGrid
 
   build() {
     Grid() {
-      ForEach(this.MenuItems!, (item: MenuInfo) => {
+      ForEach(this.MenuItems, (item: MenuInfo) => {
         GridItem() {
           MenuGridItem({ MenuItem: item })
-            .onClick(()=>{
-              router.pushUrl({url:'pages/MenuDetail'})
+            .onClick(async ()=>{
+              let options = {
+                url: 'pages/MenuDetail',
+                params: {
+                  menu:item
+                }
+              }
+              try {
+                await router.pushUrl(options)
+              } catch (err) {
+                console.info(` fail callback, code: ${err.code}, msg: ${err.msg}`)
+              }
             })
         }
       })
@@ -56,13 +67,95 @@ struct MenuGrid {
 
 @Component
 export default struct MenuIndex {
-  textInfo: string
+  @State private textInfo: string = ""
+  @State MenuItems:MenuInfo[] = new Array<MenuInfo>()
   private controller: SearchController = new SearchController()
-  customizeFunction: () => void = () => {}
   @State whe_openAll: boolean = true
+  customizeFunction: () => void = () => {
+    this.MenuItems = new Array<MenuInfo>()
+    let url = "http://" + SERVER_ADDR + `/menu/menus-by-input/${this.textInfo}`
+    if (this.textInfo === ""){
+      url = "http://" + SERVER_ADDR + `/menu/all-menu`
+    }
+
+    let httpRequest = http.createHttp();
+    let promise = httpRequest.request(url,
+      {
+        method: http.RequestMethod.GET,
+        header: {
+          'Content-Type': 'application/json'
+        },
+        readTimeout: 60000,
+        connectTimeout: 60000
+      });
+    promise.then((data) => {
+      const foods = JSON.parse(data.result.toString())
+      console.info("读取数据库所有菜谱:" + data.result);
+      for (let index = 0; index < foods.length; index++) {1
+        const element = foods[index];
+        this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
+      }
+    }).catch((err) => {
+      console.info('error:' + JSON.stringify(err));
+    });
+  }
+  recommendFunciton: () => void = () =>{
+    this.MenuItems = new Array<MenuInfo>()
+    let url2 = "http://" + SERVER_ADDR + `/menu/all-menu`
+    if (!this.whe_openAll){
+      url2 = "http://" + SERVER_ADDR + `/menu/recommend-menu`
+    }
+
+    let httpRequest = http.createHttp();
+    let promise = httpRequest.request(url2,
+      {
+        method: http.RequestMethod.GET,
+        header: {
+          'Content-Type': 'application/json'
+        },
+        readTimeout: 60000,
+        connectTimeout: 60000
+      });
+    promise.then((data) => {
+      const foods = JSON.parse(data.result.toString())
+      console.info("读取数据库所有菜谱:" + data.result);
+      for (let index = 0; index < foods.length; index++) {1
+        const element = foods[index];
+        this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
+      }
+    }).catch((err) => {
+      console.info('error:' + JSON.stringify(err));
+    });
+  }
+
+
+  //从数据库获得菜谱
+  aboutToAppear(){
+    let httpRequest = http.createHttp();
+    let url = "http://" + SERVER_ADDR + `/menu/all-menu`
+    let promise = httpRequest.request(url,
+      {
+        method: http.RequestMethod.GET,
+        header: {
+          'Content-Type': 'application/json'
+        },
+        readTimeout: 60000,
+        connectTimeout: 60000
+      });
+    promise.then((data) => {
+      const foods = JSON.parse(data.result.toString())
+      console.info("读取数据库所有菜谱:" + data.result);
+      for (let index = 0; index < foods.length; index++) {
+        const element = foods[index];
+        this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
+      }
+      console.info(this.MenuItems[0].id.toString(),this.MenuItems[0].name.toString())
+    }).catch((err) => {
+      console.info('error:' + JSON.stringify(err));
+    });
+  }
 
   build() {
-
     Column(){
       //顶部导航栏
       Text('菜谱小助手')
@@ -89,10 +182,10 @@ export default struct MenuIndex {
             this.textInfo = value
             this.customizeFunction()
           })
-          .onChange((value: string) => {
-            this.textInfo = value
-            this.customizeFunction()
-          })
+          // .onChange((value: string) => {
+          //   this.textInfo = value
+          //   this.customizeFunction()
+          // })
 
         Blank()
 
@@ -102,6 +195,7 @@ export default struct MenuIndex {
             .switchPointColor('#FFFFFF')
             .onChange((isOn: boolean) => {
               this.whe_openAll = isOn
+              this.recommendFunciton()
             })
           Row(){
             Text('推荐').fontSize(15).fontColor(this.whe_openAll ? '#DCDCDC':'#4169E1')
@@ -112,8 +206,8 @@ export default struct MenuIndex {
 
       }.width('100%')
 
-      MenuGrid({whe_openAll: this.whe_openAll}).height("88.5%")
-
+      MenuGrid({MenuItems : $MenuItems})
+        .height("88.5%")
     }.justifyContent(FlexAlign.End)
   }
 }

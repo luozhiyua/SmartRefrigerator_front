@@ -1,25 +1,25 @@
-import curves from '@ohos.curves'
-import router from '@ohos.router'
-
-// import {MenuInfo} from '../model/DataModels'
-// import {getMenuInfo} from '../model/DataUtil'
 import {PageTitle} from '../view/MenuComponent/PageTitle'
 import {MenuImage} from '../view/MenuComponent/MenuImage'
 import {IngredientList} from '../view/MenuComponent/IngredientList'
 import {MenuViewModel} from '../viewModel/MenuViewModel'
 import {StepList} from '../view/MenuComponent/StepList'
 import thermal from '@ohos.thermal'
+import { MenuInfo } from '../model/MenuInfo'
+import router from '@ohos.router'
 
 @Component
 struct content{
-  private menuViewModel: MenuViewModel
+  private menu: MenuInfo = router.getParams()['menu']
 
   build(){
     Column(){
-      MenuImage({ image: this.menuViewModel.getMenuInfo().image, name: this.menuViewModel.getMenuInfo().name })
-      IngredientList({ ingredients: this.menuViewModel.getMenuInfo().ingredients })
-      StepList({ steps: this.menuViewModel.getMenuInfo().steps })
+      MenuImage({ image: $r('app.media.strawberry'), name: this.menu.name })
+      IngredientList({ ingredients: this.menu.ingredients })
+      StepList({ steps: this.menu.steps })
     }
+    .margin({
+      top:'20%'
+    })
   }
 }
 
@@ -49,7 +49,7 @@ struct MenuTitle {
 @Component
 struct MenuDetail {
   // @StorageProp('currentBreakpoint') currentBreakpoint: string = 'sm'
-  private menuViewModel: MenuViewModel = new MenuViewModel();
+  private menu: MenuInfo;
   scroller: Scroller = new Scroller()
 
   build() {
@@ -59,7 +59,7 @@ struct MenuDetail {
       Stack({alignContent: Alignment.TopStart}) {
         Scroll(this.scroller) {
           Column() {
-            content({menuViewModel: this.menuViewModel})
+            content({menu: this.menu})
           }
           .backgroundColor('#EDF2F5')
           //.height('100%')
