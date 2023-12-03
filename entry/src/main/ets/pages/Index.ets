@@ -21,8 +21,9 @@ struct Index {
   @State foodList : FoodItem[] = new Array<FoodItem>();
 
   aboutToAppear(){
-    console.info("IndexAppear")
-    // TODO: 添加获取 foodList内容
+    // console.info("IndexAppear")
+    // this.foodList.push(new FoodItem(0,'苹果','2024-01-01','2个','FRUIT','2层'))
+
     // TODO: 每次进入该页面都有一次远程调用，浪费资源
     let httpRequest = http.createHttp();
     let url = "http://" + SERVER_ADDR + "/food/foods-by-date"
@@ -65,7 +66,6 @@ struct Index {
     Tabs({ barPosition: BarPosition.End, controller: this.tabController }) {
       TabContent() {
         FoodIndex({ foodList : $foodList })
-        // FoodIndex()
       }
       .tabBar(this.TabBuilder(TabId.HOME))
 

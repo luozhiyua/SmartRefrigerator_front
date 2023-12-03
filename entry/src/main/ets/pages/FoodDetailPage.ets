@@ -8,14 +8,13 @@ const realfoodItem = params['foodItem']
 const clickAction = params['clickAction']
 
 function deleteFoodItem(id: number) {
-  // TODO: 进行 DELETE 操作
   let httpRequest = http.createHttp();
   httpRequest.request(
     SERVER_ADDR+"/food/delete-food/"+`${id}`,
     {
       method: http.RequestMethod.DELETE,
     },(err,data)=>{
-    // 考虑弹窗提醒结果
+    // TODO: 考虑弹窗提醒结果
   })
   httpRequest.destroy();
 }
@@ -26,6 +25,20 @@ function cardStyle() {
   .borderRadius(12)
   .padding({ top: 8, right: 8, left: 8})
   .width('95%')
+}
+
+@Styles
+function selectRowStyle() {
+  .width('60%')
+  .height('22%')
+  .backgroundColor('#e6e6e6')
+  .borderRadius(18)
+  .padding(8)
+}
+
+function dealDate(value: number){
+  if(value < 10)return '0'+value
+  return value.toString()
 }
 
 @CustomDialog
@@ -96,13 +109,30 @@ export struct FoodInfoItem{
                   })
                 })
             }
-            .width('60%')
-            .height('22%')
-            .backgroundColor('#e6e6e6')
-            .borderRadius(18)
-            .padding(8)
+            .selectRowStyle()
           }
-          else{
+          else if(this.title == '保质期'){
+            Row(){
+              Text(this.new_foodItem.shelfLife == this.value ? this.value : this.newValue)
+                .fontColor('#708090')
+                .textAlign(TextAlign.Start)
+              Blank()
+              Image($r('app.media.category_select'))
+                .height(15)
+                .width(15)
+                .onClick(()=>{
+                  DatePickerDialog.show({
+                    start: new Date('2023-12-1'),
+                    end: new Date('2100-1-1'),
+                    onAccept: (value: DatePickerResult) => {
+                      this.newValue = value.year + '-' + dealDate(value.month+1) + '-' + dealDate(value.day)
+                      this.new_foodItem.shelfLife = this.newValue
+                    }
+                  })
+                })
+            }
+            .selectRowStyle()
+          } else{
             TextInput({placeholder: this.value,text: this.newValue})
               .onChange((text: string)=>{
                 this.newValue = text;
@@ -174,9 +204,6 @@ struct FoodDetailPage {
   })
 
   submit() {
-  // TODO(http): 根据 this.whe_add, true则新增，否则修改。PUT 或 POST, 对象为 new_foodItem
-  // 当为新增时,id值为-1; 为编辑时，id从new_foodItem可知
-
     let httpRequest = http.createHttp();
     if(this.whe_add){
       httpRequest.request(
@@ -194,7 +221,7 @@ struct FoodDetailPage {
             address: this.new_foodItem.addr
           }
         },(err,data)=>{
-        // 考虑弹窗提醒结果
+        // TODO: 考虑弹窗提醒结果
       })
     }else {
       httpRequest.request(
@@ -212,13 +239,11 @@ struct FoodDetailPage {
             address: this.new_foodItem.addr
           }
         },(err,data)=>{
-        // 考虑弹窗提醒结果
+        // TODO: 考虑弹窗提醒结果
       })
     }
     httpRequest.destroy();
-
     router.replaceUrl({url: "pages/Index"})
-
 }
 
   build() {

@@ -45,7 +45,7 @@ export struct CategoryModeFoods {
     .onChange((index) => {
       this.currentTabIndex = index
     })
-    .width('95%')
+    .width('96%')
 
   }
 
@@ -149,7 +149,7 @@ export default struct FoodIndex {
             .onSubmit((value: string) => {
               // 提交后反应
               this.searchInfo = value
-              //TODO:搜索功能
+              // 搜索功能
               let httpRequest = http.createHttp();
               let url = "http://" + SERVER_ADDR + "/food/foods-by-input/"+`${this.searchInfo}`
               let promise = httpRequest.request(url,
