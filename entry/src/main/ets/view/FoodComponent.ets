@@ -59,7 +59,7 @@ export default struct FoodIndex {
   private controller: SearchController = new SearchController()
 
   filter(value){
-    // TODO: 搜索功能实现
+    // TODO: 搜索功能实现,即传 value给后端，得到新的 foodList
   }
 
   onSortWayChange(){
