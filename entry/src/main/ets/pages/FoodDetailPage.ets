@@ -85,9 +85,11 @@ export struct FoodInfoItem{
 
   build(){
     Column(){
-      Flex({ justifyContent: FlexAlign.SpaceAround}) {
-        Text(this.title+' :')
+      // Flex({ justifyContent: FlexAlign.SpaceAround}) {
+      Row(){
+        Text(this.title+' :  ')
         .fontSize(20)
+        Blank()
         if(this.whe_edit){
           // 输入模式分为普通文本输入和文本选择(当为“种类”时)
           if(this.title == '种类'){
@@ -149,6 +151,7 @@ export struct FoodInfoItem{
           }
         }
       }
+      .margin(5)
     }
   }
 }
@@ -270,15 +273,16 @@ struct FoodDetailPage {
       Row().height('1%')
 
       Row(){
-        Image($r('app.media.tomato'))
-        .width('40%')
-        .height('50%')
+        Image(this.new_foodItem.category == '' ? $r('app.media.default_pho'): getCategoriesImage(this.new_foodItem.category))
+        .width(100)
+        .height(100)
 
         Column(){
           FoodInfoItem({title: '名字', value: this.foodItem.name});
           Row().height(15)
           FoodInfoItem({title: '种类', value: this.foodItem.category});
         }
+        .alignItems(HorizontalAlign.Start)
         .justifyContent(FlexAlign.Center)
         .width('55%')
       }
@@ -295,6 +299,7 @@ struct FoodDetailPage {
         FoodInfoItem({title: '存放位置', value: this.foodItem.addr});
         Divider().color('#D2D1D1')
       }
+      .alignItems(HorizontalAlign.Start)
       .justifyContent(FlexAlign.SpaceAround)
       .cardStyle()
       .height('30%')
