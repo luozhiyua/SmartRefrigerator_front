@@ -14,20 +14,20 @@ export struct SortMenuComponent{
       Column() {
         Row() {
           Image($r("app.media.ic_files_name_drive")).width(20).height(20).margin({ right: 5 })
-          Text(`按名称排序`).fontSize(15).fontColor(this.selectByName ? '#000000' : '#A9A9A9')
+          Text(`按保质期排序`).fontSize(15).fontColor(this.selectByName ? '#A9A9A9' : '#000000')
         }.RowStyle()
         .onClick(() => {
-          this.selectByName = true
+          this.selectByName = false
         })
 
         Divider().height(10).width('80%').color('#ccc')
 
         Row() {
           Image($r("app.media.ic_files_time_drive")).width(20).height(20).margin({ right: 5 })
-          Text(`按保质期排序`).fontSize(15).fontColor(this.selectByName ? '#A9A9A9' : '#000000')
+          Text(`按名称排序`).fontSize(15).fontColor(this.selectByName ? '#000000' : '#A9A9A9')
         }.RowStyle()
         .onClick(()=>{
-          this.selectByName = false
+          this.selectByName = true
         })
       }
     }.width('50%')

@@ -1,9 +1,10 @@
 import AddBtn from './Home/AddBtnComponent'
 import router from '@ohos.router';
 import FoodItem from '../bean/FoodItem';
-import { getChineseCategories} from '../util/DataUtil';
+import { getChineseCategories, SERVER_ADDR} from '../util/DataUtil';
 import { FoodListComponent } from './Home/FoodListComponent';
 import { SortMenuComponent } from './Home/sortType/SortMenuComponent';
+import http from '@ohos.net.http';
 @Styles function allSize() {
   .width('100%')
   .height('100%')
@@ -53,19 +54,57 @@ export struct CategoryModeFoods {
 @Component
 export default struct FoodIndex {
   @Link foodList : FoodItem[]
-  @State @Watch('onSortWayChange') selectByName: boolean = true
+  @State @Watch('onSortWayChange') selectByName: boolean = false
 
   @State searchInfo: string = '';
   private controller: SearchController = new SearchController()
 
-  filter(value){
-    // TODO: 搜索功能实现,即传 value给后端，得到新的 foodList
-  }
-
   onSortWayChange(){
-    // TODO: 排序方式一变，就要重新获取 foodList，根据 this.selectByName 的值可知道排序方式
-    this.foodList.push(new FoodItem(4,"苹果","3天","10个","水果","冷藏1层"));
-    this.foodList.push(new FoodItem(5,"白菜","3天","10个","蔬菜","冷藏1层"));
+    if(this.selectByName) {
+      let httpRequest = http.createHttp();
+      let url = "http://" + SERVER_ADDR + "/food/foods-by-name"
+      let promise = httpRequest.request(url,
+        {
+          method: http.RequestMethod.GET,
+          header: {
+            'Content-Type': 'application/json'
+          },
+          readTimeout: 60000,
+          connectTimeout: 60000
+        });
+      promise.then((data) => {
+        const foods = JSON.parse(data.result.toString())
+        this.foodList = new Array<FoodItem>()
+        for (let index = 0; index < foods.length; index++) {
+          const element = foods[index];
+          this.foodList.push(new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address))
+        }
+      }).catch((err) => {
+        console.info('error:' + JSON.stringify(err));
+      });
+    } else {
+      let httpRequest = http.createHttp();
+      let url = "http://" + SERVER_ADDR + "/food/foods-by-date"
+      let promise = httpRequest.request(url,
+        {
+          method: http.RequestMethod.GET,
+          header: {
+            'Content-Type': 'application/json'
+          },
+          readTimeout: 60000,
+          connectTimeout: 60000
+        });
+      promise.then((data) => {
+        const foods = JSON.parse(data.result.toString())
+        this.foodList = new Array<FoodItem>()
+        for (let index = 0; index < foods.length; index++) {
+          const element = foods[index];
+          this.foodList.push(new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address))
+        }
+      }).catch((err) => {
+        console.info('error:' + JSON.stringify(err));
+      });
+    }
   }
 
   EditFoodWithPOST(){
@@ -110,10 +149,34 @@ export default struct FoodIndex {
             .onSubmit((value: string) => {
               // 提交后反应
               this.searchInfo = value
-              this.filter(value)
+              //TODO:搜索功能
+              let httpRequest = http.createHttp();
+              let url = "http://" + SERVER_ADDR + "/food/foods-by-input/"+`${this.searchInfo}`
+              let promise = httpRequest.request(url,
+                {
+                  method: http.RequestMethod.GET,
+                  header: {
+                    'Content-Type': 'application/json'
+                  },
+                  readTimeout: 60000,
+                  connectTimeout: 60000
+                });
+              promise.then((data) => {
+                const foods = JSON.parse(data.result.toString())
+                for (let index = 0; index < foods.length; index++) {
+                  const element = foods[index];
+                  this.foodList = new Array<FoodItem>()
+                  this.foodList.push(new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address))
+                }
+              }).catch((err) => {
+                console.info('error:' + JSON.stringify(err));
+              });
             })
             .onChange((value: string) => {
               this.searchInfo = value
+              if (this.searchInfo == ""){
+                router.replaceUrl({url: "pages/Index"})
+              }
             })
 
         // 食物列表

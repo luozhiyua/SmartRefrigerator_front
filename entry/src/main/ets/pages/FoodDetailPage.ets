@@ -1,7 +1,7 @@
 import FoodItem from '../bean/FoodItem'
 import router from '@ohos.router'
 import http from '@ohos.net.http';
-import {getChineseCategories, getEnglishCategories, getFoodInfokey, SERVER_ADDR} from '../util/DataUtil'
+import {getChineseCategories, getCategoriesImage, getFoodInfokey, SERVER_ADDR, getEnglishCategories, Eng2Chn} from '../util/DataUtil'
 
 const params = router.getParams(); // 获取传递过来的参数对象
 const realfoodItem = params['foodItem']
@@ -9,16 +9,15 @@ const clickAction = params['clickAction']
 
 function deleteFoodItem(id: number) {
   // TODO: 进行 DELETE 操作
-  // let url="http://"+SERVER_ADDR+"/foodItem?id=id"
-  // let httpRequest = http.createHttp();
-  // httpRequest.request(
-  //   url,
-  //   {
-  //     method: http.RequestMethod.DELETE,
-  //   },(err,data)=>{
-  //   // 考虑弹窗提醒结果
-  // })
-  // httpRequest.destroy();
+  let httpRequest = http.createHttp();
+  httpRequest.request(
+    SERVER_ADDR+"/food/delete-food/"+`${id}`,
+    {
+      method: http.RequestMethod.DELETE,
+    },(err,data)=>{
+    // 考虑弹窗提醒结果
+  })
+  httpRequest.destroy();
 }
 
 @Styles
@@ -48,7 +47,8 @@ struct CheckDelete {
         Button('确定')
           .onClick(() => {
             deleteFoodItem(this.foodItemID)
-            router.back()
+            // router.back()
+            router.replaceUrl({url: "pages/Index"})
             this.controller.close()
           }).backgroundColor(0xffffff).fontColor(Color.Red)
       }.margin({ bottom: 10 })
@@ -64,6 +64,11 @@ export struct FoodInfoItem{
   @Consume new_foodItem: FoodItem
   @Consume whe_edit: boolean;
   private ChiCategories: string[] = getChineseCategories()
+  private cate_eng: string[] = getEnglishCategories()
+
+  aboutToAppear() {
+    this.newValue = this.value;
+  }
 
   build(){
     Column(){
@@ -74,7 +79,7 @@ export struct FoodInfoItem{
           // 输入模式分为普通文本输入和文本选择(当为“种类”时)
           if(this.title == '种类'){
             Row(){
-              Text(this.new_foodItem.category == this.value ? this.value : this.newValue)
+              Text(this.new_foodItem.category == this.value ? Eng2Chn(this.value) : this.newValue)
                 .fontColor('#708090')
                 .textAlign(TextAlign.Start)
               Blank()
@@ -86,7 +91,7 @@ export struct FoodInfoItem{
                     range: this.ChiCategories,
                     onAccept: (value: TextPickerResult) => {
                       this.newValue = this.ChiCategories[value.index]
-                      this.new_foodItem.category = this.newValue
+                      this.new_foodItem.category = this.cate_eng[value.index]
                     }
                   })
                 })
@@ -107,7 +112,11 @@ export struct FoodInfoItem{
           }
         }else{
           // 非输入模式只是简单展示文本内容
-          Text(this.value).fontSize(20)
+          if(this.title == '种类') {
+            Text(Eng2Chn(this.value)).fontSize(20)
+          } else {
+            Text(this.value).fontSize(20)
+          }
         }
       }
     }
@@ -168,45 +177,47 @@ struct FoodDetailPage {
   // TODO(http): 根据 this.whe_add, true则新增，否则修改。PUT 或 POST, 对象为 new_foodItem
   // 当为新增时,id值为-1; 为编辑时，id从new_foodItem可知
 
-  // let httpRequest = http.createHttp();
-  // if(this.whe_add){
-  //   httpRequest.request(
-  //     SERVER_ADDR+'/add-food',
-  //     {
-  //       method: http.RequestMethod.POST,
-  //       header: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       extraData:{
-  //         name: this.newName,
-  //         shelfLife: this.newShelfLife,
-  //         quantity: this.newQuantity,
-  //         category: this.newCategory,
-  //         addr: this.newAddr
-  //       }
-  //     },(err,data)=>{
-  //     // 考虑弹窗提醒结果
-  //   })
-  // }else {
-  //   httpRequest.request(
-  //     SERVER_ADDR+'/edit-food/${this.foodItem.id}',
-  //     {
-  //       method: http.RequestMethod.PUT,
-  //       header: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       extraData:{
-  //         name: this.newName,
-  //         shelfLife: this.newShelfLife,
-  //         quantity: this.newQuantity,
-  //         category: this.newCategory,
-  //         addr: this.newAddr
-  //       }
-  //     },(err,data)=>{
-  //     // 考虑弹窗提醒结果
-  //   })
-  // }
-  // httpRequest.destroy();
+    let httpRequest = http.createHttp();
+    if(this.whe_add){
+      httpRequest.request(
+        SERVER_ADDR+'/food/add-food',
+        {
+          method: http.RequestMethod.POST,
+          header: {
+            'Content-Type': 'application/json'
+          },
+          extraData:{
+            name: this.new_foodItem.name,
+            freshDate: this.new_foodItem.shelfLife,
+            quantity: this.new_foodItem.quantity,
+            category: this.new_foodItem.category,
+            address: this.new_foodItem.addr
+          }
+        },(err,data)=>{
+        // 考虑弹窗提醒结果
+      })
+    }else {
+      httpRequest.request(
+        SERVER_ADDR+"/food/edit-food/"+`${this.new_foodItem.id}`,
+        {
+          method: http.RequestMethod.PUT,
+          header: {
+            'Content-Type': 'application/json'
+          },
+          extraData:{
+            name: this.new_foodItem.name,
+            freshDate: this.new_foodItem.shelfLife,
+            quantity: this.new_foodItem.quantity,
+            category: this.new_foodItem.category,
+            address: this.new_foodItem.addr
+          }
+        },(err,data)=>{
+        // 考虑弹窗提醒结果
+      })
+    }
+    httpRequest.destroy();
+
+    router.replaceUrl({url: "pages/Index"})
 
 }
 
@@ -214,7 +225,10 @@ struct FoodDetailPage {
     Column() {
       if(!this.whe_edit){
         FirstLine({headText:'食物详情',leftText:'编辑',rightText:'删除',
-        LeftFunction:()=>{ this.whe_edit = true},
+        LeftFunction:()=>{
+          this.whe_edit = true
+          this.whe_add = false
+        },
         RightFunction:()=>{this.deleteCheckController.open()}})
       } else {
         FirstLine({headText:'食物编辑',leftText:'取消',rightText:'完成',
