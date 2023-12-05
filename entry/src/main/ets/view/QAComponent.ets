@@ -69,12 +69,16 @@ export default struct QAIndex {
       Column(){
         //顶部导航栏
         Text('问答小助手')
-          .fontSize(25)
+          .fontSize(29)
+          .fontColor($r("app.color.titleColor"))
           .fontWeight(FontWeight.Bold)
-          .padding({ top: 15, bottom: 10, left: 20, right: 20 })
+          .padding({ top: 15, bottom: 10, left: 25, right: 20 })
           .alignSelf(ItemAlign.Start)
           .width('100%')
-          .backgroundColor($r('app.color.startColor'))
+          .linearGradient({
+            angle: 90,
+            colors: [['#EDF2F5', 0.0], ["#73CD57", 0.9]]
+          }).height("8%")
       }
 
       Column(){
