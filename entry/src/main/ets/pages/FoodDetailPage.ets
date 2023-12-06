@@ -267,7 +267,7 @@ struct FoodDetailPage {
               this.whe_edit = false;
             }
           },
-          RightFunction:()=>{ this.submit(); router.back()}})
+          RightFunction:()=>{ this.submit(); router.replaceUrl({url: "pages/Index"})}})
       }
 
       Row().height('1%')
