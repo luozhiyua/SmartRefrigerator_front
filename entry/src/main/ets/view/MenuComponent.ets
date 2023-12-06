@@ -22,10 +22,10 @@ struct MenuGridItem {
       }
       .padding({ left: 12, right: 12 })
       .width('100%')
-      .height(32)
+      .height(52)
       .backgroundColor('#E5E5E5')
     }
-    .height(184)
+    .height(204)
     .clip(new Rect({ width: '100%', height: '100%', radius: 12 }))
 
   }
@@ -209,5 +209,6 @@ export default struct MenuIndex {
       MenuGrid({MenuItems : $MenuItems})
         .height("88.5%")
     }.justifyContent(FlexAlign.End)
+    .padding({ bottom: 60 })
   }
 }
