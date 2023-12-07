@@ -10,7 +10,7 @@ struct MenuGridItem {
 
   build() {
     Column() {
-      Image($r('app.media.strawberry'))//$r('app.media.user'))//this.MenuItem.image)//this.MenuItem!.image!)
+      Image(this.MenuItem?.image)//$r('app.media.user'))//this.MenuItem.image)//this.MenuItem!.image!)
         .objectFit(ImageFit.Contain)
         .backgroundColor('#f1f3f5')
         .width('100%')

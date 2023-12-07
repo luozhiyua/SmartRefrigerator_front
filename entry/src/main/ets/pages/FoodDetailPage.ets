@@ -207,6 +207,16 @@ struct FoodDetailPage {
   })
 
   submit() {
+    // 验证每个字段是否为空
+    if (this.new_foodItem.name === '' || this.new_foodItem.category === '' || this.new_foodItem.quantity === '' || this.new_foodItem.shelfLife === '' || this.new_foodItem.addr === '') {
+      // 如果有任何字段为空，弹出警告
+      AlertDialog.show({
+        title: '警告',
+        message: '请填写所有必填字段。',
+      });
+
+      return; // 阻止继续提交
+    }
     let httpRequest = http.createHttp();
     if(this.whe_add){
       httpRequest.request(

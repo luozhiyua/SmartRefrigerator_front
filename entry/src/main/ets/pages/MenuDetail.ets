@@ -13,7 +13,7 @@ struct content{
 
   build(){
     Column(){
-      MenuImage({ image: $r('app.media.strawberry'), name: this.menu.name })
+      MenuImage({ image: this.menu.image, name: this.menu.name })
       IngredientList({ ingredients: this.menu.ingredients })
       StepList({ steps: this.menu.steps })
     }
