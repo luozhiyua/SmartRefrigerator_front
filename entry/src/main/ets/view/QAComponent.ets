@@ -70,16 +70,13 @@ export default struct QAIndex {
         //顶部导航栏
         Text('问答小助手')
           .fontSize(29)
-          .fontColor($r("app.color.titleColor"))
           .fontWeight(FontWeight.Bold)
           .padding({ top: 15, bottom: 10, left: 25, right: 20 })
           .alignSelf(ItemAlign.Start)
           .width('100%')
-          .linearGradient({
-            angle: 90,
-            colors: [['#EDF2F5', 0.0], ["#73CD57", 0.9]]
-          }).height("8%")
-      }
+          .backgroundColor('#c3e6fc')
+//          .backgroundColor("#9FA4E2")
+      }.height("8%").margin({top: 0})
 
       Column(){
         Scroll(this.scroller) {
@@ -101,6 +98,11 @@ export default struct QAIndex {
         .scrollBarWidth(10) // 滚动条宽度
         .edgeEffect(EdgeEffect.None)
       }.height('80%')
+      .linearGradient({
+        angle: 90,
+        colors: [['#9FA4E2', 0.0], ["#c2d3fd", 0.8]]
+      })
+      //.backgroundColor("#D2E0FB")
 
       Column(){
         Row() {
@@ -140,6 +142,7 @@ export default struct QAIndex {
         .margin({
           bottom: "3%"
         })
+        .borderRadius(10)
       }
     }
     .height('100%')

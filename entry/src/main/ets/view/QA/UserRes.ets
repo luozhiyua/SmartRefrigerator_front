@@ -8,7 +8,7 @@ export struct UserRes{
     Row() {
       Text(this.whe_static ? this.staticItem : this.item)
         .fontSize(18)
-        .backgroundColor("#dcdcdc")
+        .backgroundColor("#F4F9F9")
         .width("80%")
         .margin({
           right: '5%'
@@ -17,11 +17,12 @@ export struct UserRes{
           left: '5%',
           right: '5%'
         })
+        .borderRadius(10)
       Image($r('app.media.user'))
         .width("60vp")
         .height("60vp")
         .margin({ top: "10vp", bottom: "8vp" })
     }
-    .width("90%")
+    .width("97%")
   }
 }

@@ -21,7 +21,7 @@ export struct CategoryModeFoods {
     Text(value)
       .fontColor(this.currentTabIndex === index ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.6)')
       .fontSize(this.currentTabIndex === index ? 23 : 17)
-      .margin({ top: 2 })
+      .margin({ top: -5 })
       .height(56)
       .width("98%")
 
@@ -46,6 +46,7 @@ export struct CategoryModeFoods {
       this.currentTabIndex = index
     })
     .width('96%')
+    .height('100%')
 
   }
 
@@ -135,13 +136,14 @@ export default struct FoodIndex {
           SortMenuComponent({selectByName : $selectByName})
 
         }.backgroundColor('#ee9ca7')
-        .height("8%")
+        .height("8%").margin({top:0})
 
           // Search栏
           Search({ value: this.searchInfo, placeholder: '请输入名称', controller: this.controller })
             .searchButton('搜索')
             .width('90%')
-            .height("6%")
+            // .height("6%")
+            .margin({ top:14 })
             .textFont({ size: 20, weight: FontWeight.Bold })
             .placeholderFont({ size: 18, weight: FontWeight.Normal, style: FontStyle.Normal })
             .backgroundColor('#FFEDF2F5')
@@ -180,8 +182,8 @@ export default struct FoodIndex {
             })
 
         // 食物列表
-        CategoryModeFoods({foodList: $foodList}).height('82%')
-      }
+        CategoryModeFoods({foodList: $foodList}).height('84%')
+      }.height('100%')
       // ”添加“按钮
       AddBtn({ clickAction: () => {this.EditFoodWithPOST()}})
     }
@@ -190,5 +192,6 @@ export default struct FoodIndex {
       angle: 90,
       colors: [['#ee9ca7', 0.0], ["#fbc7d4", 0.7]]
     })
+    //.backgroundColor("#D2E0FB")
   }
 }

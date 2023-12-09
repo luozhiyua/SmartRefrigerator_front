@@ -21,7 +21,8 @@ function deleteFoodItem(id: number) {
 
 @Styles
 function cardStyle() {
-  .backgroundColor('#EDF2F5')
+//  .backgroundColor('#F4F9F9')
+  .backgroundColor("#fff5f6")
   .borderRadius(12)
   .padding({ top: 8, right: 8, left: 8})
   .width('95%')
@@ -88,7 +89,8 @@ export struct FoodInfoItem{
       // Flex({ justifyContent: FlexAlign.SpaceAround}) {
       Row(){
         Text(this.title+' :  ')
-        .fontSize(20)
+        .fontSize(24)
+          .margin({left: 7})
         Blank()
         if(this.whe_edit){
           // 输入模式分为普通文本输入和文本选择(当为“种类”时)
@@ -145,9 +147,9 @@ export struct FoodInfoItem{
         }else{
           // 非输入模式只是简单展示文本内容
           if(this.title == '种类') {
-            Text(Eng2Chn(this.value)).fontSize(20)
+            Text(Eng2Chn(this.value)).fontSize(24)
           } else {
-            Text(this.value).fontSize(20)
+            Text(this.value).fontSize(24)
           }
         }
       }
@@ -167,26 +169,31 @@ struct FirstLine{
   @Builder buttonUse(buttonText,onClickFunction){
     Button(buttonText,{ type: ButtonType.Normal, stateEffect: true })
       .onClick(onClickFunction)
-      .borderRadius(12)
-      .backgroundColor('#73CD57')
+      .borderRadius(13)
+      .fontColor('#000000')
+      .fontSize(20)
+      .backgroundColor('#fff5f6')
   }
 
   build(){
     Row(){
+      Column().width(7)
       Image($r('app.media.return_icon'))
-        .width(28)
-        .height(28)
+        .width(35)
+        .height(35)
         .onClick(()=>{
           router.back()
         })
-      Column().width(5)
-      Text(this.headText).fontSize(25)
+      Column().width(3)
+      Text(this.headText).fontSize(29)
       Blank()
       this.buttonUse(this.leftText,this.LeftFunction)
       Column().width(5)
       this.buttonUse(this.rightText,this.RightFunction)
     }.width('100%')
-    .margin(5)
+    .margin({ top: 0 })
+    .height("8%")
+    .backgroundColor("#ee9ca7")
   }
 }
 
@@ -260,61 +267,69 @@ struct FoodDetailPage {
 }
 
   build() {
-    Column() {
-      if(!this.whe_edit){
-        FirstLine({headText:'食物详情',leftText:'编辑',rightText:'删除',
-        LeftFunction:()=>{
-          this.whe_edit = true
-          this.whe_add = false
-        },
-        RightFunction:()=>{this.deleteCheckController.open()}})
-      } else {
-        FirstLine({headText:'食物编辑',leftText:'取消',rightText:'完成',
-          LeftFunction:()=>{
-            if(this.whe_add)router.back()
-            else {
-              this.new_foodItem = realfoodItem
-              this.whe_edit = false;
-            }
-          },
-          RightFunction:()=>{ this.submit(); router.replaceUrl({url: "pages/Index"})}})
-      }
+    Column(){
+      Column() {
+        if(!this.whe_edit){
+          FirstLine({headText:'食物详情',leftText:'编辑',rightText:'删除',
+            LeftFunction:()=>{
+              this.whe_edit = true
+              this.whe_add = false
+            },
+            RightFunction:()=>{this.deleteCheckController.open()}})
+        } else {
+          FirstLine({headText:'食物编辑',leftText:'取消',rightText:'完成',
+            LeftFunction:()=>{
+              if(this.whe_add)router.back()
+              else {
+                this.new_foodItem = realfoodItem
+                this.whe_edit = false;
+              }
+            },
+            RightFunction:()=>{ this.submit(); router.replaceUrl({url: "pages/Index"})}})
+        }
 
-      Row().height('1%')
+        Row().height('2%')
 
-      Row(){
-        Image(this.new_foodItem.category == '' ? $r('app.media.default_pho'): getCategoriesImage(this.new_foodItem.category))
-        .width(100)
-        .height(100)
+        Row(){
+          Column().width(5)
+          Image(this.new_foodItem.category == '' ? $r('app.media.default_pho'): getCategoriesImage(this.new_foodItem.category))
+            .width(120)
+            .height(120)
+
+          Column(){
+            FoodInfoItem({title: '名字', value: this.foodItem.name});
+            Row().height(15)
+            FoodInfoItem({title: '种类', value: this.foodItem.category});
+          }
+          .alignItems(HorizontalAlign.Start)
+          .justifyContent(FlexAlign.Center)
+          .width('55%')
+        }
+        .cardStyle()
+        .height('19%')
+
+        Row().height('2%')
 
         Column(){
-          FoodInfoItem({title: '名字', value: this.foodItem.name});
-          Row().height(15)
-          FoodInfoItem({title: '种类', value: this.foodItem.category});
+          FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity});
+          Divider().color('#D2D1D1')
+          FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife});
+          Divider().color('#D2D1D1')
+          FoodInfoItem({title: '存放位置', value: this.foodItem.addr});
+          Divider().color('#D2D1D1')
         }
         .alignItems(HorizontalAlign.Start)
-        .justifyContent(FlexAlign.Center)
-        .width('55%')
+        .justifyContent(FlexAlign.SpaceAround)
+        .cardStyle()
+        .height('30%')
+
       }
-      .cardStyle()
-      .height('20%')
+    }.height("100%")
+    .linearGradient({
+      angle: 90,
+      colors: [['#ee9ca7', 0.0], ["#fbc7d4", 0.7]]
+    })
 
-      Row().height('2%')
-
-      Column(){
-        FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity});
-        Divider().color('#D2D1D1')
-        FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife});
-        Divider().color('#D2D1D1')
-        FoodInfoItem({title: '存放位置', value: this.foodItem.addr});
-        Divider().color('#D2D1D1')
-      }
-      .alignItems(HorizontalAlign.Start)
-      .justifyContent(FlexAlign.SpaceAround)
-      .cardStyle()
-      .height('30%')
-
-    }
     // .margin({ bottom: 5 })
     // .width('100%')
   }

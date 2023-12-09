@@ -101,7 +101,7 @@ export struct FoodListComponent{
             }).borderRadius(10)
             .height('13%')
             .width("99%")
-            .backgroundColor('#FFEDF2F5')
+            .backgroundColor('#F4F9F9')
 
           })
       }

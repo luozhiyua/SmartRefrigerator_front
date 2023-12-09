@@ -9,10 +9,11 @@ export default struct AddBtn {
 
   build() {
     Button({ type: ButtonType.Circle, stateEffect: false }) {
-      Image($r('app.media.ic_home_add'))
+      Image($r('app.media.increase'))
         .allSize()
         .borderRadius('50%')
     }
+    .backgroundColor($r("app.color.white"))
     .onClick(() => this.clickAction())
     .zIndex(2)
     .position({ x: '83%', y: '88%' })

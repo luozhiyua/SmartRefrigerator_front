@@ -4,17 +4,24 @@ export default struct ChefRes {
   build() {
     Row() {
       Image($r('app.media.chef'))
-        .width("60vp")
-        .margin({ top: "10vp", bottom: "8vp" })
-      Text(this.item)
-        .fontSize(18)
-        .backgroundColor("#faf8fc")
-        .width("80%")
-        .margin({
-          left: '5%',
-          right: '5%'
-        })
+        .width(60)
+      .margin({ top: "10vp", bottom: " 8vp" })
+        //.backgroundColor(Color.White)
+      Column().width(3.5)
+      Row(){
+        Text(this.item)
+          .fontSize(18)
+          .width("80%")
+          .margin({
+            left: '2%',
+            right: '2%',
+            top: '2%',
+            bottom: '2%'
+          })
+      }.backgroundColor("#F4F9F9")
+      .width("81%")
+      .borderRadius(10)
     }
-    .width("90%")
+    .width("97%")
   }
 }

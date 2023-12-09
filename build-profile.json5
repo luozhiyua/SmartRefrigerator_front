@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\21094\\.ohos\\config\\auto_debug_fmise_front_end_com.example.smartrefrigerator_2850086000388822653.cer",
+          "storePassword": "0000001BA240A495E17AB5B1FA66B3044651F4ED2BD1FC00B0A3BB688669652A10F11DE1EEBF0B4FC297F4",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BBB533D70C6282A74E23D1B1F4E08A018F48E5B87DA65DC349400FE6C421A5A0612D49B30F700D9",
+          "profile": "C:\\Users\\21094\\.ohos\\config\\auto_debug_fmise_front_end_com.example.smartrefrigerator_2850086000388822653.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\21094\\.ohos\\config\\auto_debug_fmise_front_end_com.example.smartrefrigerator_2850086000388822653.p12"
+        }
+      }
+    ],
     "compileSdkVersion": 9,
     "compatibleSdkVersion": 9,
     "products": [
