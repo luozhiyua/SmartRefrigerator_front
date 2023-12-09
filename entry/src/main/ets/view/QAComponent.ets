@@ -74,8 +74,8 @@ export default struct QAIndex {
           .padding({ top: 15, bottom: 10, left: 25, right: 20 })
           .alignSelf(ItemAlign.Start)
           .width('100%')
-          .backgroundColor('#c3e6fc')
-//          .backgroundColor("#9FA4E2")
+        .backgroundColor('#c0c5ff')
+        //  .backgroundColor("#9FA4E2")
       }.height("8%").margin({top: 0})
 
       Column(){
@@ -100,18 +100,23 @@ export default struct QAIndex {
       }.height('80%')
       .linearGradient({
         angle: 90,
-        colors: [['#9FA4E2', 0.0], ["#c2d3fd", 0.8]]
+
+        colors: [['#c0c5ff', 0.0] , ["#cdd1ff", 0.5], ["#cdd2ff", 0.9]]
+
+        //colors: [['#9FA4E2', 0.0], ["#cdd2ff", 0.8]]
       })
       //.backgroundColor("#D2E0FB")
 
       Column(){
         Row() {
           TextInput({ placeholder: 'inline style', controller: this.controller,text: this.textNow})
-            .width("60%")
+            .width("62%")
             .height(60)
-            .margin(20)
+            .margin(15)
             .fontSize(18)
-            .borderRadius(0)
+            .borderRadius(10)
+            .backgroundColor('#f0f8ff')
+            //.backgroundColor('#ecfdff')
             .style(TextInputStyle.Inline)
             .onChange((value: string) => {
               this.textNow = value
@@ -121,6 +126,10 @@ export default struct QAIndex {
             Text('加载中...').fontSize(20).fontColor('#A9A9A9')
           }else {
             Button('发送')
+              .backgroundColor('#ecfdff')
+              .type(ButtonType.Normal)
+              .fontColor(Color.Black)
+              .borderRadius(12)
               .margin(15)
               .onClick(async () => {
                 // 使用await等待异步操作完成
@@ -139,11 +148,10 @@ export default struct QAIndex {
               });
           }
         }
-        .margin({
-          bottom: "3%"
-        })
-        .borderRadius(10)
-      }
+
+      }.backgroundColor('#c7ccff')
+      .width('100%')
+      .height("28%")
     }
     .height('100%')
   }

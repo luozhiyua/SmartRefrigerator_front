@@ -8,7 +8,7 @@ export struct UserRes{
     Row() {
       Text(this.whe_static ? this.staticItem : this.item)
         .fontSize(18)
-        .backgroundColor("#F4F9F9")
+        .backgroundColor('#ecfdff')
         .width("80%")
         .margin({
           right: '5%'

@@ -61,9 +61,9 @@ struct Index {
         .height(25)
         .objectFit(ImageFit.Contain);
       Text(NavList[index].text)
-        .fontSize(15)
+        .fontSize(15.5)
         .fontWeight(500)
-        .fontColor(this.currentPage === index ? $r('app.color.blueColor') : $r('app.color.tabTitleColor'))
+        .fontColor(this.currentPage === index ? Color.Black : $r('app.color.tabTitleColor'))
         .margin({ top: $r('app.float.default_4') })
     }.justifyContent(FlexAlign.Center).allSize()
 

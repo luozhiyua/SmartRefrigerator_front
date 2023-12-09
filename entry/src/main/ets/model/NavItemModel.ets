@@ -18,6 +18,7 @@ export interface NavItem {
   icon_selected: Resource;
   text: Resource;
   id: number;
+
 }
 
 // tabId
@@ -29,20 +30,20 @@ export enum TabId {
 
 export const NavList: NavItem[] = [
   {
-    icon: $r('app.media.ic_tabs_home_normal'),
-    icon_selected: $r('app.media.ic_tabs_home_sel'),
+    icon: $r('app.media.home_normal'),
+    icon_selected: $r('app.media.home_sel'),
     text: $r('app.string.tab_home'),
     id: TabId.HOME
   },
   {
-    icon: $r('app.media.ic_tabs_qa_normal'),
-    icon_selected: $r('app.media.ic_tabs_qa_sel'),
+    icon: $r('app.media.qa_normal'),
+    icon_selected: $r('app.media.qa_sel'),
     text: $r('app.string.tab_qa'),
     id: TabId.QA
   },
   {
-    icon: $r('app.media.ic_tabs_menu_normal'),
-    icon_selected: $r('app.media.ic_tabs_menu_sel'),
+    icon: $r('app.media.menu_normal'),
+    icon_selected: $r('app.media.menu_sel'),
     text: $r('app.string.tab_menu'),
     id: TabId.MENU
   },

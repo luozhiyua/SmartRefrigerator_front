@@ -18,7 +18,8 @@ export default struct ChefRes {
             top: '2%',
             bottom: '2%'
           })
-      }.backgroundColor("#F4F9F9")
+      }
+      .backgroundColor("#f6fbff")
       .width("81%")
       .borderRadius(10)
     }
