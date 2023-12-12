@@ -76,12 +76,14 @@ export struct FoodInfoItem{
   value: string
   @State newValue: string = ''
   @Consume new_foodItem: FoodItem
-  @Consume whe_edit: boolean;
+  @Consume @Watch('edit_change') whe_edit: boolean;
+  @Consume categoryChange: boolean
   private ChiCategories: string[] = getChineseCategories()
   private cate_eng: string[] = getEnglishCategories()
 
-  aboutToAppear() {
-    this.newValue = this.value;
+  edit_change(){
+    if(this.title == '种类')this.newValue = Eng2Chn(this.value);
+    else this.newValue = this.value;
   }
 
   build(){
@@ -110,6 +112,7 @@ export struct FoodInfoItem{
                 onAccept: (value: TextPickerResult) => {
                   this.newValue = this.ChiCategories[value.index]
                   this.new_foodItem.category = this.cate_eng[value.index]
+                  this.categoryChange = !this.categoryChange
                 }
               })
             })
@@ -140,7 +143,7 @@ export struct FoodInfoItem{
             TextInput({placeholder: this.value,text: this.newValue})
               .onChange((text: string)=>{
                 this.newValue = text;
-                this.new_foodItem[getFoodInfokey(this.title)] = this.newValue;
+                this.new_foodItem[getFoodInfokey(this.title)] = text;
               })
               .width('60%')
           }
@@ -206,6 +209,13 @@ struct FoodDetailPage {
   @Provide whe_edit: boolean = this.whe_add
   @Provide new_foodItem: FoodItem = new FoodItem(this.foodItem.id,this.foodItem.name,
     this.foodItem.shelfLife,this.foodItem.quantity,this.foodItem.category,this.foodItem.addr)
+  @Provide @Watch('onCategoryChange') categoryChange: boolean = false
+  @State image_url: Resource = getCategoriesImage(this.new_foodItem.category)
+
+  // TODO: 为什么编辑-取消，第一次图片能恢复，之后不行？
+  onCategoryChange(){
+    this.image_url = getCategoriesImage(this.new_foodItem.category)
+  }
 
   // 这是用来控制 ”确认删除“弹窗的
   deleteCheckController: CustomDialogController = new CustomDialogController({
@@ -281,6 +291,7 @@ struct FoodDetailPage {
               if(this.whe_add)router.back()
               else {
                 this.new_foodItem = realfoodItem
+                this.categoryChange = !this.categoryChange
                 this.whe_edit = false;
               }
             },
@@ -291,7 +302,7 @@ struct FoodDetailPage {
 
         Row(){
           Column().width(5)
-          Image(this.new_foodItem.category == '' ? $r('app.media.default_pho'): getCategoriesImage(this.new_foodItem.category))
+          Image(this.image_url)
             .width(120)
             .height(120)
 

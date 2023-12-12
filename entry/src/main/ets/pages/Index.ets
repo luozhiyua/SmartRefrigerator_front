@@ -23,13 +23,13 @@ struct Index {
   aboutToAppear(){
     // console.info("IndexAppear")
     //this.foodList.push(new FoodItem(0,'苹果','2024-01-01','2个','FRUIT','2层'))
-    this.foodList.push(new FoodItem(0,'苹果','2023-12-01','2个','VEGETABLE','2层'))
-    this.foodList.push(new FoodItem(0,'苹果','2023-12-11','2个','MEAT','2层'))
-    this.foodList.push(new FoodItem(0,'苹果','2023-12-13','2个','SEAFOOD','2层'))
-    this.foodList.push(new FoodItem(0,'苹果','2023-12-15','2个','SNACK','2层'))
-    this.foodList.push(new FoodItem(0,'苹果','2023-12-18','2个','OTHER','2层'))
-    this.foodList.push(new FoodItem(0,'苹果','2024-01-01','2个','FRUIT','2层'))
-    this.foodList.push(new FoodItem(0,'苹果','2024-01-05','2个','FRUIT','2层'))
+    // this.foodList.push(new FoodItem(0,'苹果','2023-12-01','2个','VEGETABLE','2层'))
+    // this.foodList.push(new FoodItem(0,'苹果','2023-12-11','2个','MEAT','2层'))
+    // this.foodList.push(new FoodItem(0,'苹果','2023-12-13','2个','SEAFOOD','2层'))
+    // this.foodList.push(new FoodItem(0,'苹果','2023-12-15','2个','SNACK','2层'))
+    // this.foodList.push(new FoodItem(0,'苹果','2023-12-18','2个','OTHER','2层'))
+    // this.foodList.push(new FoodItem(0,'苹果','2024-01-01','2个','FRUIT','2层'))
+    // this.foodList.push(new FoodItem(0,'苹果','2024-01-05','2个','FRUIT','2层'))
 
     // TODO: 每次进入该页面都有一次远程调用，浪费资源
     let httpRequest = http.createHttp();
