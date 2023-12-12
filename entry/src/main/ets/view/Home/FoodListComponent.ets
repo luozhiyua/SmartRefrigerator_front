@@ -1,6 +1,7 @@
 import FoodItem from '../../bean/FoodItem';
 import router from '@ohos.router';
-import { Eng2Chn, getCategoriesImage as getCategoryImage } from '../../util/DataUtil';
+import { Eng2Chn, getCategoriesImage as getCategoryImage} from '../../util/DataUtil';
+import systemDateTime from '@ohos.systemDateTime';
 
 
 @Component
@@ -9,6 +10,24 @@ export struct FoodListComponent{
   @Link foodList: FoodItem[];
   foodCategory: string = ''
   private listScroller: Scroller = new Scroller();
+  curDate : Date = new Date()
+
+  onCreate(){
+    try {
+      systemDateTime.getDate((error, date) => {
+        console.info(`Succeeded in getting date : ${date}`);
+        this.curDate = date
+      });
+    } catch(e) {
+      console.info(`Failed to get date. message:${e.message}, code:${e.code}`);
+    }
+  }
+
+  judge_urgent(freshDate: string){
+    let ddl = new Date(freshDate); // 2024-1-1;2023-12-31
+    let timeDifference = ddl.getTime() - this.curDate.getTime();
+    return Math.floor(timeDifference / (1000 * 3600 * 24));
+  }
 
   build(){
     Column(){
@@ -20,9 +39,9 @@ export struct FoodListComponent{
                 Row(){
                   Image(getCategoryImage(item.category))
                     .width("100%")
-                }.width("20%")
+                }.width("25%")
 
-                Row().width('2%')
+                Row().width('5%')
                 //信息
                 Column({ space: 4 }){
                   Row().height('0.5%')
@@ -33,65 +52,24 @@ export struct FoodListComponent{
                   Row(){
                     Row(){
                       Text('数量: ').fontSize(18)
-                      // .width('34%')
                       Text(item.quantity).fontSize(18)
-                        // .width('60%')
                         .margin({right: '5%'})
                     }.width('30%')
-
+                    Row().width('15%')
                     Row(){
-                      Text('保质期: ').fontSize(18)
-                        // .width('33%')
-                        .margin({left: '10%'})
-                      Text(item.shelfLife).fontSize(18)
-                        // .width('60%')
-                        .margin({right: '3%'})
-                    }.width('70%')
+                      if(this.judge_urgent(item.shelfLife) < 0){
+                        Text('已过期').fontSize(22).fontColor('#FF0000').fontWeight(FontWeight.Bold)
+                      }else {
+                        Text('剩余'+this.judge_urgent(item.shelfLife)+'天').fontSize(this.judge_urgent(item.shelfLife) <= 3 ? 20 : 18)
+                          .fontColor(this.judge_urgent(item.shelfLife) <= 3 ? '#FF4500':'#000000')
+                      }
+                    }.width('50%').margin({left: '5%'})
                   }.margin({bottom: 0})
 
                 }.alignItems(HorizontalAlign.Start)
                 .width('75%')
               }
-
-              // Row(){
-              //   Row(){
-              //     Image(getCategoryImage(item.category))
-              //       .width("80%")
-              //       .margin("10%")
-              //   }.width("25%")
-              //
-              //   //信息
-              //   Column({ space: 4 }){
-              //     Row()
-              //       .height('0.5%')
-              //     Text(item.name).fontSize(25)
-              //       .width('40%')
-              //       .fontWeight(FontWeight.Bold)
-              //       //.margin({left: '10%' })
-              //     Row()
-              //       .height('0.5%')
-              //     Row(){
-              //     Row(){
-              //       Text('数量:').fontSize(18)
-              //         .width('34%')
-              //       Text(item.quantity).fontSize(18)
-              //         .width('60%')
-              //         .margin({right: '5%'})
-              //     }.width('50%')
-              //
-              //     Row(){
-              //       Text('剩余:').fontSize(18)
-              //         .width('33%')
-              //         .margin({left: '10%'})
-              //       Text(item.shelfLife).fontSize(18)
-              //         .width('60%')
-              //         .margin({right: '3%'})
-              //     }.width('50%')
-              //   }.margin({bottom: 0})
-              //
-              //   }.alignItems(HorizontalAlign.Start)
-              //   .width('75%')
-              // }
+              .margin({left: 10,right: 10})
             }
             .onClick(()=>{
               router.pushUrl({
@@ -99,10 +77,9 @@ export struct FoodListComponent{
                 params: {foodItem: item}
               })
             }).borderRadius(10)
-            .height('13%')
+            .height('15%')
             .width("99%")
             .backgroundColor('#F4F9F9')
-
           })
       }
     }

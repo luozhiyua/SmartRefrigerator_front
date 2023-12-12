@@ -43,7 +43,7 @@ export function Eng2Chn(cate: string): string{
   return ret;
 }
 
-export function getCategoriesImage(category: string): ResourceStr{
+export function getCategoriesImage(category: string): Resource{
   switch (category) {
     case 'VEGETABLE':
       return $r('app.media.vegetable')
@@ -59,6 +59,7 @@ export function getCategoriesImage(category: string): ResourceStr{
       return $r("app.media.others")
     default:
       console.log("无法识别的食物类型")
+      return $r('app.media.default_pho')
       break;
   }
 }
@@ -74,7 +75,7 @@ export function getFoodInfokey(s){
   let array = new Map([
     ['名字','name'],
     ['种类','category'],
-    ['食物存储量','quantity'],
+    ['食物存量','quantity'],
     ['保质期','shelfLife'],
     ['存放位置','addr']
   ])
@@ -92,4 +93,5 @@ export let menu8: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.men
 export let menu9: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
 export let menu10: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
 
-export const SERVER_ADDR: string = 'localhost:8080'
+export const SERVER_ADDR: string = '172.31.119.18:8080'
+// export const SERVER_ADDR: string = '172.31.39.198:8080'
