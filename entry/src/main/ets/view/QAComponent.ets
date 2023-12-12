@@ -88,7 +88,9 @@ export default struct QAIndex {
 
       Column(){
         Scroll(this.scroller) {
+
           Column() { //未来改成scroll
+            Column().height(8)
             ForEach(this.text, (item, index) => {
               ChefRes({item: chefRes[index]})
               if (index == this.textLength - 1) {
@@ -108,7 +110,6 @@ export default struct QAIndex {
       }.height('80%')
       .linearGradient({
         angle: 90,
-
         colors: [['#c0c5ff', 0.0] , ["#cdd1ff", 0.5], ["#cdd2ff", 0.9]]
 
         //colors: [['#9FA4E2', 0.0], ["#cdd2ff", 0.8]]
