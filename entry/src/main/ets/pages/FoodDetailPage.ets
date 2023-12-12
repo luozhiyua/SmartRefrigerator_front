@@ -31,7 +31,7 @@ function cardStyle() {
 @Styles
 function selectRowStyle() {
   .width('60%')
-  .height('22%')
+  .height('25%')
   .backgroundColor('#e6e6e6')
   .borderRadius(18)
   .padding(8)
@@ -101,18 +101,18 @@ export struct FoodInfoItem{
                 .textAlign(TextAlign.Start)
               Blank()
               Image($r('app.media.category_select'))
-                .height(15)
-                .width(15)
-                .onClick(()=>{
-                  TextPickerDialog.show({
-                    range: this.ChiCategories,
-                    onAccept: (value: TextPickerResult) => {
-                      this.newValue = this.ChiCategories[value.index]
-                      this.new_foodItem.category = this.cate_eng[value.index]
-                    }
-                  })
-                })
+                .height(20)
+                .width(20)
             }
+            .onClick(()=>{
+              TextPickerDialog.show({
+                range: this.ChiCategories,
+                onAccept: (value: TextPickerResult) => {
+                  this.newValue = this.ChiCategories[value.index]
+                  this.new_foodItem.category = this.cate_eng[value.index]
+                }
+              })
+            })
             .selectRowStyle()
           }
           else if(this.title == '保质期'){
@@ -122,19 +122,19 @@ export struct FoodInfoItem{
                 .textAlign(TextAlign.Start)
               Blank()
               Image($r('app.media.category_select'))
-                .height(15)
-                .width(15)
-                .onClick(()=>{
-                  DatePickerDialog.show({
-                    start: new Date('2023-12-1'),
-                    end: new Date('2100-1-1'),
-                    onAccept: (value: DatePickerResult) => {
-                      this.newValue = value.year + '-' + dealDate(value.month+1) + '-' + dealDate(value.day)
-                      this.new_foodItem.shelfLife = this.newValue
-                    }
-                  })
-                })
+                .height(20)
+                .width(20)
             }
+            .onClick(()=>{
+              DatePickerDialog.show({
+                start: new Date('2023-12-1'),
+                end: new Date('2100-1-1'),
+                onAccept: (value: DatePickerResult) => {
+                  this.newValue = value.year + '-' + dealDate(value.month+1) + '-' + dealDate(value.day)
+                  this.new_foodItem.shelfLife = this.newValue
+                }
+              })
+            })
             .selectRowStyle()
           } else{
             TextInput({placeholder: this.value,text: this.newValue})
@@ -221,49 +221,48 @@ struct FoodDetailPage {
         title: '警告',
         message: '请填写所有必填字段。',
       });
-
-      return; // 阻止继续提交
+    }else{
+      let httpRequest = http.createHttp();
+      if(this.whe_add){
+        httpRequest.request(
+          SERVER_ADDR+'/food/add-food',
+          {
+            method: http.RequestMethod.POST,
+            header: {
+              'Content-Type': 'application/json'
+            },
+            extraData:{
+              name: this.new_foodItem.name,
+              freshDate: this.new_foodItem.shelfLife,
+              quantity: this.new_foodItem.quantity,
+              category: this.new_foodItem.category,
+              address: this.new_foodItem.addr
+            }
+          },(err,data)=>{
+          // TODO: 考虑弹窗提醒结果
+        })
+      }else {
+        httpRequest.request(
+          SERVER_ADDR+"/food/edit-food/"+`${this.new_foodItem.id}`,
+          {
+            method: http.RequestMethod.PUT,
+            header: {
+              'Content-Type': 'application/json'
+            },
+            extraData:{
+              name: this.new_foodItem.name,
+              freshDate: this.new_foodItem.shelfLife,
+              quantity: this.new_foodItem.quantity,
+              category: this.new_foodItem.category,
+              address: this.new_foodItem.addr
+            }
+          },(err,data)=>{
+          // TODO: 考虑弹窗提醒结果
+        })
+      }
+      httpRequest.destroy();
+      router.replaceUrl({url: "pages/Index"});
     }
-    let httpRequest = http.createHttp();
-    if(this.whe_add){
-      httpRequest.request(
-        SERVER_ADDR+'/food/add-food',
-        {
-          method: http.RequestMethod.POST,
-          header: {
-            'Content-Type': 'application/json'
-          },
-          extraData:{
-            name: this.new_foodItem.name,
-            freshDate: this.new_foodItem.shelfLife,
-            quantity: this.new_foodItem.quantity,
-            category: this.new_foodItem.category,
-            address: this.new_foodItem.addr
-          }
-        },(err,data)=>{
-        // TODO: 考虑弹窗提醒结果
-      })
-    }else {
-      httpRequest.request(
-        SERVER_ADDR+"/food/edit-food/"+`${this.new_foodItem.id}`,
-        {
-          method: http.RequestMethod.PUT,
-          header: {
-            'Content-Type': 'application/json'
-          },
-          extraData:{
-            name: this.new_foodItem.name,
-            freshDate: this.new_foodItem.shelfLife,
-            quantity: this.new_foodItem.quantity,
-            category: this.new_foodItem.category,
-            address: this.new_foodItem.addr
-          }
-        },(err,data)=>{
-        // TODO: 考虑弹窗提醒结果
-      })
-    }
-    httpRequest.destroy();
-    router.replaceUrl({url: "pages/Index"})
 }
 
   build() {
@@ -285,7 +284,7 @@ struct FoodDetailPage {
                 this.whe_edit = false;
               }
             },
-            RightFunction:()=>{ this.submit(); router.replaceUrl({url: "pages/Index"})}})
+            RightFunction:()=>{ this.submit();}})
         }
 
         Row().height('2%')
@@ -311,7 +310,7 @@ struct FoodDetailPage {
         Row().height('2%')
 
         Column(){
-          FoodInfoItem({title: '食物存储量', value: this.foodItem.quantity});
+          FoodInfoItem({title: '食物存量', value: this.foodItem.quantity});
           Divider().color('#D2D1D1')
           FoodInfoItem({title: '保质期', value: this.foodItem.shelfLife});
           Divider().color('#D2D1D1')

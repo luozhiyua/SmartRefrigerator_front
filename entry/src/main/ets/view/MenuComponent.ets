@@ -35,7 +35,6 @@ struct MenuGridItem {
 struct MenuGrid {
   whe_openAll: boolean;
   @Link MenuItems: MenuInfo[];
-  // TODO: 根据模式切换，展示不同的MenuGrid
 
   build() {
     Grid() {
