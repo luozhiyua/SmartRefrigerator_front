@@ -18,7 +18,7 @@ let chefRes: string[] = ["我是厨师机器人"];
 let chefResNum: number = 0;
 
 async function postResponse(requestBody: string): Promise<string> {
-  const url = "http://" + SERVER_ADDR + "/qa/ques";
+  const url = "http://10.58.0.2:8000/v1/chat/completions";
   const httpRequest = http.createHttp();
 
   try {
@@ -27,28 +27,36 @@ async function postResponse(requestBody: string): Promise<string> {
       {
         method: http.RequestMethod.POST,
         extraData: {
-          "userQues": requestBody
+          "model": "Qwen-14B",
+          "temperature": 0.7,
+          "messages": [{"role": "user", "content": requestBody}],
+          "max_tokens": 512,
+          "n": 1,
+          "top_p": 1.0,
         },
         connectTimeout: 60000,
         readTimeout: 60000,
         header: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer some_key'
         }
       }
     );
 
     if (data.responseCode === http.ResponseCode.OK) {
-      const retValue = data.result.toString();
+      const tmp = JSON.parse(data.result.toString())
+      const retValue = tmp.choices[0].message.content.toString();
       // chefRes[chefResNum] = retValue;
+      //console.info()
       console.info('Result(f):' + data.result);
       return retValue;
     } else {
       console.error('HTTP request failed with response code:', data.responseCode);
-      return ''; // or handle the error accordingly
+      return 'sorry,please try again!'; // or handle the error accordingly
     }
   } catch (error) {
     console.error('Error during HTTP request:', error);
-    return ''; // or handle the error accordingly
+    return 'sorry,please try again!'; // or handle the error accordingly
   } finally {
     httpRequest.destroy();
   }

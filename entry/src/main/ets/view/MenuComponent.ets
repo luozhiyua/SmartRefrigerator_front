@@ -35,6 +35,7 @@ struct MenuGridItem {
 struct MenuGrid {
   whe_openAll: boolean;
   @Link MenuItems: MenuInfo[];
+
   // TODO: 根据模式切换，展示不同的MenuGrid
 
   build() {
@@ -68,6 +69,7 @@ struct MenuGrid {
 @Component
 export default struct MenuIndex {
   @State private textInfo: string = ""
+  @State menuShow: string = "推荐菜谱";
   @State MenuItems:MenuInfo[] = new Array<MenuInfo>()
   private controller: SearchController = new SearchController()
   @State whe_openAll: boolean = true
@@ -166,26 +168,65 @@ export default struct MenuIndex {
   build() {
     Column(){
       //顶部导航栏
-      Text('菜谱小助手')
-        .fontSize(29)
-        .fontColor($r("app.color.titleColor"))
-        .fontWeight(FontWeight.Bold)
-        .padding({ top: 15, bottom: 10, left: 25, right: 20 })
-        .alignSelf(ItemAlign.Start)
-        .width('100%')
-        .linearGradient({
-          angle: 90,
-          colors: [['#FFB88C', 0.0], ["#DE6262", 0.8]]
-        }).height("8%")
+      Row() {
+        Text('菜谱小助手')
+          .fontSize(29)
+          .fontColor($r("app.color.titleColor"))
+          .fontWeight(FontWeight.Bold)
+          .padding({ top: 15, bottom: 10, left: 25, right: 20 })
+          .alignSelf(ItemAlign.Start)
+          .width('60%')
+
+        Column() {
+          Image($r('app.media.ic_switch') )
+            .width('20%')
+            .height(25)
+            .objectFit(ImageFit.Contain)
+          Text(this.menuShow)
+            .fontSize(13)
+            .fontColor(Color.Black)
+        }
+        .padding({left:80,top:1})
+        .onClick(() => {
+                this.whe_openAll = !this.whe_openAll
+                if(this.whe_openAll){
+                  this.menuShow = "推荐菜谱";
+                }
+                else{
+                  this.menuShow = "全部菜谱";
+                }
+                this.recommendFunciton()
+              }
+        )
+
+        // Column(){
+        //   Toggle({ type: ToggleType.Switch, isOn: true })
+        //     .selectedColor('#007DFF')
+        //     .switchPointColor('#FFFFFF')
+        //     .onChange((isOn: boolean) => {
+        //       this.whe_openAll = isOn
+        //       this.recommendFunciton()
+        //     })
+        //   Row(){
+        //     Text('推荐').fontSize(15).fontColor(this.whe_openAll ? '#DCDCDC':'#4169E1')
+        //     Text('|').fontSize(15).fontColor('#4169E1')
+        //     Text('全部').fontSize(15).fontColor(this.whe_openAll ? '#4169E1':'#DCDCDC')
+        //   }.margin({right:5,bottom:5})
+        // }
+      }
+      .height("8.7%").margin({top:0})
+      .width('100%')
+      .backgroundColor('#ffb366')
 
       Row(){
         Search({ value: this.textInfo, placeholder: '菜谱名称', controller: this.controller })
-          .searchButton('Search')
-          .width('75%')
+          .searchButton('搜索')
+          // .width('100%')
           .textFont({ size: 20, weight: FontWeight.Bold })
           .placeholderFont({ size: 20, weight: FontWeight.Normal, style: FontStyle.Normal })
           .backgroundColor('#F5F5F5')
           .placeholderColor(Color.Grey)
+          .margin({top:14})
           .onSubmit((value: string) => {
             this.textInfo = value
             this.customizeFunction()
@@ -195,28 +236,18 @@ export default struct MenuIndex {
           //   this.customizeFunction()
           // })
 
-        Blank()
-
-        Column(){
-          Toggle({ type: ToggleType.Switch, isOn: true })
-            .selectedColor('#007DFF')
-            .switchPointColor('#FFFFFF')
-            .onChange((isOn: boolean) => {
-              this.whe_openAll = isOn
-              this.recommendFunciton()
-            })
-          Row(){
-            Text('推荐').fontSize(15).fontColor(this.whe_openAll ? '#DCDCDC':'#4169E1')
-            Text('|').fontSize(15).fontColor('#4169E1')
-            Text('全部').fontSize(15).fontColor(this.whe_openAll ? '#4169E1':'#DCDCDC')
-          }.margin({right:5,bottom:5})
-        }
-
-      }.width('100%')
+      }.width('90%')
 
       MenuGrid({MenuItems : $MenuItems})
         .height("88.5%")
+        .margin({top:10})
     }.justifyContent(FlexAlign.End)
     .padding({ bottom: 60 })
+
+    .linearGradient({
+      angle: 90,
+      //colors: [['#FFB88C', 0.0], ["#DE6262", 0.8]]
+      colors:[['#ffb366',0.0],['#ffcc7e',0.8]]
+    })
   }
 }

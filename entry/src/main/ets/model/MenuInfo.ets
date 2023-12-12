@@ -1,7 +1,7 @@
 import {MenuIngredient} from './MenuIngredient'
 export class MenuInfo{
   id:Number
-  image: string
+  image: ResourceStr
   name: string
   ingredients: Array<MenuIngredient>
   steps: Array<string>
