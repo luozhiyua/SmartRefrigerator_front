@@ -36,8 +36,6 @@ struct MenuGrid {
   whe_openAll: boolean;
   @Link MenuItems: MenuInfo[];
 
-  // TODO: 根据模式切换，展示不同的MenuGrid
-
   build() {
     Grid() {
       ForEach(this.MenuItems, (item: MenuInfo) => {
@@ -149,14 +147,6 @@ export default struct MenuIndex {
       console.info("读取数据库所有菜谱:" + data.result);
       for (let index = 0; index < foods.length; index++) {
         const element = foods[index];
-       /* let imageName = element.image;
-        for (let i = 0; i < imageName.length; i++) {
-          if (imageName[i] == "*") {
-            imageName[i] = "/"
-          }
-        }
-        this.MenuItems.push(new MenuInfo(element.menuId, imageName, element.name, element.ingredients, element.steps))
-*/
         this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
       }
       console.info(this.MenuItems[0].id.toString(),this.MenuItems[0].name.toString())

@@ -75,6 +75,10 @@
     {
       "name": "recipe_detail_step_title",
       "value": "steps"
+    },
+    {
+      "name": "tab_mine",
+      "value": "mine"
     }
   ]
 }

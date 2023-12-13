@@ -25,7 +25,8 @@ export interface NavItem {
 export enum TabId {
   HOME,
   QA,
-  MENU
+  MENU,
+  MINE
 }
 
 export const NavList: NavItem[] = [
@@ -46,5 +47,12 @@ export const NavList: NavItem[] = [
     icon_selected: $r('app.media.menu_sel'),
     text: $r('app.string.tab_menu'),
     id: TabId.MENU
+  },
+  {
+    // TODO: UI-修改此处图标
+    icon: $r('app.media.menu_normal'),
+    icon_selected: $r('app.media.menu_sel'),
+    text: $r('app.string.tab_mine'),
+    id: TabId.MINE
   },
 ]

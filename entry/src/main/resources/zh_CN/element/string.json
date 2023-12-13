@@ -75,6 +75,10 @@
     {
       "name": "start_menu",
       "value": "你的贴心小管家"
+    },
+    {
+      "name": "tab_mine",
+      "value": "我的"
     }
   ]
 }

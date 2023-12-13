@@ -14,7 +14,7 @@ function deleteFoodItem(id: number) {
     {
       method: http.RequestMethod.DELETE,
     },(err,data)=>{
-    // TODO: 考虑弹窗提醒结果
+    // 考虑弹窗提醒结果
   })
   httpRequest.destroy();
 }
@@ -258,7 +258,7 @@ struct FoodDetailPage {
               address: this.new_foodItem.addr
             }
           },(err,data)=>{
-          // TODO: 考虑弹窗提醒结果
+          // 考虑弹窗提醒结果
         })
       }
       httpRequest.destroy();

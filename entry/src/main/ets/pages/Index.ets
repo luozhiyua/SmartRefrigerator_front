@@ -5,6 +5,7 @@ import FoodIndex from '../view/FoodComponent';
 import MenuIndex from '../view/MenuComponent';
 import QAIndex from '../view/QAComponent';
 import http from '@ohos.net.http';
+import MineIndex from '../view/MineComponent';
 
 @Styles function allSize() {
   .width('100%')
@@ -31,7 +32,6 @@ struct Index {
     // this.foodList.push(new FoodItem(0,'苹果','2024-01-01','2个','FRUIT','2层'))
     // this.foodList.push(new FoodItem(0,'苹果','2024-01-05','2个','FRUIT','2层'))
 
-    // TODO: 每次进入该页面都有一次远程调用，浪费资源
     let httpRequest = http.createHttp();
     let url = "http://" + SERVER_ADDR + "/food/foods-by-date"
     let promise = httpRequest.request(url,
@@ -85,6 +85,10 @@ struct Index {
         MenuIndex()
       }
       .tabBar(this.TabBuilder(TabId.MENU))
+
+      TabContent(){
+        MineIndex()
+      }.tabBar(this.TabBuilder(TabId.MINE))
     }
     .scrollable(false)
     .allSize()
