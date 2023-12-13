@@ -1,7 +1,7 @@
 import FoodItem from '../bean/FoodItem'
 import router from '@ohos.router'
 import http from '@ohos.net.http';
-import {getChineseCategories, getCategoriesImage, getFoodInfokey, SERVER_ADDR, getEnglishCategories, Eng2Chn} from '../util/DataUtil'
+import {getChineseCategories, getCategoriesImage, getFoodInfokey, SERVER_ADDR, getEnglishCategories, Eng2Chn, showToastContent} from '../util/DataUtil'
 
 const params = router.getParams(); // 获取传递过来的参数对象
 const realfoodItem = params['foodItem']
@@ -240,7 +240,6 @@ struct FoodDetailPage {
               address: this.new_foodItem.addr
             }
           },(err,data)=>{
-          // TODO: 考虑弹窗提醒结果
         })
       }else {
         httpRequest.request(
@@ -262,7 +261,11 @@ struct FoodDetailPage {
         })
       }
       httpRequest.destroy();
-      router.replaceUrl({url: "pages/Index"});
+      showToastContent('提交成功！')
+      // 能否等 1s再切换
+      setTimeout(function() {
+        router.replaceUrl({url: "pages/Index"});
+      }, 1000);
     }
 }
 

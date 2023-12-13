@@ -1,6 +1,7 @@
 import { Category, CategoryId } from '../bean/CategoryModel'
 import {MenuInfo} from '../bean/MenuModel'
 import HashMap from '@ohos.util.HashMap'
+import promptAction from '@ohos.promptAction'
 // export function getFoodCategories(): Category[] {
 //   return [{ id: CategoryId.Vegetable, name: $r('app.string.category_vegetable') },
 //     { id: CategoryId.Fruit, name: $r('app.string.category_fruit') },
@@ -80,6 +81,12 @@ export function getFoodInfokey(s){
     ['存放位置','addr']
   ])
   return array.get(s)
+}
+export function showToastContent(content: Resource | string): void {
+  promptAction.showToast({
+                           message: content,
+                           duration: 3000
+                         });
 }
 
 export let menu1: MenuInfo = new MenuInfo(0, 'menu1', 'menu1', $r('app.media.menu1'))

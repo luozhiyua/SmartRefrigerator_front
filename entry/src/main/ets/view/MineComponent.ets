@@ -66,8 +66,8 @@ struct MenuGrid {
 @Component
 export default struct MineIndex {
   @State MenuItems:MenuInfo[] = new Array<MenuInfo>()
-  userName: string
-  userID: string
+  userName: string = AppStorage.Link('userName').get();
+  userID: string = AppStorage.Link('userID').get();
 
   aboutToAppear(){
     this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
@@ -77,7 +77,7 @@ export default struct MineIndex {
     this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
     this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
 
-    // TODO: 此处根据用户 id 得到收藏菜谱接口, 改变 url,新增 userID参数
+    // TODO: 此处根据 this.userID 得到收藏菜谱接口, 改变 url,新增 userID参数
     let httpRequest = http.createHttp();
     let url = "http://" + SERVER_ADDR + `/todo`
     let promise = httpRequest.request(url,
