@@ -77,7 +77,6 @@ export struct FoodInfoItem{
   @State newValue: string = ''
   @Consume new_foodItem: FoodItem
   @Consume @Watch('edit_change') whe_edit: boolean;
-  @Consume categoryChange: boolean
   private ChiCategories: string[] = getChineseCategories()
   private cate_eng: string[] = getEnglishCategories()
 
@@ -112,7 +111,6 @@ export struct FoodInfoItem{
                 onAccept: (value: TextPickerResult) => {
                   this.newValue = this.ChiCategories[value.index]
                   this.new_foodItem.category = this.cate_eng[value.index]
-                  this.categoryChange = !this.categoryChange
                 }
               })
             })
@@ -209,13 +207,6 @@ struct FoodDetailPage {
   @Provide whe_edit: boolean = this.whe_add
   @Provide new_foodItem: FoodItem = new FoodItem(this.foodItem.id,this.foodItem.name,
     this.foodItem.shelfLife,this.foodItem.quantity,this.foodItem.category,this.foodItem.addr)
-  @Provide @Watch('onCategoryChange') categoryChange: boolean = false
-  @State image_url: Resource = getCategoriesImage(this.new_foodItem.category)
-
-  // TODO: 为什么编辑-取消，第一次图片能恢复，之后不行？
-  onCategoryChange(){
-    this.image_url = getCategoriesImage(this.new_foodItem.category)
-  }
 
   // 这是用来控制 ”确认删除“弹窗的
   deleteCheckController: CustomDialogController = new CustomDialogController({
@@ -290,8 +281,8 @@ struct FoodDetailPage {
             LeftFunction:()=>{
               if(this.whe_add)router.back()
               else {
-                this.new_foodItem = realfoodItem
-                this.categoryChange = !this.categoryChange
+                this.new_foodItem = new FoodItem(this.foodItem.id,this.foodItem.name,
+                  this.foodItem.shelfLife,this.foodItem.quantity,this.foodItem.category,this.foodItem.addr)
                 this.whe_edit = false;
               }
             },
@@ -302,7 +293,7 @@ struct FoodDetailPage {
 
         Row(){
           Column().width(5)
-          Image(this.image_url)
+          Image(getCategoriesImage(this.new_foodItem.category))
             .width(120)
             .height(120)
 
