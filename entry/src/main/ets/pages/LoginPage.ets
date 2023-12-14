@@ -1,7 +1,8 @@
 
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
-import { showToastContent } from '../util/DataUtil'
+import { SERVER_ADDR, showToastContent } from '../util/DataUtil'
+import http from '@ohos.net.http'
 /**
  * The login page consists of two components.
  * LoginTitle and LoginBottom, which can be invoked by directly referencing the control.
@@ -46,19 +47,19 @@ struct LoginTitle {
 @Component
 struct LoginBottom {
   @Consume whe_register: boolean
-  @State account: string = '';
+  @State phoneNum: string = '';
   @State password: string = '';
   @State password2: string = '';
 
   build() {
     Column() {
       Column() {
-        TextInput({ placeholder: '账号' })
-          .maxLength(11)
-          .type(InputType.Number)
+        TextInput({ placeholder: '手机号' })
+          // .maxLength(11)
+          .type(InputType.PhoneNumber)
           .inputStyle()
           .onChange((value: string) => {
-            this.account = value;
+            this.phoneNum = value;
           })
 
         Line()
@@ -114,18 +115,52 @@ struct LoginBottom {
         .onClick(() => {
           if(!this.whe_register){
             // TODO: 添加登录逻辑 , 将 this.account, this.password 进行 submit, 返回是否认证成功与userId。
-            AppStorage.SetOrCreate('userID', '返回的用户id');
-            AppStorage.SetOrCreate('userName', this.account);
-            router.replaceUrl({url: 'pages/Index'})
-          }else{
-            if(this.password != this.password2){
+            let httpRequest = http.createHttp();
+            let url = "http://" + SERVER_ADDR + `/login`
+            let promise = httpRequest.request(url,
+              {
+                method: http.RequestMethod.PUT,
+                header: {
+                  'Content-Type': 'application/json'
+                },
+                readTimeout: 60000,
+                connectTimeout: 60000
+              });
+            promise.then((data) => {
+              const userID = JSON.parse(data.result.toString())
+              AppStorage.SetOrCreate('userID', userID);
+              AppStorage.SetOrCreate('phoneNum', this.phoneNum);
+              router.replaceUrl({url: 'pages/Index'})
+            }).catch((err) => {
+              // TODO: 密码错误等消息在这里提示？
+              console.info('error:' + JSON.stringify(err));
+              showToastContent(JSON.stringify(err))
+              router.replaceUrl({url: 'pages/Index'})
+            });
+          }else {
+            if (this.password != this.password2) {
               showToastContent('两次输入密码不同')
-            }else {
+            } else {
               // TODO: 添加注册逻辑，将 this.account, this.password 进行 submit, 返回用户id。
+              let httpRequest = http.createHttp();
+              httpRequest.request(
+                SERVER_ADDR + "/register",
+                {
+                  method: http.RequestMethod.POST,
+                  header: {
+                    'Content-Type': 'application/json'
+                  },
+                  extraData: {
+                    phone: this.phoneNum,
+                    password: this.password
+                  }
+                }, (err, data) => {
+              })
+              httpRequest.destroy();
+              showToastContent('注册成功！')
               this.whe_register = false
             }
           }
-
         })
 
       if(!this.whe_register){
