@@ -71,6 +71,7 @@ export default struct MenuIndex {
   @State MenuItems:MenuInfo[] = new Array<MenuInfo>()
   private controller: SearchController = new SearchController()
   @State whe_openAll: boolean = true
+  private userID: string = AppStorage.Link('userID').get();
   customizeFunction: () => void = () => {
     this.MenuItems = new Array<MenuInfo>()
     let url = "http://" + SERVER_ADDR + `/menu/menus-by-input/${this.textInfo}`
@@ -103,7 +104,7 @@ export default struct MenuIndex {
     this.MenuItems = new Array<MenuInfo>()
     let url2 = "http://" + SERVER_ADDR + `/menu/all-menu`
     if (!this.whe_openAll){
-      url2 = "http://" + SERVER_ADDR + `/menu/recommend-menu`
+      url2 = "http://" + SERVER_ADDR + `/menu/recommend-menu` + `/${this.userID}}`
     }
 
     let httpRequest = http.createHttp();

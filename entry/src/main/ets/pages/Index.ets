@@ -18,7 +18,7 @@ import MineIndex from '../view/MineComponent';
 struct Index {
   @State currentPage: number = 0;
   private tabController: TabsController = new TabsController();
-
+  private userID: string = AppStorage.Link('userID').get();
   @State foodList : FoodItem[] = new Array<FoodItem>();
 
   aboutToAppear(){
@@ -33,7 +33,7 @@ struct Index {
     // this.foodList.push(new FoodItem(0,'苹果','2024-01-05','2个','FRUIT','2层'))
 
     let httpRequest = http.createHttp();
-    let url = "http://" + SERVER_ADDR + "/food/foods-by-date"
+    let url = "http://" + SERVER_ADDR + "/food/foods-by-date" + `/${this.userID}`
     let promise = httpRequest.request(url,
       {
         method: http.RequestMethod.GET,

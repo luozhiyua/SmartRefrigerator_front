@@ -203,6 +203,7 @@ struct FirstLine{
 struct FoodDetailPage {
   foodItem: FoodItem = realfoodItem
   whe_add: boolean = clickAction == 'POST'
+  private userID: string = AppStorage.Link('userID').get();
 
   @Provide whe_edit: boolean = this.whe_add
   @Provide new_foodItem: FoodItem = new FoodItem(this.foodItem.id,this.foodItem.name,
@@ -234,6 +235,7 @@ struct FoodDetailPage {
             },
             extraData:{
               name: this.new_foodItem.name,
+              userId: this.userID,
               freshDate: this.new_foodItem.shelfLife,
               quantity: this.new_foodItem.quantity,
               category: this.new_foodItem.category,
@@ -251,6 +253,7 @@ struct FoodDetailPage {
             },
             extraData:{
               name: this.new_foodItem.name,
+              userId: this.userID,
               freshDate: this.new_foodItem.shelfLife,
               quantity: this.new_foodItem.quantity,
               category: this.new_foodItem.category,

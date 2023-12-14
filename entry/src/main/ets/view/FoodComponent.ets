@@ -56,6 +56,7 @@ export struct CategoryModeFoods {
 export default struct FoodIndex {
   @Link foodList : FoodItem[]
   @State @Watch('onSortWayChange') selectByName: boolean = false
+  private userID: string = AppStorage.Link('userID').get();
 
   @State searchInfo: string = '';
   private controller: SearchController = new SearchController()
@@ -63,7 +64,7 @@ export default struct FoodIndex {
   onSortWayChange(){
     if(this.selectByName) {
       let httpRequest = http.createHttp();
-      let url = "http://" + SERVER_ADDR + "/food/foods-by-name"
+      let url = "http://" + SERVER_ADDR + "/food/foods-by-name" + `/${this.userID}`
       let promise = httpRequest.request(url,
         {
           method: http.RequestMethod.GET,
@@ -85,7 +86,7 @@ export default struct FoodIndex {
       });
     } else {
       let httpRequest = http.createHttp();
-      let url = "http://" + SERVER_ADDR + "/food/foods-by-date"
+      let url = "http://" + SERVER_ADDR + "/food/foods-by-date" + `/${this.userID}`
       let promise = httpRequest.request(url,
         {
           method: http.RequestMethod.GET,
@@ -153,7 +154,7 @@ export default struct FoodIndex {
               this.searchInfo = value
               // 搜索功能
               let httpRequest = http.createHttp();
-              let url = "http://" + SERVER_ADDR + "/food/foods-by-input/"+`${this.searchInfo}`
+              let url = "http://" + SERVER_ADDR + "/food/foods-by-input/"+`${this.searchInfo}`+ `/${this.userID}`
               let promise = httpRequest.request(url,
                 {
                   method: http.RequestMethod.GET,

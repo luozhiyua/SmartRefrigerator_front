@@ -115,7 +115,7 @@ struct LoginBottom {
         .onClick(() => {
           if(!this.whe_register){
             let httpRequest = http.createHttp();
-            let url = "http://" + SERVER_ADDR + `/user/login`
+            let url = "http://" + SERVER_ADDR + "/user/login"
             let promise = httpRequest.request(url,
               {
                 method: http.RequestMethod.POST,

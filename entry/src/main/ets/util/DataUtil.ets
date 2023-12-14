@@ -101,4 +101,4 @@ export let menu9: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.men
 export let menu10: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
 
 // export const SERVER_ADDR: string = '172.31.119.18:8080'
-export const SERVER_ADDR: string = '172.31.39.198:8080'
+export const SERVER_ADDR: string = 'localhost:8080'
