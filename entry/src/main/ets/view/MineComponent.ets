@@ -66,10 +66,8 @@ struct MenuGrid {
 @Component
 export default struct MineIndex {
   @State MenuItems:MenuInfo[] = new Array<MenuInfo>()
-
-  // TODO: 到时候取消这里的注释
-  // phoneNum: string = AppStorage.Link('phoneNum').get();
-  // userID: string = AppStorage.Link('userID').get();
+  phoneNum: string = AppStorage.Link('phoneNum').get();
+  userID: string = AppStorage.Link('userID').get();
 
   aboutToAppear(){
     this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
@@ -85,7 +83,7 @@ export default struct MineIndex {
     // let promise = httpRequest.request(url,
     //   {
     //     method: http.RequestMethod.GET,
-    //     header: {
+    //     header: {a
     //       'Content-Type': 'application/json'
     //     },
     //     readTimeout: 60000,
@@ -129,11 +127,7 @@ export default struct MineIndex {
         Column(){
           Image($r('app.media.user')).width(100).height(100)
           Row().height('5%')
-
-          // TODO: 这里到时候换成注释内容
-          Text('用户：').fontSize(22)
-          Text('账号id：').fontSize(18)
-          // Text('用户：'+this.phoneNum).fontSize(22)
+          Text('用户：'+this.phoneNum).fontSize(22)
           // Text('账号id：'+this.userID).fontSize(18)
         }
       }.height('35%').width('100%').backgroundColor('#E0E0E0')

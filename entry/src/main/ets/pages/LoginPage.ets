@@ -114,51 +114,63 @@ struct LoginBottom {
         })
         .onClick(() => {
           if(!this.whe_register){
-            // TODO: 添加登录逻辑 , 将 this.account, this.password 进行 submit, 返回是否认证成功与userId。
             let httpRequest = http.createHttp();
-            let url = "http://" + SERVER_ADDR + `/login`
+            let url = "http://" + SERVER_ADDR + `/user/login`
             let promise = httpRequest.request(url,
               {
-                method: http.RequestMethod.PUT,
+                method: http.RequestMethod.POST,
                 header: {
                   'Content-Type': 'application/json'
+                },
+                extraData: {
+                  "username": this.phoneNum,
+                  "password": this.password
                 },
                 readTimeout: 60000,
                 connectTimeout: 60000
               });
             promise.then((data) => {
               const userID = JSON.parse(data.result.toString())
-              AppStorage.SetOrCreate('userID', userID);
-              AppStorage.SetOrCreate('phoneNum', this.phoneNum);
-              router.replaceUrl({url: 'pages/Index'})
+              console.info(data.result.toString())
+              if(userID == -1){
+                showToastContent("密码错误")
+              }else if(userID == -2){
+                showToastContent("用户不存在")
+              }else {
+                AppStorage.SetOrCreate('userID', userID);
+                AppStorage.SetOrCreate('phoneNum', this.phoneNum);
+                router.replaceUrl({url: 'pages/Index'})
+              }
             }).catch((err) => {
-              // TODO: 密码错误等消息在这里提示？
-              console.info('error:' + JSON.stringify(err));
               showToastContent(JSON.stringify(err))
-              router.replaceUrl({url: 'pages/Index'})
+              console.log(JSON.stringify(err))
             });
           }else {
             if (this.password != this.password2) {
               showToastContent('两次输入密码不同')
             } else {
-              // TODO: 添加注册逻辑，将 this.account, this.password 进行 submit, 返回用户id。
               let httpRequest = http.createHttp();
               httpRequest.request(
-                SERVER_ADDR + "/register",
+                SERVER_ADDR + "/user/registry",
                 {
                   method: http.RequestMethod.POST,
                   header: {
                     'Content-Type': 'application/json'
                   },
                   extraData: {
-                    phone: this.phoneNum,
+                    username: this.phoneNum,
                     password: this.password
                   }
                 }, (err, data) => {
+                  const re_msg = JSON.parse(data.result.toString())
+                  if(re_msg.code == 201){
+                    showToastContent("注册成功")
+                    this.whe_register = false
+                  }else if(re_msg.code == 409){
+                    showToastContent("名称已存在，注册失败")
+                  }
               })
               httpRequest.destroy();
-              showToastContent('注册成功！')
-              this.whe_register = false
             }
           }
         })
