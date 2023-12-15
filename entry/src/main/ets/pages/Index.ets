@@ -6,6 +6,7 @@ import MenuIndex from '../view/MenuComponent';
 import QAIndex from '../view/QAComponent';
 import http from '@ohos.net.http';
 import MineIndex from '../view/MineComponent';
+import { MenuInfo } from '../bean/MenuModel';
 
 @Styles function allSize() {
   .width('100%')
@@ -52,6 +53,7 @@ struct Index {
     }).catch((err) => {
       console.info('error:' + JSON.stringify(err));
     });
+    httpRequest.destroy();
   }
 
   @Builder TabBuilder(index: number) {

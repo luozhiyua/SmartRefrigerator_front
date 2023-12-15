@@ -1,5 +1,4 @@
 import { Category, CategoryId } from '../bean/CategoryModel'
-import {MenuInfo} from '../bean/MenuModel'
 import HashMap from '@ohos.util.HashMap'
 import promptAction from '@ohos.promptAction'
 // export function getFoodCategories(): Category[] {
@@ -65,13 +64,6 @@ export function getCategoriesImage(category: string): Resource{
   }
 }
 
-export function getMenus(): Array<MenuInfo> {
-  let menuArray : Array<MenuInfo> = [
-    menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10
-  ]
-  return menuArray;
-}
-
 export function getFoodInfokey(s){
   let array = new Map([
     ['名字','name'],
@@ -88,17 +80,6 @@ export function showToastContent(content: Resource | string): void {
                            duration: 3000
                          });
 }
-
-export let menu1: MenuInfo = new MenuInfo(0, 'menu1', 'menu1', $r('app.media.menu1'))
-export let menu2: MenuInfo = new MenuInfo(1, 'menu2', 'menu2', $r('app.media.menu1'))
-export let menu3: MenuInfo = new MenuInfo(2, 'menu3', 'menu3', $r('app.media.menu1'))
-export let menu4: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
-export let menu5: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
-export let menu6: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
-export let menu7: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
-export let menu8: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
-export let menu9: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
-export let menu10: MenuInfo = new MenuInfo(3, 'menu4', 'menu4', $r('app.media.menu1'))
 
 // export const SERVER_ADDR: string = '172.31.119.18:8080'
 export const SERVER_ADDR: string = 'localhost:8080'

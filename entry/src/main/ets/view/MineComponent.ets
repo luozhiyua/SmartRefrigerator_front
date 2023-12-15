@@ -8,24 +8,6 @@ struct MenuGridItem {
   private MenuItem?: MenuInfo
 
   build() {
-    Column() {
-      Image(this.MenuItem?.image)//$r('app.media.user'))//this.MenuItem.image)//this.MenuItem!.image!)
-        .objectFit(ImageFit.Contain)
-        .backgroundColor('#f1f3f5')
-        .width('100%')
-        .height(152)
-      Row() {
-        Text(this.MenuItem?.name)
-          .fontSize(20)
-
-      }
-      .padding({ left: 12, right: 12 })
-      .width('100%')
-      .height(52)
-      .backgroundColor('#E5E5E5')
-    }
-    .height(204)
-    .clip(new Rect({ width: '100%', height: '100%', radius: 12 }))
 
   }
 }
@@ -39,7 +21,23 @@ struct MenuGrid {
     Grid() {
       ForEach(this.MenuItems, (item: MenuInfo) => {
         GridItem() {
-          MenuGridItem({ MenuItem: item })
+          Column() {
+            Image(item.image)//$r('app.media.user'))//this.MenuItem.image)//this.MenuItem!.image!)
+              .objectFit(ImageFit.Contain)
+              .backgroundColor('#f1f3f5')
+              .width('100%')
+              .height(152)
+            Row() {
+              Text(item.name)
+                .fontSize(20)
+            }
+            .padding({ left: 12, right: 12 })
+            .width('100%')
+            .height(52)
+            .backgroundColor('#E5E5E5')
+          }
+          .height(204)
+          .clip(new Rect({ width: '100%', height: '100%', radius: 12 }))
             .onClick(async ()=>{
               let options = {
                 url: 'pages/MenuDetail',
@@ -65,41 +63,32 @@ struct MenuGrid {
 
 @Component
 export default struct MineIndex {
-  @State MenuItems:MenuInfo[] = new Array<MenuInfo>()
+  @State MenuItems: MenuInfo[] = new Array<MenuInfo>();
   phoneNum: string = AppStorage.Link('phoneNum').get();
   userID: string = AppStorage.Link('userID').get();
 
   aboutToAppear(){
-    this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
-    this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
-    this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
-    this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
-    this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
-    this.MenuItems.push(new MenuInfo(0,'test','test',new Array<MenuIngredient>(),new Array<string>()))
-
-    // TODO: 此处根据 this.userID 得到收藏菜谱接口, 改变 url
-    // let httpRequest = http.createHttp();
-    // let url = "http://" + SERVER_ADDR + `/collectedMenu?userID=${this.userID}`
-    // let promise = httpRequest.request(url,
-    //   {
-    //     method: http.RequestMethod.GET,
-    //     header: {a
-    //       'Content-Type': 'application/json'
-    //     },
-    //     readTimeout: 60000,
-    //     connectTimeout: 60000
-    //   });
-    // promise.then((data) => {
-    //   const foods = JSON.parse(data.result.toString())
-    //   console.info("读取收藏菜谱:" + data.result);
-    //   for (let index = 0; index < foods.length; index++) {
-    //     const element = foods[index];
-    //     this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
-    //   }
-    //   console.info(this.MenuItems[0].id.toString(),this.MenuItems[0].name.toString())
-    // }).catch((err) => {
-    //   console.info('error:' + JSON.stringify(err));
-    // });
+    let httpRequest = http.createHttp()
+    let promise = httpRequest.request(
+      "http://" + SERVER_ADDR + "/menu/menus-by-collect/" + `${this.userID}`,
+      {
+        method: http.RequestMethod.GET,
+        header: {
+          'Content-Type': 'application/json'
+        },
+        readTimeout: 60000,
+        connectTimeout: 60000
+      });
+    promise.then((data) => {
+      const foods = JSON.parse(data.result.toString())
+      console.info("读取收藏菜谱:" + data.result);
+      for (let index = 0; index < foods.length; index++) {
+        const element = foods[index];
+        this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
+      }
+    }).catch((err) => {
+      console.info('error:' + JSON.stringify(err));
+    });
   }
 
   build(){

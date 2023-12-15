@@ -1,6 +1,6 @@
 import curves from '@ohos.curves'
 import { MenuInfo} from '../model/MenuInfo'
-import { getMenus, SERVER_ADDR } from '../util/DataUtil'
+import { SERVER_ADDR } from '../util/DataUtil'
 import router from '@ohos.router'
 import http from '@ohos.net.http'
 
@@ -104,7 +104,7 @@ export default struct MenuIndex {
     this.MenuItems = new Array<MenuInfo>()
     let url2 = "http://" + SERVER_ADDR + `/menu/all-menu`
     if (!this.whe_openAll){
-      url2 = "http://" + SERVER_ADDR + `/menu/recommend-menu` + `/${this.userID}}`
+      url2 = "http://" + SERVER_ADDR + `/menu/recommend-menu` + `/${this.userID}`
     }
 
     let httpRequest = http.createHttp();

@@ -13,7 +13,7 @@ struct content{
 
   build(){
     Column(){
-      MenuImage({ image: this.menu.image, name: this.menu.name })
+      MenuImage({ menuId: this.menu.id, image: this.menu.image, name: this.menu.name })
       IngredientList({ ingredients: this.menu.ingredients })
       StepList({ steps: this.menu.steps })
     }
