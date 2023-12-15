@@ -41,9 +41,11 @@ export struct MenuImage {
           .fontSize(26)
           .fontWeight(FontWeight.Bold)
           .margin({ left : 18, bottom: 18, top : 5 })
+        Row().width('40%')
 
         if (this.is_collected) { //已收藏
-          Button("取消收藏")
+          Image($r("app.media.collect"))
+            .height("6%")
             .onClick(()=>{
               let httpRequest = http.createHttp();
               httpRequest.request(
@@ -61,7 +63,8 @@ export struct MenuImage {
               this.is_collected = false;
             })
         } else {
-          Button("收藏")
+          Image($r("app.media.uncollect"))
+            .height("6%")
             .onClick(()=>{
               let httpRequest = http.createHttp();
               httpRequest.request(
