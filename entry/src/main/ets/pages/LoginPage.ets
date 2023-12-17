@@ -139,7 +139,7 @@ struct LoginBottom {
               }else {
                 AppStorage.SetOrCreate('userID', userID);
                 AppStorage.SetOrCreate('phoneNum', this.phoneNum);
-                router.replaceUrl({url: 'pages/Index'})
+                router.replaceUrl({url: 'pages/Index',params : {collectChange : false}})
               }
             }).catch((err) => {
               showToastContent(JSON.stringify(err))

@@ -6,7 +6,7 @@ import http from '@ohos.net.http'
 
 @Component
 struct MenuGridItem {
-  private MenuItem?: MenuInfo
+  MenuItem?: MenuInfo
 
   build() {
     Column() {

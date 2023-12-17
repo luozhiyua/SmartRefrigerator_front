@@ -1,92 +1,27 @@
-import { SERVER_ADDR } from '../../util/DataUtil'
-import http from '@ohos.net.http'
 @Component
 export struct MenuImage {
-  private menuId: Number
   private image: ResourceStr
   private name: string
-  private userID: string = AppStorage.Link('userID').get();
-  @State is_collected: boolean = false;
-
-  aboutToAppear() {
-    let httpRequest = http.createHttp();
-    let url = "http://" + SERVER_ADDR + "/menu/collection" + `/${this.menuId}`+`/${this.userID}`
-    let promise = httpRequest.request(url,
-      {
-        method: http.RequestMethod.GET,
-        header: {
-          'Content-Type': 'application/json'
-        },
-        readTimeout: 60000,
-        connectTimeout: 60000
-      });
-    promise.then((data) => {
-      console.info(data.result.toString())
-      if (data.result.toString() == "true"){
-        this.is_collected = true;
-      } else {
-        this.is_collected = false;
-      }
-    }).catch((err) => {
-      console.info('error:' + JSON.stringify(err));
-    });
-  }
+  @Consume is_collected: boolean
 
   build() {
     Column(){
       Image(this.image).width('100%').height('30%')
 
-      Row(){
+      Flex({justifyContent: FlexAlign.SpaceBetween}){
         Text(this.name)
           .fontSize(26)
           .fontWeight(FontWeight.Bold)
           .margin({ left : 18, bottom: 18, top : 5 })
-        Row().width('40%')
 
-        if (this.is_collected) { //已收藏
-          Image($r("app.media.collect"))
+        Image(this.is_collected ? $r("app.media.collect") : $r("app.media.uncollect"))
             .height("6%")
             .onClick(()=>{
-              let httpRequest = http.createHttp();
-              httpRequest.request(
-                SERVER_ADDR+"/menu/uncollect-menu"+`/${this.menuId}` + `/${this.userID}`,
-                {
-                  method: http.RequestMethod.PUT,
-                  header: {
-                    'Content-Type': 'application/json'
-                  },
-                  extraData:{
-                  }
-                },(err,data)=>{
-                // 考虑弹窗提醒结果
-              })
-              this.is_collected = false;
-            })
-        } else {
-          Image($r("app.media.uncollect"))
-            .height("6%")
-            .onClick(()=>{
-              let httpRequest = http.createHttp();
-              httpRequest.request(
-                SERVER_ADDR+"/menu/collect-menu"+`/${this.menuId}` + `/${this.userID}`,
-                {
-                  method: http.RequestMethod.PUT,
-                  header: {
-                    'Content-Type': 'application/json'
-                  },
-                  extraData:{
-                  }
-                },(err,data)=>{
-                // 考虑弹窗提醒结果
-              })
-              this.is_collected = true;
-            })
-        }
-
+              this.is_collected = !this.is_collected;
+            }).margin({right : 8})
       }
       .width('100%')
-      .justifyContent(FlexAlign.Start)
-
+      .margin({left: 8, right: 12})
 
     }
     .justifyContent(FlexAlign.Start)

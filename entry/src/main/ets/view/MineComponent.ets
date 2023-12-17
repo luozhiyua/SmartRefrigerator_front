@@ -66,8 +66,15 @@ export default struct MineIndex {
   @State MenuItems: MenuInfo[] = new Array<MenuInfo>();
   phoneNum: string = AppStorage.Link('phoneNum').get();
   userID: string = AppStorage.Link('userID').get();
+  @Consume @Watch('onCollectChange') collect_change: boolean
 
   aboutToAppear(){
+    this.toGetCollect()
+  }
+  onCollectChange(){
+    this.toGetCollect()
+  }
+  toGetCollect(){
     let httpRequest = http.createHttp()
     let promise = httpRequest.request(
       "http://" + SERVER_ADDR + "/menu/menus-by-collect/" + `${this.userID}`,
@@ -84,6 +91,7 @@ export default struct MineIndex {
       console.info("读取收藏菜谱:" + data.result);
       for (let index = 0; index < foods.length; index++) {
         const element = foods[index];
+        this.MenuItems = new Array<MenuInfo>();
         this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
       }
     }).catch((err) => {

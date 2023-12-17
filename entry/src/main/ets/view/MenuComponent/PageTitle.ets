@@ -1,7 +1,7 @@
 import router from '@ohos.router'
 @Component
 export struct PageTitle {
-  private foodName: Resource
+  foodName: string
 
   build() {
     Row() {
@@ -11,8 +11,8 @@ export struct PageTitle {
         .onClick(() => {
           router.back()
         })
-      Text(this.foodName)
-        .fontSize(10)
+      Text('菜谱详情')
+        .fontSize(25)
         .margin({ left: 20 })
     }
     .padding(12)

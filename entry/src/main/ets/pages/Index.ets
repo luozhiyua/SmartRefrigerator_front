@@ -7,12 +7,12 @@ import QAIndex from '../view/QAComponent';
 import http from '@ohos.net.http';
 import MineIndex from '../view/MineComponent';
 import { MenuInfo } from '../bean/MenuModel';
+import router from '@ohos.router';
 
 @Styles function allSize() {
   .width('100%')
   .height('100%')
 }
-
 
 @Entry
 @Component
@@ -21,6 +21,15 @@ struct Index {
   private tabController: TabsController = new TabsController();
   private userID: string = AppStorage.Link('userID').get();
   @State foodList : FoodItem[] = new Array<FoodItem>();
+  @Provide collect_change: boolean = false
+
+  onPageShow() {
+    const params = router.getParams(); // 获取传递过来的参数对象
+    const collectChange = params['collectChange']; // 将属性值存储在临时变量中
+    if(collectChange){
+      this.collect_change = !this.collect_change;
+    }
+  }
 
   aboutToAppear(){
     // console.info("IndexAppear")
