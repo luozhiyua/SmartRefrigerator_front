@@ -81,5 +81,5 @@ export function showToastContent(content: Resource | string): void {
                          });
 }
 
-export const SERVER_ADDR: string = '172.31.39.198:8080'
-// export const SERVER_ADDR: string = 'localhost:8080'
+// export const SERVER_ADDR: string = '172.31.39.198:8080'
+export const SERVER_ADDR: string = 'localhost:8080'
