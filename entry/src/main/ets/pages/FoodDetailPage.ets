@@ -7,7 +7,7 @@ const params = router.getParams(); // 获取传递过来的参数对象
 const realfoodItem = params['foodItem']
 const clickAction = params['clickAction']
 
-function deleteFoodItem(id: number) {
+async function deleteFoodItem(id: number) {
   let httpRequest = http.createHttp();
   httpRequest.request(
     SERVER_ADDR+"/food/delete-food/"+`${id}`,
@@ -59,10 +59,9 @@ struct CheckDelete {
             this.controller.close()
           }).backgroundColor(0xffffff).fontColor(Color.Black)
         Button('确定')
-          .onClick(() => {
-            deleteFoodItem(this.foodItemID)
-            // router.back()
-            router.replaceUrl({url: "pages/Index"})
+          .onClick(async () => {
+            await deleteFoodItem(this.foodItemID)
+            router.replaceUrl({url: "pages/Index",params : {collectChange :false}})
             this.controller.close()
           }).backgroundColor(0xffffff).fontColor(Color.Red)
       }.margin({ bottom: 10 })
@@ -179,11 +178,11 @@ struct FirstLine{
   build(){
     Row(){
       Column().width(7)
-      Image($r('app.media.return_icon'))
+      Image($r('app.media.back'))
         .width(35)
         .height(35)
         .onClick(()=>{
-          router.back()
+          router.replaceUrl({url : 'pages/Index',params : {collectChange : false}})
         })
       Column().width(3)
       Text(this.headText).fontSize(29)
@@ -267,8 +266,8 @@ struct FoodDetailPage {
       showToastContent('提交成功！')
       // 能否等 1s再切换
       setTimeout(function() {
-        router.replaceUrl({url: "pages/Index"});
-      }, 1000);
+        router.replaceUrl({url: "pages/Index",params : {collectChange :false}});
+      }, 500);
     }
 }
 
