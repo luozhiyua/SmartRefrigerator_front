@@ -15,6 +15,14 @@ struct LoginPage {
 
   build() {
     Column() {
+      Flex({justifyContent : FlexAlign.Start}){
+        if(this.whe_register){
+          Image($r('app.media.back'))
+            .width(25)
+            .height(25)
+            .onClick(()=>{this.whe_register = false})
+        }
+      }.margin({left: 8,top : 8})
       LoginTitle()
       LoginBottom()
     }
