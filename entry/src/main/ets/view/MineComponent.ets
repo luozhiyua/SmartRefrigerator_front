@@ -89,9 +89,9 @@ export default struct MineIndex {
     promise.then((data) => {
       const foods = JSON.parse(data.result.toString())
       console.info("读取收藏菜谱:" + data.result);
+      this.MenuItems = new Array<MenuInfo>();
       for (let index = 0; index < foods.length; index++) {
         const element = foods[index];
-        this.MenuItems = new Array<MenuInfo>();
         this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
       }
     }).catch((err) => {
