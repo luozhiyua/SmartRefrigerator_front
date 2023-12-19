@@ -165,12 +165,8 @@ export default struct FoodIndex {
                   connectTimeout: 60000
                 });
               promise.then((data) => {
-                const foods = JSON.parse(data.result.toString())
-                for (let index = 0; index < foods.length; index++) {
-                  const element = foods[index];
-                  this.foodList = new Array<FoodItem>()
-                  this.foodList.push(new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address))
-                }
+                const foods = JSON.parse(data.result.toString());
+                this.foodList = foods.map(element => new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address));
               }).catch((err) => {
                 console.info('error:' + JSON.stringify(err));
               });
