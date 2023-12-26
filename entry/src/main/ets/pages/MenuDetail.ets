@@ -9,6 +9,7 @@ import router from '@ohos.router'
 import http from '@ohos.net.http'
 import { SERVER_ADDR } from '../util/DataUtil'
 
+const SERVICE_NAME = "/nacos-discovery-provider-menu"
 @Component
 struct content{
   menu: MenuInfo = router.getParams()['menu']
@@ -37,7 +38,7 @@ struct MenuDetail {
 
   onPageShow(){
     let httpRequest = http.createHttp();
-    let url = "http://" + SERVER_ADDR + "/menu/collection" + `/${this.menu.id}`+`/${this.userID}`
+    let url = "http://" + SERVER_ADDR + SERVICE_NAME + "/menu/collection" + `/${this.menu.id}`+`/${this.userID}`
     let promise = httpRequest.request(url,
       {
         method: http.RequestMethod.GET,
@@ -84,7 +85,7 @@ struct MenuDetail {
             .onClick(() => {
               if(this.history_collected != this.is_collected){
                 let httpRequest = http.createHttp();
-                let url = SERVER_ADDR + (this.is_collected ? "/menu/collect-menu" : "/menu/uncollect-menu") +`/${this.menu.id}` + `/${this.userID}`
+                let url = SERVER_ADDR + SERVICE_NAME + (this.is_collected ? "/menu/collect-menu" : "/menu/uncollect-menu") +`/${this.menu.id}` + `/${this.userID}`
                 httpRequest.request(
                   url,
                   {

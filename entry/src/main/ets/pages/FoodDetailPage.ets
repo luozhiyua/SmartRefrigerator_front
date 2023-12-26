@@ -6,11 +6,13 @@ import {getChineseCategories, getCategoriesImage, getFoodInfokey, SERVER_ADDR, g
 const params = router.getParams(); // 获取传递过来的参数对象
 const realfoodItem = params['foodItem']
 const clickAction = params['clickAction']
+const SERVICE_NAME = "/nacos-discovery-provider-food"
 
 async function deleteFoodItem(id: number) {
   let httpRequest = http.createHttp();
   httpRequest.request(
-    SERVER_ADDR+"/food/delete-food/"+`${id}`,
+    // SERVER_ADDR+"/food/delete-food/"+`${id}`,
+    SERVER_ADDR + SERVICE_NAME + "/food/delete-food/"+`${id}`,
     {
       method: http.RequestMethod.DELETE,
     },(err,data)=>{
@@ -226,7 +228,7 @@ struct FoodDetailPage {
       let httpRequest = http.createHttp();
       if(this.whe_add){
         httpRequest.request(
-          SERVER_ADDR+'/food/add-food',
+          SERVER_ADDR+SERVICE_NAME+'/food/add-food',
           {
             method: http.RequestMethod.POST,
             header: {
@@ -244,7 +246,7 @@ struct FoodDetailPage {
         })
       }else {
         httpRequest.request(
-          SERVER_ADDR+"/food/edit-food/"+`${this.new_foodItem.id}`,
+          SERVER_ADDR+SERVICE_NAME+"/food/edit-food/"+`${this.new_foodItem.id}`,
           {
             method: http.RequestMethod.PUT,
             header: {

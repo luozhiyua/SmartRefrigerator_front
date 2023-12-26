@@ -7,7 +7,7 @@ import http from '@ohos.net.http'
  * The login page consists of two components.
  * LoginTitle and LoginBottom, which can be invoked by directly referencing the control.
  */
-
+const SERVICE_NAME = "/nacos-discovery-provider-user"
 @Entry
 @Component
 struct LoginPage {
@@ -123,7 +123,7 @@ struct LoginBottom {
         .onClick(() => {
           if(!this.whe_register){
             let httpRequest = http.createHttp();
-            let url = "http://" + SERVER_ADDR + "/user/login"
+            let url = "http://" + SERVER_ADDR + SERVICE_NAME +"/user/login"
             let promise = httpRequest.request(url,
               {
                 method: http.RequestMethod.POST,
@@ -159,7 +159,7 @@ struct LoginBottom {
             } else {
               let httpRequest = http.createHttp();
               httpRequest.request(
-                SERVER_ADDR + "/user/registry",
+                SERVER_ADDR + SERVICE_NAME +"/user/registry",
                 {
                   method: http.RequestMethod.POST,
                   header: {

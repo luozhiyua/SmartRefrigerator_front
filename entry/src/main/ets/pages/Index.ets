@@ -9,6 +9,8 @@ import MineIndex from '../view/MineComponent';
 import { MenuInfo } from '../bean/MenuModel';
 import router from '@ohos.router';
 
+const SERVICE_NAME = "/nacos-discovery-provider-food"
+
 @Styles function allSize() {
   .width('100%')
   .height('100%')
@@ -43,7 +45,7 @@ struct Index {
     // this.foodList.push(new FoodItem(0,'苹果','2024-01-05','2个','FRUIT','2层'))
 
     let httpRequest = http.createHttp();
-    let url = "http://" + SERVER_ADDR + "/food/foods-by-date" + `/${this.userID}`
+    let url = "http://" + SERVER_ADDR + SERVICE_NAME + "/food/foods-by-date" + `/${this.userID}`
     let promise = httpRequest.request(url,
       {
         method: http.RequestMethod.GET,

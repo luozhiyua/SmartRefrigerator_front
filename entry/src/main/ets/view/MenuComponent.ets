@@ -3,7 +3,7 @@ import { MenuInfo} from '../model/MenuInfo'
 import { SERVER_ADDR } from '../util/DataUtil'
 import router from '@ohos.router'
 import http from '@ohos.net.http'
-
+const SERVICE_NAME = "/nacos-discovery-provider-menu"
 @Component
 struct MenuGridItem {
   MenuItem?: MenuInfo
@@ -74,9 +74,9 @@ export default struct MenuIndex {
   private userID: string = AppStorage.Link('userID').get();
   customizeFunction: () => void = () => {
     this.MenuItems = new Array<MenuInfo>()
-    let url = "http://" + SERVER_ADDR + `/menu/menus-by-input/${this.textInfo}`
+    let url = "http://" + SERVER_ADDR + SERVICE_NAME + `/menu/menus-by-input/${this.textInfo}`
     if (this.textInfo === ""){
-      url = "http://" + SERVER_ADDR + `/menu/all-menu`
+      url = "http://" + SERVER_ADDR + SERVICE_NAME  + `/menu/all-menu`
     }
 
     let httpRequest = http.createHttp();
@@ -102,9 +102,9 @@ export default struct MenuIndex {
   }
   recommendFunciton: () => void = () =>{
     this.MenuItems = new Array<MenuInfo>()
-    let url2 = "http://" + SERVER_ADDR + `/menu/all-menu`
+    let url2 = "http://" + SERVER_ADDR + SERVICE_NAME  + `/menu/all-menu`
     if (!this.whe_openAll){
-      url2 = "http://" + SERVER_ADDR + `/menu/recommend-menu` + `/${this.userID}`
+      url2 = "http://" + SERVER_ADDR + SERVICE_NAME  + `/menu/recommend-menu` + `/${this.userID}`
     }
 
     let httpRequest = http.createHttp();
@@ -133,7 +133,7 @@ export default struct MenuIndex {
   //从数据库获得菜谱
   aboutToAppear(){
     let httpRequest = http.createHttp();
-    let url = "http://" + SERVER_ADDR + `/menu/all-menu`
+    let url = "http://" + SERVER_ADDR + SERVICE_NAME  + `/menu/all-menu`
     let promise = httpRequest.request(url,
       {
         method: http.RequestMethod.GET,

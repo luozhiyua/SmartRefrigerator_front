@@ -50,8 +50,8 @@ export const NavList: NavItem[] = [
   },
   {
     // TODO: UI-修改此处图标
-    icon: $r('app.media.menu_normal'),
-    icon_selected: $r('app.media.menu_sel'),
+    icon: $r('app.media.mine_normal'),
+    icon_selected: $r('app.media.mine_select'),
     text: $r('app.string.tab_mine'),
     id: TabId.MINE
   },

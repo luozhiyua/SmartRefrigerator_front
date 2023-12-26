@@ -3,6 +3,7 @@ import router from '@ohos.router'
 import http from '@ohos.net.http'
 import { SERVER_ADDR } from '../util/DataUtil'
 import { MenuIngredient } from '../model/MenuIngredient'
+const SERVICE_NAME = "/nacos-discovery-provider-menu"
 @Component
 struct MenuGridItem {
   private MenuItem?: MenuInfo
@@ -77,7 +78,7 @@ export default struct MineIndex {
   toGetCollect(){
     let httpRequest = http.createHttp()
     let promise = httpRequest.request(
-      "http://" + SERVER_ADDR + "/menu/menus-by-collect/" + `${this.userID}`,
+      "http://" + SERVER_ADDR + SERVICE_NAME  + "/menu/menus-by-collect/" + `${this.userID}`,
       {
         method: http.RequestMethod.GET,
         header: {

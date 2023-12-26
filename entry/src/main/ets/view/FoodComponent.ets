@@ -5,6 +5,7 @@ import { getChineseCategories, SERVER_ADDR} from '../util/DataUtil';
 import { FoodListComponent } from './Home/FoodListComponent';
 import { SortMenuComponent } from './Home/sortType/SortMenuComponent';
 import http from '@ohos.net.http';
+const SERVICE_NAME = "/nacos-discovery-provider-food"
 @Styles function allSize() {
   .width('100%')
   .height('100%')
@@ -64,7 +65,7 @@ export default struct FoodIndex {
   onSortWayChange(){
     if(this.selectByName) {
       let httpRequest = http.createHttp();
-      let url = "http://" + SERVER_ADDR + "/food/foods-by-name" + `/${this.userID}`
+      let url = "http://" + SERVER_ADDR + SERVICE_NAME + "/food/foods-by-name" + `/${this.userID}`
       let promise = httpRequest.request(url,
         {
           method: http.RequestMethod.GET,
@@ -86,7 +87,7 @@ export default struct FoodIndex {
       });
     } else {
       let httpRequest = http.createHttp();
-      let url = "http://" + SERVER_ADDR + "/food/foods-by-date" + `/${this.userID}`
+      let url = "http://" + SERVER_ADDR + SERVICE_NAME + "/food/foods-by-date" + `/${this.userID}`
       let promise = httpRequest.request(url,
         {
           method: http.RequestMethod.GET,
@@ -154,7 +155,7 @@ export default struct FoodIndex {
               this.searchInfo = value
               // 搜索功能
               let httpRequest = http.createHttp();
-              let url = "http://" + SERVER_ADDR + "/food/foods-by-input/"+`${this.searchInfo}`+ `/${this.userID}`
+              let url = "http://" + SERVER_ADDR + SERVICE_NAME + "/food/foods-by-input/"+`${this.searchInfo}`+ `/${this.userID}`
               let promise = httpRequest.request(url,
                 {
                   method: http.RequestMethod.GET,
