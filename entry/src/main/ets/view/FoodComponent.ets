@@ -155,12 +155,15 @@ export default struct FoodIndex {
               this.searchInfo = value
               // 搜索功能
               let httpRequest = http.createHttp();
-              let url = "http://" + SERVER_ADDR + SERVICE_NAME + "/food/foods-by-input/"+`${this.searchInfo}`+ `/${this.userID}`
+              let url = "http://" + SERVER_ADDR + SERVICE_NAME + "/food/foods-by-input/"+ `${this.userID}`
               let promise = httpRequest.request(url,
                 {
-                  method: http.RequestMethod.GET,
+                  method: http.RequestMethod.POST,
                   header: {
                     'Content-Type': 'application/json'
+                  },
+                  extraData: {
+                    input: this.searchInfo
                   },
                   readTimeout: 60000,
                   connectTimeout: 60000

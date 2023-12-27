@@ -73,31 +73,55 @@ export default struct MenuIndex {
   private userID: string = AppStorage.Link('userID').get();
   customizeFunction: () => void = () => {
     this.MenuItems = new Array<MenuInfo>()
-    let url = "http://" + SERVER_ADDR + SERVICE_NAME + `/menu/menus-by-input/${this.textInfo}`
+    let url = "http://" + SERVER_ADDR + SERVICE_NAME  + `/menu/menus-by-input`
+    if (this.textInfo != "") {
+      let httpRequest = http.createHttp();
+      let promise = httpRequest.request(url,
+        {
+          method: http.RequestMethod.POST,
+          header: {
+            'Content-Type': 'application/json'
+          },
+          extraData: {
+            input: this.textInfo
+          },
+          readTimeout: 60000,
+          connectTimeout: 60000
+        });
+      promise.then((data) => {
+        const foods = JSON.parse(data.result.toString())
+        console.info("读取数据库所有菜谱:" + data.result);
+        for (let index = 0; index < foods.length; index++) {1
+          const element = foods[index];
+          this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
+        }
+      }).catch((err) => {
+        console.info('error:' + JSON.stringify(err));
+      });
+    }
     if (this.textInfo === ""){
       url = "http://" + SERVER_ADDR + SERVICE_NAME  + `/menu/all-menu`
-    }
-
-    let httpRequest = http.createHttp();
-    let promise = httpRequest.request(url,
-      {
-        method: http.RequestMethod.GET,
-        header: {
-          'Content-Type': 'application/json'
-        },
-        readTimeout: 60000,
-        connectTimeout: 60000
+      let httpRequest = http.createHttp();
+      let promise = httpRequest.request(url,
+        {
+          method: http.RequestMethod.GET,
+          header: {
+            'Content-Type': 'application/json'
+          },
+          readTimeout: 60000,
+          connectTimeout: 60000
+        });
+      promise.then((data) => {
+        const foods = JSON.parse(data.result.toString())
+        console.info("读取数据库所有菜谱:" + data.result);
+        for (let index = 0; index < foods.length; index++) {1
+          const element = foods[index];
+          this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
+        }
+      }).catch((err) => {
+        console.info('error:' + JSON.stringify(err));
       });
-    promise.then((data) => {
-      const foods = JSON.parse(data.result.toString())
-      console.info("读取数据库所有菜谱:" + data.result);
-      for (let index = 0; index < foods.length; index++) {1
-        const element = foods[index];
-        this.MenuItems.push(new MenuInfo(element.menuId, element.image, element.name, element.ingredients, element.steps))
-      }
-    }).catch((err) => {
-      console.info('error:' + JSON.stringify(err));
-    });
+    }
   }
   recommendFunciton: () => void = () =>{
     this.MenuItems = new Array<MenuInfo>()
@@ -221,10 +245,12 @@ export default struct MenuIndex {
             this.textInfo = value
             this.customizeFunction()
           })
-          // .onChange((value: string) => {
-          //   this.textInfo = value
-          //   this.customizeFunction()
-          // })
+          .onChange((value: string) => {
+            if (value == ""){
+              this.textInfo = value
+              this.customizeFunction()
+            }
+          })
 
       }.width('90%')
 
