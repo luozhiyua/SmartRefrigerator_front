@@ -67,7 +67,7 @@ struct MenuGrid {
 @Component
 export default struct MenuIndex {
   @State private textInfo: string = ""
-  @State menuShow: string = "推荐菜谱";
+  @State menuShow: string = "全部菜谱";
   @State MenuItems:MenuInfo[] = new Array<MenuInfo>()
   private controller: SearchController = new SearchController()
   @State whe_openAll: boolean = true
@@ -181,10 +181,10 @@ export default struct MenuIndex {
         .onClick(() => {
                 this.whe_openAll = !this.whe_openAll
                 if(this.whe_openAll){
-                  this.menuShow = "推荐菜谱";
+                  this.menuShow = "全部菜谱";
                 }
                 else{
-                  this.menuShow = "全部菜谱";
+                  this.menuShow = "推荐菜谱";
                 }
                 this.recommendFunciton()
               }

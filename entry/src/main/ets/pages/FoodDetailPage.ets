@@ -129,7 +129,7 @@ export struct FoodInfoItem{
             }
             .onClick(()=>{
               DatePickerDialog.show({
-                start: new Date('2023-12-1'),
+                start: new Date(),
                 end: new Date('2100-1-1'),
                 onAccept: (value: DatePickerResult) => {
                   this.newValue = value.year + '-' + dealDate(value.month+1) + '-' + dealDate(value.day)
@@ -216,17 +216,11 @@ struct FoodDetailPage {
     alignment : DialogAlignment.Center
   })
 
-  submit() {
-    // 验证每个字段是否为空
-    if (this.new_foodItem.name === '' || this.new_foodItem.category === '' || this.new_foodItem.quantity === '' || this.new_foodItem.shelfLife === '' || this.new_foodItem.addr === '') {
-      // 如果有任何字段为空，弹出警告
-      AlertDialog.show({
-        title: '警告',
-        message: '请填写所有必填字段。',
-      });
-    }else{
-      let httpRequest = http.createHttp();
-      if(this.whe_add){
+  async toRealSubmit(): Promise<string>{
+    let result = "";
+    let httpRequest = http.createHttp();
+    if(this.whe_add){
+      result = await new Promise((resolve, reject) => {
         httpRequest.request(
           SERVER_ADDR+SERVICE_NAME+'/food/add-food',
           {
@@ -243,8 +237,15 @@ struct FoodDetailPage {
               address: this.new_foodItem.addr
             }
           },(err,data)=>{
-        })
-      }else {
+          if (err) {
+            reject("0"+err);
+          } else {
+            resolve("1"+data);
+          }
+        });
+      });
+    } else {
+      result = await new Promise((resolve, reject) => {
         httpRequest.request(
           SERVER_ADDR+SERVICE_NAME+"/food/edit-food/"+`${this.new_foodItem.id}`,
           {
@@ -261,12 +262,34 @@ struct FoodDetailPage {
               address: this.new_foodItem.addr
             }
           },(err,data)=>{
-          // 考虑弹窗提醒结果
-        })
-      }
-      httpRequest.destroy();
+          if (err) {
+            reject("0"+err);
+          } else {
+            resolve("1"+data);
+          }
+        });
+      });
+    }
+    httpRequest.destroy();
+    return result;
+  }
+
+  async submit() {
+    // 验证每个字段是否为空
+    if (this.new_foodItem.name === '' || this.new_foodItem.category === '' || this.new_foodItem.quantity === '' || this.new_foodItem.shelfLife === '' || this.new_foodItem.addr === '') {
+      // 如果有任何字段为空，弹出警告
+      AlertDialog.show({
+        title: '警告',
+        message: '请填写所有必填字段。',
+      });
+    }else{
       showToastContent('提交成功！')
-      // 能否等 1s再切换
+      let re = await this.toRealSubmit()
+      if(re.charAt(0) == '0'){
+        showToastContent('修改失败！')
+      }else {
+        showToastContent('修改成功！')
+      }
       setTimeout(function() {
         router.replaceUrl({url: "pages/Index",params : {collectChange :false}});
       }, 500);

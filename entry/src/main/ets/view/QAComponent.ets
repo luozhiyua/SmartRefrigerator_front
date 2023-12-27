@@ -132,7 +132,7 @@ export default struct QAIndex {
             })
 
           if(this.whe_loading){
-            Text('加载中...').fontSize(20).fontColor('#A9A9A9')
+            Text('加载中...').fontSize(20).fontColor('#696969')
           }else {
             Button('发送')
               .backgroundColor('#ecfdff')

@@ -175,7 +175,7 @@ export default struct FoodIndex {
             .onChange((value: string) => {
               this.searchInfo = value
               if (this.searchInfo == ""){
-                router.replaceUrl({url: "pages/Index"})
+                router.replaceUrl({url: "pages/Index",params : {collectChange : false}})
               }
             })
 
