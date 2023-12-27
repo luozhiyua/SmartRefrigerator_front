@@ -129,8 +129,9 @@ export struct FoodInfoItem{
             }
             .onClick(()=>{
               DatePickerDialog.show({
-                start: new Date(),
+                start: new Date('2023-12-1'),
                 end: new Date('2100-1-1'),
+                selected: this.new_foodItem.shelfLife == '' ? new Date() : new Date(this.new_foodItem.shelfLife),
                 onAccept: (value: DatePickerResult) => {
                   this.newValue = value.year + '-' + dealDate(value.month+1) + '-' + dealDate(value.day)
                   this.new_foodItem.shelfLife = this.newValue

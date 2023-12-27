@@ -11,21 +11,20 @@ struct MenuGridItem {
   build() {
     Column() {
       Image(this.MenuItem?.image)//$r('app.media.user'))//this.MenuItem.image)//this.MenuItem!.image!)
-        .objectFit(ImageFit.Contain)
+        .objectFit(ImageFit.Fill)
         .backgroundColor('#f1f3f5')
         .width('100%')
-        .height(152)
+        .height('80%')
       Row() {
         Text(this.MenuItem?.name)
           .fontSize(20)
-
       }
       .padding({ left: 12, right: 12 })
       .width('100%')
-      .height(52)
+      .height('20%')
       .backgroundColor('#E5E5E5')
     }
-    .height(204)
+    .height(180)
     .clip(new Rect({ width: '100%', height: '100%', radius: 12 }))
 
   }
@@ -60,7 +59,7 @@ struct MenuGrid {
     .columnsTemplate('1fr 1fr')
     .columnsGap(8)
     .rowsGap(8)
-    .padding({ left: 16, right: 16 })
+    .padding({ left: 11, right: 11 })
   }
 }
 

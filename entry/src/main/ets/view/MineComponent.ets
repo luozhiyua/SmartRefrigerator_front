@@ -24,20 +24,20 @@ struct MenuGrid {
         GridItem() {
           Column() {
             Image(item.image)//$r('app.media.user'))//this.MenuItem.image)//this.MenuItem!.image!)
-              .objectFit(ImageFit.Contain)
+              .objectFit(ImageFit.Fill)
               .backgroundColor('#f1f3f5')
               .width('100%')
-              .height(152)
+              .height('80%')
             Row() {
               Text(item.name)
                 .fontSize(20)
             }
             .padding({ left: 12, right: 12 })
             .width('100%')
-            .height(52)
+            .height('20%')
             .backgroundColor('#E5E5E5')
           }
-          .height(204)
+          .height(180)
           .clip(new Rect({ width: '100%', height: '100%', radius: 12 }))
             .onClick(async ()=>{
               let options = {
@@ -58,7 +58,7 @@ struct MenuGrid {
     .columnsTemplate('1fr 1fr')
     .columnsGap(8)
     .rowsGap(8)
-    .padding({ left: 16, right: 16 })
+    .padding({ left: 11, right: 11 })
   }
 }
 
@@ -111,7 +111,7 @@ export default struct MineIndex {
             .padding({ top: 15, bottom: 10, left: 25, right: 20 })
             .alignSelf(ItemAlign.Start)
         }.width('100%')
-        .backgroundColor('#c0c5ff')
+        .backgroundColor('#B0C4DE')
       }.height("8%").margin({top: 0})
 
       Column(){
@@ -128,10 +128,10 @@ export default struct MineIndex {
           Text('用户：'+this.phoneNum).fontSize(22)
           // Text('账号id：'+this.userID).fontSize(18)
         }
-      }.height('35%').width('100%').backgroundColor('#E0E0E0')
+      }.height('35%').width('100%').backgroundColor('#F0F8FF')
 
       Column(){
-        Text('我的收藏：').fontSize(18).margin({top : 8,left : 8,bottom : 8}).alignSelf(ItemAlign.Start)
+        Text('我的收藏：').fontSize(20).margin({top : 8,left : 8,bottom : 8}).alignSelf(ItemAlign.Start)
         MenuGrid({MenuItems : $MenuItems}).height('90%')
       }.height('57%').width('100%').backgroundColor('#CCE5FF')
 
