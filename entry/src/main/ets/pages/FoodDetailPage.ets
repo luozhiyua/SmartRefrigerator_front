@@ -8,7 +8,8 @@ const realfoodItem = params['foodItem']
 const clickAction = params['clickAction']
 const SERVICE_NAME = "/nacos-discovery-provider-food"
 
-async function deleteFoodItem(id: number) {
+// async function deleteFoodItem(id: number) {
+function deleteFoodItem(id: number) {
   let httpRequest = http.createHttp();
   httpRequest.request(
     SERVER_ADDR + SERVICE_NAME + "/food/delete-food/" + `${id}`,
@@ -25,9 +26,9 @@ async function deleteFoodItem(id: number) {
         // 在删除成功后再进行页面跳转
         router.replaceUrl({ url: "pages/Index", params: { collectChange: false } });
       }
+      httpRequest.destroy();
     }
   );
-  httpRequest.destroy();
 }
 
 
@@ -72,8 +73,9 @@ struct CheckDelete {
           }).backgroundColor(0xffffff).fontColor(Color.Black)
         Button('确定')
           .onClick(async () => {
-            await deleteFoodItem(this.foodItemID)
-            router.replaceUrl({url: "pages/Index",params : {collectChange :false}})
+            // await deleteFoodItem(this.foodItemID)
+            deleteFoodItem(this.foodItemID)
+            // router.replaceUrl({url: "pages/Index",params : {collectChange :false}})
             this.controller.close()
           }).backgroundColor(0xffffff).fontColor(Color.Red)
       }.margin({ bottom: 10 })
