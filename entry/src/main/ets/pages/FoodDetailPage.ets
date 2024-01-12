@@ -11,15 +11,25 @@ const SERVICE_NAME = "/nacos-discovery-provider-food"
 async function deleteFoodItem(id: number) {
   let httpRequest = http.createHttp();
   httpRequest.request(
-    // SERVER_ADDR+"/food/delete-food/"+`${id}`,
-    SERVER_ADDR + SERVICE_NAME + "/food/delete-food/"+`${id}`,
+    SERVER_ADDR + SERVICE_NAME + "/food/delete-food/" + `${id}`,
     {
       method: http.RequestMethod.DELETE,
-    },(err,data)=>{
-    // 考虑弹窗提醒结果
-  })
+    },
+    (err, data) => {
+      if (err) {
+        // 处理删除失败的情况
+        console.error("删除失败:", err);
+      } else {
+        // 处理删除成功的情况
+        console.log("删除成功:", data);
+        // 在删除成功后再进行页面跳转
+        router.replaceUrl({ url: "pages/Index", params: { collectChange: false } });
+      }
+    }
+  );
   httpRequest.destroy();
 }
+
 
 @Styles
 function cardStyle() {
