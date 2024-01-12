@@ -46,19 +46,20 @@ struct Index {
 
     let httpRequest = http.createHttp();
     let url = "http://" + SERVER_ADDR + SERVICE_NAME + "/food/foods-by-date" + `/${this.userID}`
-    let promise = httpRequest.request(url,
-      {
-        method: http.RequestMethod.GET,
-        header: {
-          'Content-Type': 'application/json'
-        },
-        readTimeout: 60000,
-        connectTimeout: 60000
-      });
+    // 发送GET请求获取食品数据
+    let promise = httpRequest.request(url, {
+      method: http.RequestMethod.GET,
+      header: {
+        'Content-Type': 'application/json'
+      },
+      readTimeout: 60000,
+      connectTimeout: 60000
+    });
     promise.then((data) => {
       const foods = JSON.parse(data.result.toString())
       for (let index = 0; index < foods.length; index++) {
         const element = foods[index];
+        // 将食品数据添加到食品列表
         this.foodList.push(new FoodItem(element.id, element.name, element.freshDate, element.quantity, element.category, element.address))
       }
     }).catch((err) => {

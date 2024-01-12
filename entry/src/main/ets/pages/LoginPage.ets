@@ -7,7 +7,10 @@ import http from '@ohos.net.http'
  * The login page consists of two components.
  * LoginTitle and LoginBottom, which can be invoked by directly referencing the control.
  */
+ // 服务名称常量，用于网络请求的URL
 const SERVICE_NAME = "/nacos-discovery-provider-user"
+
+// 使用Entry装饰器标记主入口组件
 @Entry
 @Component
 struct LoginPage {
@@ -15,6 +18,7 @@ struct LoginPage {
 
   build() {
     Column() {
+      // 顶部的返回按钮，仅在注册模式下显示
       Flex({justifyContent : FlexAlign.Start}){
         if(this.whe_register){
           Image($r('app.media.back'))
@@ -30,6 +34,7 @@ struct LoginPage {
   }
 }
 
+// 登录标题组件
 @Component
 struct LoginTitle {
   @Consume whe_register: boolean
@@ -52,6 +57,7 @@ struct LoginTitle {
   }
 }
 
+// 登录底部组件
 @Component
 struct LoginBottom {
   @Consume whe_register: boolean
@@ -62,6 +68,7 @@ struct LoginBottom {
   build() {
     Column() {
       Column() {
+        // 电话号码输入框
         TextInput({ placeholder: '手机号' })
           // .maxLength(11)
           .type(InputType.PhoneNumber)
@@ -70,6 +77,7 @@ struct LoginBottom {
             this.phoneNum = value;
           })
 
+        // 分割线
         Line()
           .width('100%')
           .height(0.5)
@@ -79,6 +87,7 @@ struct LoginBottom {
           })
           .backgroundColor('#0D182431')
 
+        // 密码输入框
         TextInput({ placeholder: '密码' })
           .maxLength(8)
           .type(InputType.Password)
@@ -87,6 +96,7 @@ struct LoginBottom {
             this.password = value;
           })
 
+        // 在注册模式下，显示重复密码输入框
         if(this.whe_register){
           Line()
             .width('100%')

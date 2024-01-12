@@ -3,11 +3,13 @@ import router from '@ohos.router'
 import http from '@ohos.net.http';
 import {getChineseCategories, getCategoriesImage, getFoodInfokey, SERVER_ADDR, getEnglishCategories, Eng2Chn, showToastContent} from '../util/DataUtil'
 
-const params = router.getParams(); // 获取传递过来的参数对象
+// 从路由器获取传递过来的参数
+const params = router.getParams();
 const realfoodItem = params['foodItem']
 const clickAction = params['clickAction']
 const SERVICE_NAME = "/nacos-discovery-provider-food"
 
+// 定义一个异步函数用于删除食品条目
 async function deleteFoodItem(id: number) {
   let httpRequest = http.createHttp();
   httpRequest.request(
@@ -15,35 +17,38 @@ async function deleteFoodItem(id: number) {
     SERVER_ADDR + SERVICE_NAME + "/food/delete-food/"+`${id}`,
     {
       method: http.RequestMethod.DELETE,
-    },(err,data)=>{
-    // 考虑弹窗提醒结果
-  })
+    }, (err, data) => {
+      // 这里可以添加处理错误和数据的逻辑
+    })
   httpRequest.destroy();
 }
 
+// 定义一个样式函数，设置卡片样式
 @Styles
 function cardStyle() {
-//  .backgroundColor('#F4F9F9')
-  .backgroundColor("#fff5f6")
-  .borderRadius(12)
-  .padding({ top: 8, right: 8, left: 8})
-  .width('95%')
+  .backgroundColor("#fff5f6")  // 设置背景颜色
+  .borderRadius(12)            // 设置边框圆角
+  .padding({ top: 8, right: 8, left: 8})  // 设置内边距
+  .width('95%')                // 设置宽度
 }
 
+// 定义一个样式函数，用于选择行的样式
 @Styles
 function selectRowStyle() {
-  .width('60%')
-  .height('25%')
-  .backgroundColor('#e6e6e6')
-  .borderRadius(18)
-  .padding(8)
+  .width('60%')                // 设置宽度
+  .height('25%')               // 设置高度
+  .backgroundColor('#e6e6e6')  // 设置背景颜色
+  .borderRadius(18)            // 设置边框圆角
+  .padding(8)                  // 设置内边距
 }
 
+// 定义一个处理日期的函数，确保日期格式正确
 function dealDate(value: number){
-  if(value < 10)return '0'+value
+  if(value < 10) return '0' + value
   return value.toString()
 }
 
+// 定义一个自定义对话框结构，用于删除确认
 @CustomDialog
 struct CheckDelete {
   controller: CustomDialogController
@@ -58,13 +63,13 @@ struct CheckDelete {
       Flex({ justifyContent: FlexAlign.SpaceAround }) {
         Button('取消')
           .onClick(() => {
-            this.controller.close()
+            this.controller.close()  // 点击取消时关闭对话框
           }).backgroundColor(0xffffff).fontColor(Color.Black)
         Button('确定')
           .onClick(async () => {
-            await deleteFoodItem(this.foodItemID)
+            await deleteFoodItem(this.foodItemID)  // 点击确定时删除食品条目
             router.replaceUrl({url: "pages/Index",params : {collectChange :false}})
-            this.controller.close()
+            this.controller.close()  // 关闭对话框
           }).backgroundColor(0xffffff).fontColor(Color.Red)
       }.margin({ bottom: 10 })
     }
@@ -81,11 +86,13 @@ export struct FoodInfoItem{
   private ChiCategories: string[] = getChineseCategories()
   private cate_eng: string[] = getEnglishCategories()
 
+  // 当编辑状态改变时，更新新值
   edit_change(){
-    if(this.title == '种类')this.newValue = Eng2Chn(this.value);
+    if(this.title == '种类') this.newValue = Eng2Chn(this.value);
     else this.newValue = this.value;
   }
 
+  // 构建组件的显示内容
   build(){
     Column(){
       // Flex({ justifyContent: FlexAlign.SpaceAround}) {
@@ -97,6 +104,7 @@ export struct FoodInfoItem{
         if(this.whe_edit){
           // 输入模式分为普通文本输入和文本选择(当为“种类”时)
           if(this.title == '种类'){
+            // 特殊处理种类字段
             Row(){
               Text(this.new_foodItem.category == this.value ? Eng2Chn(this.value) : this.newValue)
                 .fontColor('#708090')
@@ -118,6 +126,7 @@ export struct FoodInfoItem{
             .selectRowStyle()
           }
           else if(this.title == '保质期'){
+            // 特殊处理保质期字段
             Row(){
               Text(this.new_foodItem.shelfLife == this.value ? this.value : this.newValue)
                 .fontColor('#708090')
@@ -140,7 +149,8 @@ export struct FoodInfoItem{
             })
             .selectRowStyle()
           } else{
-            TextInput({placeholder: this.value,text: this.newValue})
+            // 其他字段的普通文本输入
+            TextInput({placeholder: this.value, text: this.newValue})
               .onChange((text: string)=>{
                 this.newValue = text;
                 this.new_foodItem[getFoodInfokey(this.title)] = text;
@@ -301,16 +311,18 @@ struct FoodDetailPage {
     Column(){
       Column() {
         if(!this.whe_edit){
-          FirstLine({headText:'食物详情',leftText:'编辑',rightText:'删除',
-            LeftFunction:()=>{
+          // 如果不是编辑模式，显示食品详情和编辑、删除按钮
+          FirstLine({headText: '食物详情', leftText: '编辑', rightText: '删除',
+            LeftFunction: () => {
               this.whe_edit = true
               this.whe_add = false
             },
             RightFunction:()=>{this.deleteCheckController.open()}})
         } else {
-          FirstLine({headText:'食物编辑',leftText:'取消',rightText:'完成',
-            LeftFunction:()=>{
-              if(this.whe_add)router.back()
+          // 如果是编辑模式，显示食品编辑和取消、完成按钮
+          FirstLine({headText: '食物编辑', leftText: '取消', rightText: '完成',
+            LeftFunction: () => {
+              if(this.whe_add) router.back()
               else {
                 this.new_foodItem = new FoodItem(this.foodItem.id,this.foodItem.name,
                   this.foodItem.shelfLife,this.foodItem.quantity,this.foodItem.category,this.foodItem.addr)
@@ -320,6 +332,7 @@ struct FoodDetailPage {
             RightFunction:()=>{ this.submit();}})
         }
 
+        // 页面的主要内容区域，显示食品的图片和详细信息
         Row().height('2%')
 
         Row(){
@@ -362,7 +375,6 @@ struct FoodDetailPage {
       colors: [['#ee9ca7', 0.0], ["#fbc7d4", 0.7]]
     })
 
-    // .margin({ bottom: 5 })
-    // .width('100%')
+
   }
 }
